@@ -1,0 +1,16 @@
+@startuml
+class Net
+class Place
+Place : + name
+class Transition
+Transition : + name
+class Pair
+Pair : + order
+Pair "1..*" ..> "1" Place
+Pair "1..*" ..> "1" Transition
+class FluxRelation
+FluxRelation *-- Pair
+Net "<.. FluxRelation
+Net *-- Place
+Net *-- Transition
+@enduml
