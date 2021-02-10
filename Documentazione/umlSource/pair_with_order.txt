@@ -1,0 +1,19 @@
+@startuml
+class Net
+class Place
+Place : + name
+class Transition
+Transition : + name
+class Pair<K,V>
+class PairPT
+PairPT : + order
+class FluxRelation
+
+Pair  <|-  PairPT : "<<bind>>\n<K::Place>\n<V::Transition>"
+PairPT "1..*" ..> "1" Place
+PairPT "1..*" ..> "1" Transition
+FluxRelation *--> PairPT
+Net <.. FluxRelation
+Net *--> Place
+Net -> Transition
+@enduml
