@@ -1,0 +1,37 @@
+#PRESUNZIONI RIGUARDO ALLA DEFINIZIONE DI RETE CONNESSA
+Si presume che un posto debba punatare solo a una o più transizioni e può essere puntato solo da transizioni (non è obbligatorio che venga puntato). Una transizione deve essere puntata da almeno un posto e deve puntare almeno un posto.
+Detto ciò consideriamo una rete N con P l'insieme di posti e T l'insieme delle transizioni. Allora N è connessa se e solo se:
+Per ogni p <- P : Predecessori(p) != Insieme vuoto oppure Sucessori(p) != insieme vuoto. Ovvero il posto p deve avere un collegamento, deve essere connesso alla Rete.
+E per ogni t <- T : Predecessori(t) != insieme vuoto && Sucessori(t) != insieme vuoto. Ovvero deve esserci almeno un posto che punta a t e t deve puntare ad almeno un posto.
+
+
+#NOTE PRELIMINARI:
+le parole tra <> indicano dei non terminali (i.e. "parte sinistra").
+le parole senza <> sono dei terminali, in particolare quelle minuscole indicano delle keyword mentre quelle maiuscole delle definizioni regolari.
+
+
+
+#INIZIO DEFINIZIONE BNF
+<net-description> -> net ID start <stat-list> end ID
+<stat-list> -> <stat> <stat-list> | <stat> 
+<stat> -> <flux-stat>; | <comment>
+<flux-stat> -> <id> '->' <id> '->' <flux-stat> | <id> '->' <id> '->' <id>
+<id> -> {<list-id>} | ID
+<list-id> -> ID, <list-id> | ID
+<comment> -> # STRINGA '\n' 
+
+
+
+#NOTE RIGUARDO ALLA BNF
+<flux-stat>. Imponiamo che la descrizione di una relazione di fluzzo inizi sempre con l'identificatore di un posto (o più) che puntano a una transizione per come è definita la rete (nodi posssono puntare solo a transizioni e transizioni possono puntare solo a nodi). Imponiamo anche il numero di elementi di relazione di flusso (ovvero id1 -> id2) esprimibili in una volta sia pari. In questo modo garantiamo che la rete sia connessa con la sintassi del linguaggio.
+
+Es: n1 -> t2 -> n3; #accettato, gli elementi della relazione fi flusso definiti sono (n1, t2) e (t2, n3).
+n1 -> t2; # non valido
+n1 -> t2 -> n3 -> t4; #non valido
+n1 -> t2 -> n3 -> t4 -> n5; #valido
+
+Notare che la definizione inizia sempre con un posto e termina con un posto, in questo modo garantiamo che i Pre e Succ di una transizione non siano vuoto. O meglio è l'interprete a indentifcare il primo e ultimo ID inseriti come dei posti, se il configuartore li insersce intendenoli come transizione si tratta di un errore logico commesso dal configuratore.
+
+Se in modifica si vuole aggiungere un arco da una transizione a un posto sarà necessario specificare prima un arco, già esistente, da un posto alla transizione in questione, questo arco per il primo passaggio verrà ignorato in quanto già presente.
+
+Gli ID inseriti nei vari elementi della relazione di flusso sono analizzati dall'interprete per verificare se già presenti. Se si definisce una relazione n1 -> t2 -> n3; dove n1 e t2 sono già stati definiti ma n3 no allora l'elemento (n1, t2) viene ignorato in quanto già presente e viene aggiunto solo l'elemento (t2, n3).
