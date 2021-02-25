@@ -1,0 +1,3 @@
+INDEX VERSION 1.131+/home/fabiolusha/Desktop/DeskArch-10-20/unibs/3_Anno/1_Semestre/Ingengeria del software/ProgettoPrimaParte/.metadata/.plugins/org.eclipse.jdt.core
+3403819261.index
+4010541665.index

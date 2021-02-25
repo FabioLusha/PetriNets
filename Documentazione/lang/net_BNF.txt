@@ -13,7 +13,7 @@ le parole senza <> sono dei terminali, in particolare quelle minuscole indicano 
 
 
 #INIZIO DEFINIZIONE BNF
-<net-description> -> net ID start <stat-list> end ID
+<net-description> -> net ID begin <stat-list> end ID
 <stat-list> -> <stat> <stat-list> | <stat> 
 <stat> -> <flux-stat>; | <comment>
 <flux-stat> -> <id> '->' <id> '->' <flux-stat> | <id> '->' <id> '->' <id>
