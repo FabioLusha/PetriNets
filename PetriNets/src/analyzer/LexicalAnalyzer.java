@@ -4,9 +4,10 @@ import java.util.regex.Pattern;
 
 public class LexicalAnalyzer {
 
-    static final String[] KEYWORDS = {"net", "start", "end", "->", "{", "}", ","};
+    static final String[] KEYWORDS = {"net", "start", "end", "->"};
     // \\{ per ricercare efftivamente il letterale { altrimenti { assume funzione di metacarattere nella regex
-    static final String ID_PATTERN = "[A-Za-z][0-9A-Za-z_]*";
+    static final String ID_PATTERN = "\\b[A-Za-z][0-9A-Za-z_]*\\b";
+    static final String COMMENT = "#.*\\n";
 
     public static boolean isID(String word){
         return Pattern.matches(ID_PATTERN, word);
