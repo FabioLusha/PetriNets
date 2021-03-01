@@ -19,7 +19,7 @@ public class SyntaxAnalyzer {
 
     public static boolean belongsTo(String sentence, String grammar){
         bnfHolder bnf = new bnfHolder(grammar);
-        sentence = sentence.replaceAll("[ \\t\\n]+"," ");
+
 
 
 
