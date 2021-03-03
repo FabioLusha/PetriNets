@@ -1,4 +1,4 @@
-package src.net;
+package net;
 
 
 import java.util.*;
