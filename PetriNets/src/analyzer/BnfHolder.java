@@ -4,16 +4,35 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class bnfHolder {
+public class BnfHolder {
 
     public static final String NOMATCH_REGEX_MSG = "La Regex non ha trovato alcun match";
 
     class NoMatchFoundException extends Exception{
         public NoMatchFoundException() {super();}
         public NoMatchFoundException(String s) {super(s);}
+
     }
 
-    public static final char SPACES = '\n' | '\t' | ' ';
+    class SentenceTooShortException extends Exception{
+        private String errorMsg;
+        private String errorPoint;
+
+        public SentenceTooShortException(String msg, String point){
+            errorMsg = msg;
+            errorPoint = point;
+        }
+
+        public String getErrorMsg() {
+            return errorMsg;
+        }
+
+        public String getErrorPoint() {
+            return errorPoint;
+        }
+    }
+
+    //public static final char SPACES = '\n' | '\t' | ' ';
         /*
         axiom = astrazione di più alto livello, non-terminale radice
         grammar = grammatica del linguaggio, ovvero l'insieme delle regole di produzione
@@ -23,7 +42,7 @@ public class bnfHolder {
     private Set<String> regularDefinitions;
     private String axiom;
 
-    public bnfHolder(String grammar){
+    public BnfHolder(String grammar){
         String[] tmp = grammar.split("\\n");
         bnf = new LinkedHashMap<>();
         nonTerminals = new LinkedHashSet<>();
@@ -38,7 +57,7 @@ public class bnfHolder {
             //se split non trova la regex in input ritorna l'intera stringa
             String[] rhs = strList[1].split("\\|");
             for(int i = 0; i < rhs.length; i++)
-                rhs[i] = rhs[i].replaceAll("[ \\t]+"," ");
+                rhs[i] = rhs[i].replaceAll("[ \\t]+"," ").trim();
 
             bnf.put(lhs, Arrays.asList(rhs));
             if(lhs.startsWith("<\\")) regularDefinitions.add(lhs);
@@ -84,7 +103,7 @@ public class bnfHolder {
         return nonTerminals;
     }
 
-    public boolean belongsTo(String sentence){
+    public boolean belongsTo(String sentence) throws SentenceTooShortException {
         //formatto il testo in una forma ideale per essere trattato
         sentence = sentence.replaceAll("\\{","\\{ " ).
                             replaceAll("}"," } " ).
@@ -92,11 +111,11 @@ public class bnfHolder {
                             replaceAll(";", " ; " ).
                             replaceAll("->", " -> ").
                             replaceAll("[ \\t]+", " ");
-        System.out.println(sentence);
+        //System.out.println(sentence);
 
         try {
             if(matchGeneric(sentence, axiom).isEmpty()) return true;
-        }catch (NoMatchFoundException e){
+        }catch (NoMatchFoundException  e){
            e.getMessage();
         }
 
@@ -106,7 +125,7 @@ public class bnfHolder {
     /**
      * @ assert( true, nonTerminals.contains(nonTerminal) )
      */
-    public String matchNonTerminal(String sentence, String nonTerminal) throws NoMatchFoundException {
+    public String matchNonTerminal(String sentence, String nonTerminal) throws NoMatchFoundException, SentenceTooShortException {
 
         //se una variante della bnf è vera allora la frase appartiene al linguaggio
         if(regularDefinitions.contains(nonTerminal)){
@@ -140,7 +159,14 @@ public class bnfHolder {
     }
 
 
-    public String matchGeneric(String sentence, String option) throws NoMatchFoundException{
+    public String matchGeneric(String sentence, String option) throws NoMatchFoundException, SentenceTooShortException{
+
+        sentence = sentence.replaceAll("\\{","\\{ " ).
+                replaceAll("}"," } " ).
+                replaceAll(",", " , " ).
+                replaceAll(";", " ; " ).
+                replaceAll("->", " -> ").
+                replaceAll("[ \\t]+", " ");
 
         sentence = sentence.trim();
         option = option.trim();
@@ -159,9 +185,11 @@ public class bnfHolder {
                 j = 0;
                 int endOfNonTerminal = option.indexOf(">") + 1;
                 String nonTerminal = option.substring(j, option.indexOf(">") + 1);
+                sentence = matchNonTerminal(sentence.substring(i), nonTerminal);
+
                 option = option.substring(endOfNonTerminal);
                 j = 0;
-                sentence = matchNonTerminal(sentence.substring(i), nonTerminal);
+
                 i = 0;
                 sentence = sentence.trim();
                 option = option.trim();
@@ -177,8 +205,10 @@ public class bnfHolder {
         }
         if( j == option.length())
             return sentence.substring(i);
+        else if (sentence.isEmpty())
+            throw new SentenceTooShortException("frase vuota, option no", option);
         else
-            throw new NoMatchFoundException();
+            throw new NoMatchFoundException("Errore nel Match");
     }
 
 }

@@ -1,9 +1,6 @@
 package analyzer;
 
-import java.net.SocketTimeoutException;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args){
@@ -11,7 +8,8 @@ public class Main {
         String[] a = "aaa c0".split("->");
         System.out.println("\\\\");
 
-        bnfHolder bnf = new bnfHolder(SyntaxAnalyzer.GRAMMAR);
+        /*
+        BnfHolder bnf = new BnfHolder(Grammar.NET_GRAMMAR);
         System.out.println(bnf.toString());
         String[] str = " a b  c".split(" ");
         for(String s : str){
@@ -24,18 +22,6 @@ public class Main {
                 System.out.println("\t" + ss);
             }
         }
-
-        //System.out.println( bnf.matchGeneric(" { this}-  > {t1 }", "{this } ->{ t1    \n}"));
-        /*
-        String sentence = "net   rete1   begin {n1}->n2 -> m3; end Re";
-        sentence = sentence.replaceAll("net","graph")
-        .replaceAll("\\{"," { " )
-        .replaceAll("}"," } " )
-        .replaceAll(",", " , " )
-        .replaceAll(";", " ; " )
-                .replaceAll("->", " -> ")
-        .replaceAll("[ \\t]+", " ");
-        System.out.println(sentence);
 */
 
        /*
@@ -57,17 +43,62 @@ public class Main {
         //System.out.println(matcher.start());
 
 */
-
-/*
+        /*
         try {
-         System.out.println(bnf.matchNonTerminal("#jgg\n hj", "<stat>"));
+         System.out.println(bnf.matchNonTerminal("n1 -> n3 -> n4 ; ", "<stat-list>"));
             System.out.println("yay");
         }catch(bnfHolder.NoMatchFoundException e){
             System.out.println("Err");
         }
+
+         */
+       //System.out.println(Grammar.belongsTo("net rete1 begin { n1, n3} -> {n2, n4, n4} -> m3 -> n2 -> {n4, n5}; n3 -> {n2  -> n1 ; end Re", Grammar.NET_GRAMMAR));
+/*
+        Scanner scan = new Scanner(System.in);
+        BnfHolder bnf = new BnfHolder(Grammar.INSTRUCTION_GRAMMAR);
+        String toMatch = bnf.getRoot();
+        do{
+            System.out.print("> ");
+            String str = scan.nextLine();
+            try{
+                bnf.matchGeneric(str, toMatch);
+            }catch(BnfHolder.SentenceTooShortException e ){
+                toMatch =  e.getErrorPoint() + " " + toMatch;
+                System.out.println("arrivato");
+                System.out.println(toMatch);
+            }catch (BnfHolder.NoMatchFoundException e){
+                e.getMessage();
+            };
+        }while(true);
 */
-
-        System.out.println(SyntaxAnalyzer.belongsTo("net rete1 begin {n1, n3} -> {n2, n4} -> m3 ; n3 -> n2 -> n1; end Re", SyntaxAnalyzer.GRAMMAR));
-
+        Interpreter interpreter = new Interpreter();
+        System.out.println(interpreter.state.ordinal());
+        Scanner scan = new Scanner(System.in);
+        BnfHolder bnf = new BnfHolder(Grammar.INSTRUCTION_GRAMMAR);
+        String toMatch = bnf.getRoot();
+        StringBuilder quelloCheScrivi = new StringBuilder();
+        do{
+            System.out.print("> ");
+            String str = scan.nextLine();
+            for(String command : interpreter.state.commands){
+                try{
+                    if( bnf.matchGeneric(str, command).isEmpty()) {
+                        interpreter.nextStep(command);
+                        quelloCheScrivi.append(str + "\n");
+                        System.out.println(interpreter.state.ordinal());
+                        System.out.println(quelloCheScrivi);
+                        break;
+                    }
+                }catch(BnfHolder.SentenceTooShortException e ){
+                    toMatch =  e.getErrorPoint() + " " + toMatch;
+                    System.out.println("arrivato");
+                    System.out.println(toMatch);
+                    continue;
+                }catch (BnfHolder.NoMatchFoundException e){
+                    System.out.println(e.getMessage());;
+                    continue;
+                };
+            }
+        }while(true);
     }
 }
