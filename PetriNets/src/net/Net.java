@@ -18,6 +18,18 @@ public class Net {
 		return Transitions.contains(transition);
 	}
 
+	public String getName() {
+		return name;
+	}
+
+	public Set<Transition> getTransitions() {
+		return Transitions;
+	}
+
+	public Set<Place> getPlaces() {
+		return Places;
+	}
+
 	public boolean isPlace(Place place) {
 		return Places.contains(place);
 	}

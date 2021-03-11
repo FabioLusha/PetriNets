@@ -1,5 +1,7 @@
 package net;
 
+import java.util.Objects;
+
 public class Transition {
 	private String name;
 	
@@ -25,9 +27,14 @@ public class Transition {
         }
 		
 		final Transition other = (Transition) t;
-        if ((this.name == null) ? (other.name != null) : !this.name.equals(other.name)) {
+        if (!Objects.equals(this.name, other.name)) {
             return false;
         }
         return true;
+	}
+
+	@Override
+	public int hashCode(){
+		return Objects.hash(name);
 	}
 }

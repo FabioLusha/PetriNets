@@ -1,12 +1,12 @@
 package analyzer;
 
+import net.Net;
+import net.Transition;
+
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args){
-        System.out.println( LexicalAnalyzer.isID("{thisx"));
-        String[] a = "aaa c0".split("->");
-        System.out.println("\\\\");
 
         /*
         BnfHolder bnf = new BnfHolder(Grammar.NET_GRAMMAR);
@@ -77,6 +77,8 @@ public class Main {
         BnfHolder bnf = new BnfHolder(Grammar.INSTRUCTION_GRAMMAR);
         String toMatch = bnf.getRoot();
         StringBuilder quelloCheScrivi = new StringBuilder();
+        
+
         do{
             System.out.print("> ");
             String str = scan.nextLine();
@@ -84,7 +86,7 @@ public class Main {
                 try{
                     if( bnf.matchGeneric(str, command).isEmpty()) {
                         interpreter.nextStep(command);
-                        quelloCheScrivi.append(str + "\n");
+
                         interpreter.toDoCommand(command, str);
                         System.out.println(interpreter.returnNet().toString());
                         quelloCheScrivi.append(str + "\n");
