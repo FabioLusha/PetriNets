@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import net.Net;
+
 public class Interpreter {
+	SemanticAnalyzer semanalyzer = new SemanticAnalyzer();
 
     enum State {
 
@@ -50,12 +53,40 @@ public class Interpreter {
 
     public Interpreter(){
         state = State.inizio;
+        semanalyzer = new SemanticAnalyzer();
     }
 
     public State nextStep(String command){
         state = state.nextStep(command);
         return state;
     }
+    
+    public void toDoCommand(String command, String sentence) {
+    	switch(command) {
+    	case "<init-stat>" : {
+    		semanalyzer.toDoInit_Stat(sentence);
+    		break;
+    	}
+    	case "<stat-list>" : {
+    		semanalyzer.toDoStat_List(sentence);
+    		break;
+    	}
+    	case "<stat>" : {
+    		semanalyzer.toDoStat(sentence);
+    		break;
+    	}
+    	
+    	default : {
+    		System.out.println("Nessun comando");
+    		break;
+    	}
+    	}
+    }
+    
+    public Net returnNet() {
+		return semanalyzer.returnNet();
+	}
+	
 
 
 }

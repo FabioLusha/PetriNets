@@ -84,6 +84,8 @@ public class Main {
                 try{
                     if( bnf.matchGeneric(str, command).isEmpty()) {
                         interpreter.nextStep(command);
+                        interpreter.toDoCommand(command, str);
+                        System.out.println(interpreter.returnNet().toString());
                         quelloCheScrivi.append(str + "\n");
                         System.out.println(interpreter.state.ordinal());
                         System.out.println(quelloCheScrivi);
