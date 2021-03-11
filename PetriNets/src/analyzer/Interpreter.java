@@ -71,9 +71,8 @@ public class Interpreter {
     		semanalyzer.toDoStat_List(sentence);
     		break;
     	}
-    	case "<stat>" : {
-    		semanalyzer.toDoStat(sentence);
-    		break;
+    	case "<view-ins>" : {
+    		
     	}
     	
     	default : {

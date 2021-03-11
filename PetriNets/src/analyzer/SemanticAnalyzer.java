@@ -16,7 +16,7 @@ public class SemanticAnalyzer {
 	public Net returnNet() {
 		return net;
 	}
-	
+
 	public void toDoInit_Stat(String sentence) {
 		sentence = sentence.replaceAll("begin", "").replaceAll("net", "").trim();
 		net = new Net(sentence);
@@ -31,47 +31,53 @@ public class SemanticAnalyzer {
 	}
 
 	public void toDoStat(String sentence) {
-
 		if (sentence.startsWith("place")) {
-			sentence = sentence.replaceAll("place", "");
-			String[] parts = sentence.split("->");
-			
-			
+			appoggioStat(sentence, "place", 0);
+		} else {
+			appoggioStat(sentence, "transition", 1);
+		}
+	}
+	
 
-			for (int i = 0; i < parts.length; i++) {
-				if (parts[i].contains("{")) {
-					parts[i] = parts[i].replaceAll("[{}]", "");
-					List<String> id = Arrays.asList(parts[i].split(","));
-					id.forEach(e->e.trim());
-					if (i % 2 == 0) {
-						for (int j = 0; j < id.size(); j++) {
-							if (!net.isTransition(new Transition(id.get(j)))) {
-								net.addPlace(new Place(id.get(j)));
-							}
-						}
-					} else {
-						for (int j = 0; j < id.size(); j++) {
-							if (!net.isPlace(new Place(id.get(j)))) {
-								net.addTransition(new Transition(id.get(j)));
-							}
+	public void appoggioStat(String sentence, String keyword, int num) {
+		sentence = sentence.replaceAll(keyword, "");
+		String[] parts = sentence.split("->");
+
+		for (int i = 0; i < parts.length; i++) {
+			if (parts[i].contains("{")) {
+				parts[i] = parts[i].replaceAll("[{}]", "");
+				List<String> id = Arrays.asList(parts[i].split(","));
+				id.forEach(e -> e.trim());
+				if (i % 2 == num) {
+					for (int j = 0; j < id.size(); j++) {
+						if (!net.isTransition(new Transition(id.get(j)))) {
+							net.addPlace(new Place(id.get(j)));
 						}
 					}
-
 				} else {
-					parts[i] = parts[i].trim();
-					if (i % 2 == 0) {
-						if (!(net.isTransition(new Transition(parts[i])))) {
-							net.addPlace(new Place(parts[i]));
-						}
-					} else {
-						if (!(net.isPlace(new Place(parts[i])))) {
-							net.addTransition(new Transition(parts[i]));
+					for (int j = 0; j < id.size(); j++) {
+						if (!net.isPlace(new Place(id.get(j)))) {
+							net.addTransition(new Transition(id.get(j)));
 						}
 					}
 				}
 
+			} else {
+				parts[i] = parts[i].trim();
+				if (i % 2 == num) {
+					if (!net.isTransition(new Transition(parts[i]))) {
+						net.addPlace(new Place(parts[i]));
+					}
+				} else {
+					if (!net.isPlace(new Place(parts[i]))) {
+						net.addTransition(new Transition(parts[i]));
+					}
+				}
 			}
+
 		}
 	}
+	
+	
 
 }
