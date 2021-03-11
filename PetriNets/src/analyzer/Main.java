@@ -79,12 +79,14 @@ public class Main {
         StringBuilder quelloCheScrivi = new StringBuilder();
         do{
             System.out.print("> ");
-            String str = scan.nextLine();
+            String input = scan.nextLine();
             for(String command : interpreter.state.commands){
                 try{
-                    if( bnf.matchGeneric(str, command).isEmpty()) {
+                    if( bnf.matchGeneric(input, command).isEmpty()) {
                         interpreter.nextStep(command);
-                        quelloCheScrivi.append(str + "\n");
+                        quelloCheScrivi.append(input + "\n");
+
+
                         System.out.println(interpreter.state.ordinal());
                         System.out.println(quelloCheScrivi);
                         break;

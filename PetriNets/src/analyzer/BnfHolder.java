@@ -168,6 +168,7 @@ public class BnfHolder {
                 replaceAll("->", " -> ").
                 replaceAll("[ \\t]+", " ");
 
+        String originalSentence = sentence;
         sentence = sentence.trim();
         option = option.trim();
 
