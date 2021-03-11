@@ -1,0 +1,11 @@
+/SyntaxAnalyzer.class
+/BnfHolder$NoMatchFoundException.class
+/BnfHolder$SentenceTooShortException.class
+/BnfHolder.class
+/Grammar.class
+/Interpreter$State$1.class
+/Interpreter$State$2.class
+/Interpreter$State$3.class
+/Interpreter$State.class
+/Interpreter.class
+/SemanticAnalyzer.class
