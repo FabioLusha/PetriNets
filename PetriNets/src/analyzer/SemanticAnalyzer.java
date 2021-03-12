@@ -8,9 +8,6 @@ import java.util.*;
 import java.util.function.Function;
 
 public class SemanticAnalyzer {
-
-	private static BnfHolder bnf;
-	private Map<String, Function<String, Boolean>> nonTerminalToSemanticCheck;
 	private Net net;
 
 	public Net returnNet() {
@@ -18,9 +15,12 @@ public class SemanticAnalyzer {
 	}
 
 	public void toDoInit_Stat(String sentence) {
-		sentence = sentence.replaceAll("begin", "").replaceAll("net", "").trim();
+		sentence = sentence.trim();
 		net = new Net(sentence);
 	}
+	
+	
+	
 
 	public void toDoStat_List(String sentence) {
 		String[] stats = sentence.split(";");

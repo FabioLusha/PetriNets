@@ -3,89 +3,129 @@ package analyzer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 import net.Net;
 
 public class Interpreter {
-	SemanticAnalyzer semanalyzer = new SemanticAnalyzer();
 
     enum State {
 
-        inizio(
-                new ArrayList<>(Arrays.asList("<init-stat>", "<view-ins>", "<erase-ins>", "<view-pred-succ-ins>"))
-        ){
-            public State nextStep(String command){
-                if(command.equalsIgnoreCase("<init-stat>")) return dichiarata_rete;
-                else return inizio;
+        Inizio {
+
+            public State stepNext() {
+                System.out.println("inserisci la tua scelta: 1)Crea Rete 2)Chiudi");
+
+                if (scanint.nextInt() == 1) {
+                    return Crea_rete;
+                }
+                return Fine;
+            }
+
+        },
+
+        Crea_rete {
+
+            public State stepNext() {
+                System.out.println("Inserisci il nome della rete: ");
+                semanalyzer.toDoInit_Stat(scanstring.nextLine());
+                return Aggiunta;
+            }
+
+        },
+
+        Aggiunta {
+        	String place;
+        	String transition;
+            public State stepNext() {
+                System.out.println("Quale tipo di relazione di flusso vuoi inserire: 1) posto->transizione 2)transizione->posto");
+                switch (scanint.nextInt()) {
+                    case 1:
+                        {
+                            System.out.println("Inserisci posto:");
+                            place = scanstring.nextLine();
+                            System.out.println("Inserisci transizione:");
+                            transition = scanstring.nextLine();
+                            break;
+                        }
+                    case 2:
+                        {
+                            System.out.println("Inserisci transizione:");
+                            transition = scanstring.nextLine();
+                            System.out.println("Inserisci posto:");
+                            place = scanstring.nextLine();
+                            break;
+                        }
+                    default:
+                        {
+                            System.out.println("valore inserito non corretto!");
+                            break;
+                        }
+                }
+                return AggiuntaF;
             }
         },
 
-        dichiarata_rete(
-                new ArrayList<>(Arrays.asList("<stat-list>", "<stat>"))
-        ){
+        AggiuntaF {
 
-            public State nextStep(String command){
-                return rete_non_vuota;
+            public State stepNext() {
+
+                System.out.println("1)Inserisci altre relazioni di flusso 2)Salva e torna al menu principale 3)Chiudi tutto senza salvare");
+                switch ((scanint.nextInt())) {
+                    case 1:
+                        {
+                            return Aggiunta;
+
+                        }
+                    case 2:
+                        {
+                            return Inizio;
+
+                        }
+                    case 3:
+                        {
+                            return Fine;
+                        }
+                    default:
+                        {
+                            return AggiuntaF;
+                        }
+                }
             }
+
         },
-        rete_non_vuota(
-                new ArrayList<>(Arrays.asList("<stat-list>", "<stat>", "<end-stat>"))
-        ){
 
-            public State nextStep(String command){
-                if (command.equalsIgnoreCase("<end-stat>"))
-                    return inizio;
-                else
-                    return rete_non_vuota;
+        Fine {
+            public State stepNext() {
+            	System.out.println("Chiusura programma");
+                System.exit(0);
+                return Fine;
             }
+
+
+
         };
 
-        public List<String> commands;
+        Scanner scanint = new Scanner(System.in);
+        Scanner scanstring = new Scanner(System.in);
+        SemanticAnalyzer semanalyzer = new SemanticAnalyzer();
 
-        State(ArrayList<String> strings) {
-            commands = strings;
-        }
-
-        public abstract State nextStep(String command);
+        public abstract State stepNext();
+      
     }
 
     public State state;
 
-    public Interpreter(){
-        state = State.inizio;
-        semanalyzer = new SemanticAnalyzer();
+    public Interpreter() {
+        state = State.Inizio;
+
     }
 
-    public State nextStep(String command){
-        state = state.nextStep(command);
+    public State nextStep() {
+        state = state.stepNext();
         return state;
     }
-    
-    public void toDoCommand(String command, String sentence) {
-    	switch(command) {
-    	case "<init-stat>" : {
-    		semanalyzer.toDoInit_Stat(sentence);
-    		break;
-    	}
-    	case "<stat-list>" : {
-    		semanalyzer.toDoStat_List(sentence);
-    		break;
-    	}
-    	case "<view-ins>" : {
-    		
-    	}
-    	
-    	default : {
-    		System.out.println("Nessun comando");
-    		break;
-    	}
-    	}
-    }
-    
-    public Net returnNet() {
-		return semanalyzer.returnNet();
-	}
-	
 
-
+    
+    
 }
