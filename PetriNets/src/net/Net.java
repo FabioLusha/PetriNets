@@ -5,17 +5,21 @@ import java.util.Set;
 
 public class Net {
 	private String name;
-	private Set<Transition> Transitions;
-	private Set<Place> Places;
+	private Set<Transition> transitions;
+	private Set<Place> places;
+	private Set<OrderedPair> fluxRelation = new HashSet<OrderedPair>();
+
+	//costrutture vuoto senza argomenti per XMLEncoder
+	public Net(){};
 
 	public Net(String name) {
 		this.name = name;
-		Transitions = new HashSet<>();
-		Places = new HashSet<>();
+		transitions = new HashSet<>();
+		places = new HashSet<>();
 	}
 
 	public boolean isTransition(Transition transition) {
-		return Transitions.contains(transition);
+		return transitions.contains(transition);
 	}
 
 	public String getName() {
@@ -23,34 +27,62 @@ public class Net {
 	}
 
 	public Set<Transition> getTransitions() {
-		return Transitions;
+		return transitions;
 	}
 
 	public Set<Place> getPlaces() {
-		return Places;
+		return places;
+	}
+
+	public Set<OrderedPair> getFluxRelation() {
+		return fluxRelation;
+	}
+
+	public void setFluxRelation(Set<OrderedPair> fluxRelation) {
+		this.fluxRelation = fluxRelation;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setTransitions(Set<Transition> transitions) {
+		this.transitions = transitions;
+	}
+
+	public void setPlaces(Set<Place> places) {
+		this.places = places;
 	}
 
 	public boolean isPlace(Place place) {
-		return Places.contains(place);
+		return places.contains(place);
 	}
 
 	public boolean addPlace(Place p) {
-		return Places.add(p);
+		return places.add(p);
 	}
 
 	public boolean addTransition(Transition t) {
-		return Transitions.add(t);
+		return transitions.add(t);
 	}
-	
+
+	public boolean addFluxRelElement(OrderedPair pair){
+		places.add(pair.getCurrentPlace());
+		transitions.add(pair.getCurrentTransition());
+
+		return fluxRelation.add(pair);
+	}
+
+
 	public String toString() {
 		StringBuilder output = new StringBuilder();
 		output.append("Rete: " + name +" \n");
 		output.append("Posti: \n");
-		for(Place p : Places) {
+		for(Place p : places) {
 			output.append("\t" + p.toString() + "\n");
 		}
 		output.append("Transizioni: \n");
-		for(Transition t : Transitions) {
+		for(Transition t : transitions) {
 			output.append("\t" + t.toString() +"\n");
 		}
 		

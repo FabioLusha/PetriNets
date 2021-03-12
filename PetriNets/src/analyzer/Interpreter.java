@@ -1,95 +1,122 @@
 package analyzer;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import it.unibs.fp.mylib.*;
 
 import net.Net;
+import net.OrderedPair;
+import net.Place;
+import net.Transition;
+
+import java.util.Map;
 
 public class Interpreter {
+
+    public static final String WELCOME_MESSAGE = "BENVENUTO";
+    public static final String[] STARTING_OPTIONS = { "Aggiungi una nuova rete", "Visualizza reti salvate" };
+
+    public static final String NET_SAVING_MENU = "INSERIMENTO RETE COMPLETATO";
+    public static final String[] NET_SAVING_MENU_OPTIONS = { "Salva e torna al menu principale", "Ritorna al menu principale senza salvare"};
+
+
+    public static final String INSERT_ELEM_MSG =
+            "Inserisci il nome del %s:\n > ";
+
+    public static final String INSERT_NET_NAME_MSG = String.format(INSERT_ELEM_MSG, "rete");
+    public static final String INSERT_PLACE_MSG = String.format(INSERT_ELEM_MSG, "posto");
+    public static final String INSERT_TRANSITION_MSG = String.format(INSERT_ELEM_MSG, "trensizione");
+
+    public static final String INSERT_DIRECTION_MSG =
+            "Inserisci la direzione della relzione di flusso:\n";
+
+    public static final String FLUX_DIRECTION_MSG = " %d \t %s -> %s\n";
+    public static final String FLUX_ELEM_ADD_TRUE = "Elemento %s inseirto correttamente";
+    public static final String FLUX_ELEM_ADD_FALSE = "Elemento %s già presesente";
+
+    private static Map<String, Net> netList;
 
     enum State {
 
         Inizio {
 
             public State stepNext() {
-                System.out.println("inserisci la tua scelta: 1)Crea Rete 2)Chiudi");
+                int choice = principalMenu.scegli();
 
-                if (scanint.nextInt() == 1) {
-                    return Crea_rete;
-                }
-                return Fine;
+                 switch (choice) {
+                     case 1:
+                         return Crea_rete;
+                     case 2: ;
+                     default:
+                         return Fine;
+                 }
             }
 
         },
 
         Crea_rete {
 
+            Net tmpNet;
+            String netName;
+            String place;
+            String trans;
+            int direction;
+
             public State stepNext() {
-                System.out.println("Inserisci il nome della rete: ");
-                semanalyzer.toDoInit_Stat(scanstring.nextLine());
-                return Aggiunta;
+
+                netName =  InputDati.leggiStringaNonVuota(INSERT_NET_NAME_MSG);
+                tmpNet = new Net(netName);
+
+                do {
+                    System.out.println( "Inserimento relazione di fusso".toUpperCase());
+                    place = InputDati.leggiStringaNonVuota(INSERT_PLACE_MSG);
+                    trans = InputDati.leggiStringaNonVuota(INSERT_TRANSITION_MSG);
+                    direction = InputDati.leggiIntero(INSERT_DIRECTION_MSG
+                            + String.format(FLUX_DIRECTION_MSG, OrderedPair.typePair.pt.ordinal(), place, trans)
+                            + String.format(FLUX_DIRECTION_MSG, OrderedPair.typePair.tp.ordinal(), trans, place) + "\n > ",
+                            OrderedPair.typePair.pt.ordinal(),OrderedPair.typePair.tp.ordinal());
+
+
+                    /**
+                     * TO-DO
+                     * Controllare che trans non sia un posto e che place non sia una transizione.
+                     * Dove fare il controllo? qui o nel metodo addFluxRelElement(arg) ?
+                     */
+                    OrderedPair pair = new OrderedPair(new Place(place), new Transition(trans), OrderedPair.typePair.ordinalToType(direction));
+                    boolean result = tmpNet.addFluxRelElement(pair);
+
+                    if(result) System.out.println(String.format(FLUX_ELEM_ADD_TRUE, pair.toString()));
+                    else System.out.println(String.format(FLUX_ELEM_ADD_FALSE, pair.toString()));
+
+
+                }while(InputDati.yesOrNo("Aggiungere nuova relazione di flusso?"));
+
+                return AggiuntaF;
             }
 
         },
-
+/*
         Aggiunta {
         	String place;
         	String transition;
             public State stepNext() {
-                System.out.println("Quale tipo di relazione di flusso vuoi inserire: 1) posto->transizione 2)transizione->posto");
-                switch (scanint.nextInt()) {
-                    case 1:
-                        {
-                            System.out.println("Inserisci posto:");
-                            place = scanstring.nextLine();
-                            System.out.println("Inserisci transizione:");
-                            transition = scanstring.nextLine();
-                            break;
-                        }
-                    case 2:
-                        {
-                            System.out.println("Inserisci transizione:");
-                            transition = scanstring.nextLine();
-                            System.out.println("Inserisci posto:");
-                            place = scanstring.nextLine();
-                            break;
-                        }
-                    default:
-                        {
-                            System.out.println("valore inserito non corretto!");
-                            break;
-                        }
-                }
-                return AggiuntaF;
+
+
             }
         },
-
+*/
         AggiuntaF {
 
             public State stepNext() {
-
-                System.out.println("1)Inserisci altre relazioni di flusso 2)Salva e torna al menu principale 3)Chiudi tutto senza salvare");
-                switch ((scanint.nextInt())) {
-                    case 1:
-                        {
-                            return Aggiunta;
-
-                        }
-                    case 2:
-                        {
-                            return Inizio;
-
-                        }
-                    case 3:
-                        {
-                            return Fine;
-                        }
-                    default:
-                        {
-                            return AggiuntaF;
-                        }
+                MyMenu netSaving = new MyMenu(NET_SAVING_MENU,NET_SAVING_MENU_OPTIONS);
+                switch (netSaving.scegli()) {
+                    case 0: return Fine;
+                    case 1: {
+                        /**
+                         * TO-DO
+                         * Aggiungere la rete nella lista di reti salvate
+                         */
+                        return Inizio; }
+                    case 2: { return Inizio; }
+                    default: { return Inizio; }
                 }
             }
 
@@ -106,9 +133,7 @@ public class Interpreter {
 
         };
 
-        Scanner scanint = new Scanner(System.in);
-        Scanner scanstring = new Scanner(System.in);
-        SemanticAnalyzer semanalyzer = new SemanticAnalyzer();
+        static final MyMenu principalMenu = new MyMenu(WELCOME_MESSAGE, STARTING_OPTIONS);
 
         public abstract State stepNext();
       
