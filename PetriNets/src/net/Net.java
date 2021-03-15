@@ -55,22 +55,7 @@ public class Net {
 		}
 	}
 
-	public void serializeToXML () throws IOException
-	{
-		FileOutputStream fos = new FileOutputStream("nets.xml");
-		XMLEncoder encoder = new XMLEncoder(fos);
-		encoder.setExceptionListener(new ExceptionListener() {
-			public void exceptionThrown(Exception e) {
-				System.out.println("Exception! :"+e.toString());
-			}
-		});
 
-
-		encoder.writeObject(this);
-		encoder.close();
-		fos.close();
-	}
-	
 
 	public String toString() {
 		StringBuilder output = new StringBuilder();

@@ -133,14 +133,13 @@ public class Interpreter {
 
         Fine {
             public State stepNext() {
-            	for (Net n : netList.values()) {
-            		try {
-						n.serializeToXML();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-            	}
+            	
+            	try {
+					serializeToXML(netList);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             	System.out.println("Chiusura programma");
                 System.exit(0);
                 return Fine;
@@ -156,6 +155,23 @@ public class Interpreter {
         private static Map<String, Net> netList  = new HashMap<>();
 
         public abstract State stepNext();
+        
+    	private static void serializeToXML (Map<String,Net> netlist) throws IOException
+    	{
+    		FileOutputStream fos = new FileOutputStream("nets.xml");
+    		XMLEncoder encoder = new XMLEncoder(fos);
+    		encoder.setExceptionListener(new ExceptionListener() {
+    			public void exceptionThrown(Exception e) {
+    				System.out.println("Exception! :"+e.toString());
+    			}
+    		});
+
+
+    		encoder.writeObject(netlist);
+    		encoder.close();
+    		fos.close();
+    	}
+    	
 
 
       
