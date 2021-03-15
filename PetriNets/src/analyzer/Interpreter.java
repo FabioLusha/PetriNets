@@ -8,7 +8,10 @@ import net.Place;
 import net.Transition;
 
 import java.beans.ExceptionListener;
+import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -44,8 +47,21 @@ public class Interpreter {
     enum State {
 
         Inizio {
-
+      
             public State stepNext() {
+            	
+            	File newFile = new File("nets.xml");
+            	 if(newFile.length() == 0) {
+            		 netList = new HashMap<>();
+            	 }else {
+            		 try {
+						netList = deserializeFromXML();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+            	 }
+            	 
                 int choice = principalMenu.scegli();
 
                  switch (choice) {
@@ -170,6 +186,16 @@ public class Interpreter {
     		encoder.writeObject(netlist);
     		encoder.close();
     		fos.close();
+    	}
+    	
+    	
+    	private static Map<String,Net> deserializeFromXML() throws IOException {
+    	    FileInputStream fis = new FileInputStream("nets.xml");
+    	    XMLDecoder decoder = new XMLDecoder(fis);
+    	    Map<String,Net> savednets = (Map<String,Net>) decoder.readObject();
+    	    decoder.close();
+    	    fis.close();
+    	    return savednets;
     	}
     	
 
