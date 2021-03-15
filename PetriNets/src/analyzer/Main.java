@@ -1,13 +1,13 @@
 package analyzer;
 
-import net.Configurator;
+import net.*;
 import net.OrderedPair;
-
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
 	public static void main(String[] args) {
 		Interpreter interpreter = new Interpreter();
+		
 
 
 		while(true) {

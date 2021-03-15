@@ -1,6 +1,12 @@
 package net;
 
+import java.beans.ExceptionListener;
+import java.beans.XMLEncoder;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class Net {
@@ -9,8 +15,9 @@ public class Net {
 	private Set<Place> places;
 	private Set<OrderedPair> fluxRelation = new HashSet<OrderedPair>();
 
-	//costrutture vuoto senza argomenti per XMLEncoder
-	public Net(){};
+	// costrutture vuoto senza argomenti per XMLEncoder
+	public Net() {
+	};
 
 	public Net(String name) {
 		this.name = name;
@@ -66,28 +73,50 @@ public class Net {
 		return transitions.add(t);
 	}
 
-	public boolean addFluxRelElement(OrderedPair pair){
-		places.add(pair.getCurrentPlace());
-		transitions.add(pair.getCurrentTransition());
+	public boolean addFluxRelElement(OrderedPair pair) {
 
-		return fluxRelation.add(pair);
+		if (isTransition(new Transition(pair.getCurrentPlace().getName()))
+				|| isPlace(new Place(pair.getCurrentTransition().getName()))) {
+			return false;
+		} else {
+			places.add(pair.getCurrentPlace());
+			transitions.add(pair.getCurrentTransition());
+
+			return fluxRelation.add(pair);
+		}
 	}
-
+	
+	public void serializeToXML () throws IOException
+	{
+	    FileOutputStream fos = new FileOutputStream("nets.xml");
+	    XMLEncoder encoder = new XMLEncoder(fos);
+	    encoder.setExceptionListener(new ExceptionListener() {
+	            public void exceptionThrown(Exception e) {
+	                System.out.println("Exception! :"+e.toString());
+	            }
+	    });
+	    
+	   
+	    encoder.writeObject(this);
+	    encoder.close();
+	    fos.close();
+	}
+	
 
 	public String toString() {
 		StringBuilder output = new StringBuilder();
-		output.append("Rete: " + name +" \n");
+		output.append("Rete: " + name + " \n");
 		output.append("Posti: \n");
-		for(Place p : places) {
+		for (Place p : places) {
 			output.append("\t" + p.toString() + "\n");
 		}
 		output.append("Transizioni: \n");
-		for(Transition t : transitions) {
-			output.append("\t" + t.toString() +"\n");
+		for (Transition t : transitions) {
+			output.append("\t" + t.toString() + "\n");
 		}
-		
+
 		return output.toString();
-		
+
 	}
 
 }

@@ -7,6 +7,10 @@ import net.OrderedPair;
 import net.Place;
 import net.Transition;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Interpreter {
@@ -32,7 +36,7 @@ public class Interpreter {
     public static final String FLUX_ELEM_ADD_TRUE = "Elemento %s inseirto correttamente";
     public static final String FLUX_ELEM_ADD_FALSE = "Elemento %s già presesente";
 
-    private static Map<String, Net> netList;
+
 
     enum State {
 
@@ -88,9 +92,14 @@ public class Interpreter {
 
 
                 }while(InputDati.yesOrNo("Aggiungere nuova relazione di flusso?"));
+                
+               rete=tmpNet;
 
                 return AggiuntaF;
             }
+           
+            
+            
 
         },
 /*
@@ -114,6 +123,8 @@ public class Interpreter {
                          * TO-DO
                          * Aggiungere la rete nella lista di reti salvate
                          */
+                    	
+                    	netList.put(rete.getName(), rete);
                         return Inizio; }
                     case 2: { return Inizio; }
                     default: { return Inizio; }
@@ -124,6 +135,14 @@ public class Interpreter {
 
         Fine {
             public State stepNext() {
+            	for (Net n : netList.values()) {
+            		try {
+						n.serializeToXML();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+            	}
             	System.out.println("Chiusura programma");
                 System.exit(0);
                 return Fine;
@@ -134,8 +153,9 @@ public class Interpreter {
         };
 
         static final MyMenu principalMenu = new MyMenu(WELCOME_MESSAGE, STARTING_OPTIONS);
-
         public abstract State stepNext();
+        Net rete = new Net();
+        private static Map<String, Net> netList  = new HashMap<>();;
       
     }
 
