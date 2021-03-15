@@ -4,6 +4,8 @@ import java.util.Objects;
 
 public class Place {
 	private String name;
+
+	public Place(){}
 	
 	public String getName() {
 		return name;

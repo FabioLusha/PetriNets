@@ -7,6 +7,9 @@ import net.OrderedPair;
 import net.Place;
 import net.Transition;
 
+import java.beans.ExceptionListener;
+import java.beans.XMLEncoder;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -97,10 +100,6 @@ public class Interpreter {
 
                 return AggiuntaF;
             }
-           
-            
-            
-
         },
 /*
         Aggiunta {
@@ -130,7 +129,6 @@ public class Interpreter {
                     default: { return Inizio; }
                 }
             }
-
         },
 
         Fine {
@@ -153,24 +151,27 @@ public class Interpreter {
         };
 
         static final MyMenu principalMenu = new MyMenu(WELCOME_MESSAGE, STARTING_OPTIONS);
+
+        private static Net rete = new Net();
+        private static Map<String, Net> netList  = new HashMap<>();
+
         public abstract State stepNext();
-        Net rete = new Net();
-        private static Map<String, Net> netList  = new HashMap<>();;
+
+
       
     }
 
-    public State state;
+
+    private State state;
 
     public Interpreter() {
         state = State.Inizio;
 
     }
 
-    public State nextStep() {
+    public State start() {
         state = state.stepNext();
         return state;
     }
-
-    
     
 }

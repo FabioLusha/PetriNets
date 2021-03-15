@@ -4,7 +4,9 @@ import java.util.Objects;
 
 public class Transition {
 	private String name;
-	
+
+	public Transition(){}
+
 	public String getName() {
 		return name;
 	}

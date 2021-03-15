@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 public class Net {
+
 	private String name;
 	private Set<Transition> transitions;
 	private Set<Place> places;
@@ -27,38 +28,6 @@ public class Net {
 
 	public boolean isTransition(Transition transition) {
 		return transitions.contains(transition);
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public Set<Transition> getTransitions() {
-		return transitions;
-	}
-
-	public Set<Place> getPlaces() {
-		return places;
-	}
-
-	public Set<OrderedPair> getFluxRelation() {
-		return fluxRelation;
-	}
-
-	public void setFluxRelation(Set<OrderedPair> fluxRelation) {
-		this.fluxRelation = fluxRelation;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public void setTransitions(Set<Transition> transitions) {
-		this.transitions = transitions;
-	}
-
-	public void setPlaces(Set<Place> places) {
-		this.places = places;
 	}
 
 	public boolean isPlace(Place place) {
@@ -85,21 +54,21 @@ public class Net {
 			return fluxRelation.add(pair);
 		}
 	}
-	
+
 	public void serializeToXML () throws IOException
 	{
-	    FileOutputStream fos = new FileOutputStream("nets.xml");
-	    XMLEncoder encoder = new XMLEncoder(fos);
-	    encoder.setExceptionListener(new ExceptionListener() {
-	            public void exceptionThrown(Exception e) {
-	                System.out.println("Exception! :"+e.toString());
-	            }
-	    });
-	    
-	   
-	    encoder.writeObject(this);
-	    encoder.close();
-	    fos.close();
+		FileOutputStream fos = new FileOutputStream("nets.xml");
+		XMLEncoder encoder = new XMLEncoder(fos);
+		encoder.setExceptionListener(new ExceptionListener() {
+			public void exceptionThrown(Exception e) {
+				System.out.println("Exception! :"+e.toString());
+			}
+		});
+
+
+		encoder.writeObject(this);
+		encoder.close();
+		fos.close();
 	}
 	
 
@@ -117,6 +86,38 @@ public class Net {
 
 		return output.toString();
 
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Set<Transition> getTransitions() {
+		return transitions;
+	}
+
+	public void setTransitions(Set<Transition> transitions) {
+		this.transitions = transitions;
+	}
+
+	public Set<Place> getPlaces() {
+		return places;
+	}
+
+	public void setPlaces(Set<Place> places) {
+		this.places = places;
+	}
+
+	public Set<OrderedPair> getFluxRelation() {
+		return fluxRelation;
+	}
+
+	public void setFluxRelation(Set<OrderedPair> fluxRelation) {
+		this.fluxRelation = fluxRelation;
 	}
 
 }
