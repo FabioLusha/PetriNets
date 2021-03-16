@@ -68,6 +68,10 @@ public class Net {
 		for (Transition t : transitions) {
 			output.append("\t" + t.toString() + "\n");
 		}
+		output.append("Relazioni di flusso presenti: \n");
+		for(OrderedPair couple : fluxRelation) {
+			output.append(couple.toString() + "\n");
+		}
 
 		return output.toString();
 

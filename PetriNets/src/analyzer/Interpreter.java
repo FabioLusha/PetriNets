@@ -31,15 +31,17 @@ public class Interpreter {
 
     public static final String INSERT_NET_NAME_MSG = String.format(INSERT_ELEM_MSG, "rete");
     public static final String INSERT_PLACE_MSG = String.format(INSERT_ELEM_MSG, "posto");
-    public static final String INSERT_TRANSITION_MSG = String.format(INSERT_ELEM_MSG, "trensizione");
+    public static final String INSERT_TRANSITION_MSG = String.format(INSERT_ELEM_MSG, "transizione");
 
     public static final String INSERT_DIRECTION_MSG =
-            "Inserisci la direzione della relzione di flusso:\n";
+            "Inserisci la direzione della relazione di flusso:\n";
 
     public static final String FLUX_DIRECTION_MSG = " %d \t %s -> %s\n";
-    public static final String FLUX_ELEM_ADD_TRUE = "Elemento %s inseirto correttamente";
-    public static final String FLUX_ELEM_ADD_FALSE = "Elemento %s gi√† presesente";
-
+    public static final String FLUX_ELEM_ADD_TRUE = "Elemento %s inserito correttamente";
+    public static final String FLUX_ELEM_ADD_FALSE = "Elemento %s gia'† presesente";
+    
+    public static final String INSERT_NET_TO_VIEW=
+            "Inserisci il nome della rete che vuoi visualizzare:\n";
 
 
     enum State {
@@ -71,7 +73,7 @@ public class Interpreter {
                     case 1:
                         return CREA_RETE;
                     case 2:
-                        // TODO visualizza rete
+                        return VISUALIZZA;
                     default:
                         return FINE;
                 }
@@ -148,6 +150,26 @@ public class Interpreter {
                     default: { return MENU_PRINCIPALE; }
                 }
             }
+        },
+        
+        VISUALIZZA{
+        	public State stepNext() {
+        		if(netList.isEmpty()) {
+        			System.out.println("Nussuna rete presente da visualizzare!");
+        		}else {
+        			System.out.println("Reti disponibili alla visualizzazione:");
+        		for(String s : netList.keySet()) {
+        			System.out.println("-" + s);
+        		}
+        		try {
+        		System.out.println(netList.get(InputDati.leggiStringaNonVuota(INSERT_NET_TO_VIEW)).toString());
+        		}catch(NullPointerException e) {
+        			System.out.println("Nome della rete inserito non presente!");
+        		}
+        		}
+        		
+        		return MENU_PRINCIPALE;
+        	}
         },
 
         FINE {

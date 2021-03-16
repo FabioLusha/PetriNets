@@ -109,7 +109,7 @@ public class OrderedPair implements Map.Entry<Place,Transition>{
 
 	@Override
 	public String toString(){
-		String format = "( %s , %s )";
+		String format = "( %s -> %s )";
 
 		if(type == typePair.pt) return String.format(format, currentPlace, currentTransition);
 		else return String.format(format, currentTransition, currentPlace);
