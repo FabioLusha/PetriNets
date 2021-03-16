@@ -70,7 +70,7 @@ public class Net {
 		}
 		output.append("Relazioni di flusso presenti: \n");
 		for(OrderedPair couple : fluxRelation) {
-			output.append(couple.toString() + "\n");
+			output.append("\t" + couple.toString() + "\n");
 		}
 
 		return output.toString();

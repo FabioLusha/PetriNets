@@ -7,7 +7,6 @@ import net.OrderedPair;
 import net.Place;
 import net.Transition;
 
-import java.beans.ExceptionListener;
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.File;
@@ -27,7 +26,7 @@ public class Interpreter {
 
 
     public static final String INSERT_ELEM_MSG =
-            "Inserisci il nome del %s:\n > ";
+            "Inserisci il nome dell'elemento: %s:\n > ";
 
     public static final String INSERT_NET_NAME_MSG = String.format(INSERT_ELEM_MSG, "rete");
     public static final String INSERT_PLACE_MSG = String.format(INSERT_ELEM_MSG, "posto");
@@ -38,7 +37,7 @@ public class Interpreter {
 
     public static final String FLUX_DIRECTION_MSG = " %d \t %s -> %s\n";
     public static final String FLUX_ELEM_ADD_TRUE = "Elemento %s inserito correttamente";
-    public static final String FLUX_ELEM_ADD_FALSE = "Elemento %s gia'  presesente";
+    public static final String FLUX_ELEM_ADD_FALSE = "Elemento %s gia' presente";
     
     public static final String INSERT_NET_TO_VIEW=
             "Inserisci il nome della rete che vuoi visualizzare:\n";
@@ -82,7 +81,6 @@ public class Interpreter {
 
         CREA_RETE {
 
-            Net tmpNet;
             String netName;
             String place;
             String trans;
@@ -91,7 +89,7 @@ public class Interpreter {
             public State stepNext() {
 
                 netName =  InputDati.leggiStringaNonVuota(INSERT_NET_NAME_MSG).trim();
-                tmpNet = new Net(netName);
+                rete = new Net(netName);
 
                 do {
                     System.out.println( "Inserimento relazione di fusso".toUpperCase());
@@ -103,48 +101,39 @@ public class Interpreter {
                             OrderedPair.typePair.pt.ordinal(),OrderedPair.typePair.tp.ordinal());
 
 
-                    /**
-                     * TO-DO
-                     * Controllare che trans non sia un posto e che place non sia una transizione.
-                     * Dove fare il controllo? qui o nel metodo addFluxRelElement(arg) ?
-                     */
+
+
+                     /*TODO
+                        Controllare che trans non sia un posto e che place non sia una transizione.
+                        Dove fare il controllo? qui o nel metodo addFluxRelElement(arg) ?*/
+
                     OrderedPair pair = new OrderedPair(new Place(place), new Transition(trans), OrderedPair.typePair.ordinalToType(direction));
-                    boolean result = tmpNet.addFluxRelElement(pair);
+                    boolean result = rete.addFluxRelElement(pair);
 
                     if(result) System.out.println(String.format(FLUX_ELEM_ADD_TRUE, pair.toString()));
                     else System.out.println(String.format(FLUX_ELEM_ADD_FALSE, pair.toString()));
 
 
                 }while(InputDati.yesOrNo("Aggiungere nuova relazione di flusso?"));
-                
-               rete=tmpNet;
-
-                return AGGIUNTA_F;
+                return SALVA;
             }
         },
-/*
-        Aggiunta {
-        	String place;
-        	String transition;
-            public State stepNext() {
 
-
-            }
-        },
-*/
-        AGGIUNTA_F {
+        SALVA {
 
             public State stepNext() {
                 MyMenu netSaving = new MyMenu(NET_SAVING_MENU,NET_SAVING_MENU_OPTIONS);
                 switch (netSaving.scegli()) {
                     case 0: return FINE;
                     case 1: {
-                        /**
-                         * TO-DO
-                         * Aggiungere la rete nella lista di reti salvate
-                         */
-                    	
+
                     	netList.put(rete.getName(), rete);
+                        try {
+                            serializeToXML(netList);
+                        } catch (IOException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace(System.out);
+                        }
                         return MENU_PRINCIPALE; }
                     case 2: //Ritorna al menu senza salvare
                     default: { return MENU_PRINCIPALE; }
@@ -174,13 +163,7 @@ public class Interpreter {
 
         FINE {
             public State stepNext() {
-            	
-            	try {
-					serializeToXML(netList);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-                    e.printStackTrace(System.out);
-				}
+                
             	System.out.println("Chiusura programma");
                 System.exit(0);
                 return FINE;
@@ -201,11 +184,7 @@ public class Interpreter {
     	{
     		FileOutputStream fos = new FileOutputStream("nets.xml");
     		XMLEncoder encoder = new XMLEncoder(fos);
-    		encoder.setExceptionListener(new ExceptionListener() {
-    			public void exceptionThrown(Exception e) {
-    				System.out.println("Exception! :"+ e.toString());
-    			}
-    		});
+    		encoder.setExceptionListener(e -> System.out.println("Exception! :"+ e.toString()));
 
 
     		encoder.writeObject(netlist);
