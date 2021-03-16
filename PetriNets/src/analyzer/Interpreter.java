@@ -14,9 +14,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Interpreter {
@@ -46,14 +44,12 @@ public class Interpreter {
 
     enum State {
 
-        Inizio {
+        INIZIO {
       
             public State stepNext() {
-            	
+
             	File newFile = new File("nets.xml");
-            	 if(newFile.length() == 0) {
-            		 netList = new HashMap<>();
-            	 }else {
+            	 if(newFile.length() != 0) {
             		 try {
 						netList = deserializeFromXML();
 					} catch (IOException e) {
@@ -61,21 +57,28 @@ public class Interpreter {
 						e.printStackTrace();
 					}
             	 }
-            	 
-                int choice = principalMenu.scegli();
-
-                 switch (choice) {
-                     case 1:
-                         return Crea_rete;
-                     case 2: ;
-                     default:
-                         return Fine;
-                 }
+            	 return MENU_PRINCIPALE;
             }
-
         },
 
-        Crea_rete {
+        MENU_PRINCIPALE {
+
+            public State stepNext() {
+
+                int choice = principalMenu.scegli();
+
+                switch (choice) {
+                    case 1:
+                        return CREA_RETE;
+                    case 2:
+                        // TODO visualizza rete
+                    default:
+                        return FINE;
+                }
+            }
+        },
+
+        CREA_RETE {
 
             Net tmpNet;
             String netName;
@@ -85,13 +88,13 @@ public class Interpreter {
 
             public State stepNext() {
 
-                netName =  InputDati.leggiStringaNonVuota(INSERT_NET_NAME_MSG);
+                netName =  InputDati.leggiStringaNonVuota(INSERT_NET_NAME_MSG).trim();
                 tmpNet = new Net(netName);
 
                 do {
                     System.out.println( "Inserimento relazione di fusso".toUpperCase());
-                    place = InputDati.leggiStringaNonVuota(INSERT_PLACE_MSG);
-                    trans = InputDati.leggiStringaNonVuota(INSERT_TRANSITION_MSG);
+                    place = InputDati.leggiStringaNonVuota(INSERT_PLACE_MSG).trim();
+                    trans = InputDati.leggiStringaNonVuota(INSERT_TRANSITION_MSG).trim();
                     direction = InputDati.leggiIntero(INSERT_DIRECTION_MSG
                             + String.format(FLUX_DIRECTION_MSG, OrderedPair.typePair.pt.ordinal(), place, trans)
                             + String.format(FLUX_DIRECTION_MSG, OrderedPair.typePair.tp.ordinal(), trans, place) + "\n > ",
@@ -114,7 +117,7 @@ public class Interpreter {
                 
                rete=tmpNet;
 
-                return AggiuntaF;
+                return AGGIUNTA_F;
             }
         },
 /*
@@ -127,12 +130,12 @@ public class Interpreter {
             }
         },
 */
-        AggiuntaF {
+        AGGIUNTA_F {
 
             public State stepNext() {
                 MyMenu netSaving = new MyMenu(NET_SAVING_MENU,NET_SAVING_MENU_OPTIONS);
                 switch (netSaving.scegli()) {
-                    case 0: return Fine;
+                    case 0: return FINE;
                     case 1: {
                         /**
                          * TO-DO
@@ -140,25 +143,25 @@ public class Interpreter {
                          */
                     	
                     	netList.put(rete.getName(), rete);
-                        return Inizio; }
-                    case 2: { return Inizio; }
-                    default: { return Inizio; }
+                        return MENU_PRINCIPALE; }
+                    case 2: //Ritorna al menu senza salvare
+                    default: { return MENU_PRINCIPALE; }
                 }
             }
         },
 
-        Fine {
+        FINE {
             public State stepNext() {
             	
             	try {
 					serializeToXML(netList);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+                    e.printStackTrace(System.out);
 				}
             	System.out.println("Chiusura programma");
                 System.exit(0);
-                return Fine;
+                return FINE;
             }
 
 
@@ -168,7 +171,7 @@ public class Interpreter {
         static final MyMenu principalMenu = new MyMenu(WELCOME_MESSAGE, STARTING_OPTIONS);
 
         private static Net rete = new Net();
-        private static Map<String, Net> netList  = new HashMap<>();
+        public static Map<String, Net> netList = new HashMap<>();
 
         public abstract State stepNext();
         
@@ -178,7 +181,7 @@ public class Interpreter {
     		XMLEncoder encoder = new XMLEncoder(fos);
     		encoder.setExceptionListener(new ExceptionListener() {
     			public void exceptionThrown(Exception e) {
-    				System.out.println("Exception! :"+e.toString());
+    				System.out.println("Exception! :"+ e.toString());
     			}
     		});
 
@@ -197,18 +200,12 @@ public class Interpreter {
     	    fis.close();
     	    return savednets;
     	}
-    	
-
-
-      
     }
-
 
     private State state;
 
     public Interpreter() {
-        state = State.Inizio;
-
+        state = State.INIZIO;
     }
 
     public State start() {
