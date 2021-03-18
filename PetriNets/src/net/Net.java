@@ -1,12 +1,9 @@
 package net;
 
-import java.beans.ExceptionListener;
-import java.beans.XMLEncoder;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.Serializable;
+
+import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 public class Net {
@@ -76,6 +73,26 @@ public class Net {
 		return output.toString();
 
 	}
+	
+	public boolean equals(Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (obj.getClass() != this.getClass() || obj == null) {
+			return false;
+		}
+
+		final Net other = (Net) obj;
+		
+		
+		return this.fluxRelation.containsAll(new ArrayList<>(other.fluxRelation));
+		
+	}
+	
+	public int hashCode(){
+		return Objects.hash(fluxRelation);
+	}
+
 
 	public String getName() {
 		return name;
@@ -107,6 +124,10 @@ public class Net {
 
 	public void setFluxRelation(Set<OrderedPair> fluxRelation) {
 		this.fluxRelation = fluxRelation;
+	}
+	
+	public boolean containsTransition(Transition t) {
+		return transitions.contains(t);
 	}
 
 }

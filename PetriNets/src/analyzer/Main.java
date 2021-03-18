@@ -2,12 +2,9 @@ package analyzer;
 
 public class Main {
 	public static void main(String[] args) {
-		Interpreter interpreter = new Interpreter();
-		
-
-
-		while(true) {
-		interpreter.start();
+		UserMenuFSA menu = UserMenuFSA.INIZIO;
+		while (true) {
+			menu = menu.stepNext();
 		}
 	}
 }
