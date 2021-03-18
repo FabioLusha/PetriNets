@@ -6,6 +6,9 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import org.junit.jupiter.api.Order;
+
+
 public class Net {
 
 	private String name;
@@ -84,8 +87,13 @@ public class Net {
 
 		final Net other = (Net) obj;
 		
+		//Vengono rimossi gli elementi e si verifica che sia vuoto;
+		Set<OrderedPair> fluxrelationcopy = new HashSet<OrderedPair>(fluxRelation);
 		
-		return this.fluxRelation.containsAll(new ArrayList<>(other.fluxRelation));
+		fluxrelationcopy.removeAll(new ArrayList<>(other.fluxRelation));
+		other.fluxRelation.removeAll(new ArrayList<>(this.fluxRelation));
+		
+		return fluxrelationcopy.isEmpty() && other.fluxRelation.isEmpty();
 		
 	}
 	

@@ -13,7 +13,7 @@ import java.util.Map;
 
 public enum UserMenuFSA {
 
-	INIZIO {
+	START {
 
 		public UserMenuFSA stepNext() {
 
@@ -25,27 +25,27 @@ public enum UserMenuFSA {
 					e.printStackTrace();
 				}
 			}
-			return MENU_PRINCIPALE;
+			return MAIN_MENU;
 		}
 	},
 
-	MENU_PRINCIPALE {
+	MAIN_MENU {
 
 		public UserMenuFSA stepNext() {
 			int choice = principalMenu.scegli();
 
 			switch (choice) {
 			case 1:
-				return CREA_RETE;
+				return CREATE_NET;
 			case 2:
-				return VISUALIZZA;
+				return PRINT_NET;
 			default:
-				return FINE;
+				return END;
 			}
 		}
 	},
 
-	CREA_RETE {
+	CREATE_NET {
 
 		String netName;
 
@@ -54,15 +54,15 @@ public enum UserMenuFSA {
 			netName = InputDati.leggiStringaNonVuota(INSERT_NET_NAME_MSG).trim();
 			if (netMap.containsKey(netName)) {
 				System.out.println("Nome della rete già presente!");
-				return CREA_RETE;
+				return CREATE_NET;
 			}
 
 			temporaryNet = new Net(netName);
-			return AGGIUNTA_ELEMENTO;
+			return ADD_ELEMENT;
 		}
 	},
 
-	AGGIUNTA_ELEMENTO {
+	ADD_ELEMENT {
 
 		public UserMenuFSA stepNext() {
 			String place;
@@ -82,7 +82,7 @@ public enum UserMenuFSA {
 				if (OrderedPair.typePair.ordinalToType(direction) == OrderedPair.typePair.tp
 						&& !temporaryNet.containsTransition(new Transition(trans))) {
 					System.out.println("Transizione non puntata da alcun posto");
-					return AGGIUNTA_ELEMENTO;
+					return ADD_ELEMENT;
 				}
 
 				OrderedPair pair = new OrderedPair(new Place(place), new Transition(trans),
@@ -95,17 +95,17 @@ public enum UserMenuFSA {
 					System.out.println(String.format(FLUX_ELEM_ADD_FALSE, pair.toString()));
 
 			} while (InputDati.yesOrNo("Aggiungere nuova relazione di flusso?"));
-			return SALVA;
+			return SAVE;
 		}
 	},
 
-	SALVA {
+	SAVE {
 
 		public UserMenuFSA stepNext() {
 			MyMenu netSaving = new MyMenu(NET_SAVING_MENU, NET_SAVING_MENU_OPTIONS);
 			switch (netSaving.scegli()) {
 			case 0:
-				return FINE;
+				return END;
 			case 1: {
 				if (!(netMap.containsValue(temporaryNet))) {
 					netMap.put(temporaryNet.getName(), temporaryNet);
@@ -119,17 +119,17 @@ public enum UserMenuFSA {
 					// TODO Auto-generated catch block
 					e.printStackTrace(System.out);
 				}
-				return MENU_PRINCIPALE;
+				return MAIN_MENU;
 			}
 			// case 2: //Ritorna al menu senza salvare
 			default: {
-				return MENU_PRINCIPALE;
+				return MAIN_MENU;
 			}
 			}
 		}
 	},
 
-	VISUALIZZA {
+	PRINT_NET {
 		public UserMenuFSA stepNext() {
 			if (netMap.isEmpty()) {
 				System.out.println("Nussuna rete presente da visualizzare!");
@@ -144,15 +144,15 @@ public enum UserMenuFSA {
 				}
 			}
 
-			return MENU_PRINCIPALE;
+			return MAIN_MENU;
 		}
 	},
 
-	FINE {
+	END {
 		public UserMenuFSA stepNext() {
 			System.out.println("Chiusura programma");
 			System.exit(0);
-			return FINE;
+			return END;
 		}
 
 	};
