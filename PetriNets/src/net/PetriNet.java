@@ -37,8 +37,10 @@ public class PetriNet extends Net{
 	public String toString() {
 		StringBuilder output = new StringBuilder();
 		output.append("Nome: " + this.getName()+ "\n");
-		output.append("Posti: ");
-		getMarcmap().forEach((p,v) -> output.append("-" + p.getName() + "    marcatura: " + v));
+		output.append("Posti: \n");
+		getMarcmap().forEach((p,v) -> output.append("-" + p.getName() + "    marcatura: " + v + "\n"));
+		output.append("Transizioni: \n");
+		getValuemap().forEach((p,v) -> output.append("-" + p.getCurrentPlace().getName() + "->" + p.getCurrentTransition().getName() + "    valore: " + v + "\n"));
 		return output.toString();
 		
 	}
