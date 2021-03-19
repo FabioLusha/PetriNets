@@ -4,6 +4,7 @@ import it.unibs.fp.mylib.*;
 
 import net.Net;
 import net.OrderedPair;
+import net.PetriNet;
 import net.Place;
 import net.Transition;
 
@@ -20,6 +21,7 @@ public enum UserMenuFSA {
 			if (!(netxmlmanager.isEmpty())) {
 				try {
 					netMap = netxmlmanager.deserializeFromXML();
+					
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -39,6 +41,10 @@ public enum UserMenuFSA {
 				return CREATE_NET;
 			case 2:
 				return PRINT_NET;
+			case 3:
+				return CREATE_PETRI_NET;
+			case 4:
+				return PRINT_PETRI_NET;
 			default:
 				return END;
 			}
@@ -99,6 +105,107 @@ public enum UserMenuFSA {
 		}
 	},
 
+	CREATE_PETRI_NET {
+		public UserMenuFSA stepNext() {
+
+			if (netMap.isEmpty()) {
+				System.out.println("Non vi è alcuna rete presente per poter definire una rete di Petri!");
+				return MAIN_MENU;
+			} else {
+				System.out.println("Reti presenti da cui poter definire una rete di Petri: ");
+				netMap.keySet().forEach(e -> System.out.println("-" + e));
+				String basedNetName = InputDati
+						.leggiStringa("Inserisci il nome della rete su cui si basera' la rete di Petri: ");
+				String petriname = InputDati.leggiStringa("Inserisci il nome della rete di Petri:  ");
+
+				temporaryPetriNet = new PetriNet(petriname, netMap.get(basedNetName));
+				return ADD_VALUES_TO_PETRI_NET;
+
+			}
+
+		}
+	},
+
+	ADD_VALUES_TO_PETRI_NET {
+
+		public UserMenuFSA stepNext() {
+			MyMenu petriNetValue = new MyMenu(PETRI_NET_CHANGE_VALUE, UserMenuFSA.PETRI_NET_CHANGE_VALUE_OPTIONS);
+
+			switch (petriNetValue.scegli()) {
+			case 1: {
+				System.out.println("Posti presenti:");
+				temporaryPetriNet.getMarcmap().keySet().forEach(
+						e -> System.out.println("-" + e + "     marcatura:" + temporaryPetriNet.getMarcmap().get(e)));
+				return CHANGE_PLACE_VALUE;
+			}
+			case 2: {
+				System.out.println("Relazioni di flusso presenti:");
+				temporaryPetriNet.getValuemap().keySet().forEach(
+						e -> System.out.println("- " + e + "    valore:" + temporaryPetriNet.getValuemap().get(e)));
+				return CHANGE_FLUX_VALUE;
+			}
+			case 3:{
+				return SAVE_PETRI_NET;
+			}
+			default : 
+				return MAIN_MENU;
+			}
+		}
+	},
+
+	CHANGE_PLACE_VALUE {
+		public UserMenuFSA stepNext() {
+
+			String choice = InputDati.leggiStringa("Inserisci il nome del posto di cui vuoi modificare la marcatura: ")
+					.trim();
+			if (temporaryPetriNet.getMarcmap().keySet().contains(new Place(choice))) {
+
+				int newValue;
+				do {
+					newValue = InputDati.leggiIntero("Inserisci la nuova marcatura per " + choice + ": ");
+					if (newValue < 0) {
+						System.out.println("Il valore della marcatura inserito deve essere un intero non negativo");
+					}
+				} while (newValue < 0);
+				temporaryPetriNet.getMarcmap().replace(new Place(choice), newValue);
+				return ADD_VALUES_TO_PETRI_NET;
+
+			} else {
+				System.out.println("Non è presente alcun posto con questo nome!");
+				return ADD_VALUES_TO_PETRI_NET;
+			}
+		}
+	},
+
+	CHANGE_FLUX_VALUE {
+		public UserMenuFSA stepNext() {
+			String choiceplace = InputDati
+					.leggiStringa("Inserisci il posto della relazione di flusso di cui vuoi modificare la marcatura: ")
+					.trim();
+			String choicetransition = InputDati
+					.leggiStringa(
+							"Inserisci la transizione della relazione di flusso di cui vuoi modificare la marcatura: ")
+					.trim();
+			if (temporaryPetriNet.getValuemap().keySet()
+					.contains(new OrderedPair(new Place(choiceplace), new Transition(choicetransition)))) {
+
+				int newValue;
+				do {
+					newValue = InputDati.leggiIntero("Inserisci il nuovo valore per la transizione scelta:  ");
+					if (newValue <= 0) {
+						System.out.println("Il valore inserito deve essere un intero positivo");
+					}
+				} while (newValue <= 0);
+				temporaryPetriNet.getValuemap().replace(new OrderedPair(new Place(choiceplace), new Transition(choicetransition)), newValue);
+				return ADD_VALUES_TO_PETRI_NET;
+
+			} else {
+				System.out.println("Transizione non presente!");
+				return ADD_VALUES_TO_PETRI_NET;
+			}
+		}
+	},
+
 	SAVE {
 
 		public UserMenuFSA stepNext() {
@@ -128,6 +235,15 @@ public enum UserMenuFSA {
 			}
 		}
 	},
+	
+	SAVE_PETRI_NET{
+		public UserMenuFSA stepNext() {
+			petrinetMap.put(temporaryPetriNet.getName(), temporaryPetriNet);
+			
+			
+			return MAIN_MENU;
+		}
+	},
 
 	PRINT_NET {
 		public UserMenuFSA stepNext() {
@@ -138,6 +254,25 @@ public enum UserMenuFSA {
 				netMap.keySet().forEach(e -> System.out.println("-" + e));
 				try {
 					System.out.println(netMap.get(InputDati.leggiStringaNonVuota(INSERT_NET_TO_VIEW)).toString());
+				} catch (NullPointerException e) {
+					System.out.println("Nome della rete inserito non presente!");
+
+				}
+			}
+
+			return MAIN_MENU;
+		}
+	},
+	
+	PRINT_PETRI_NET {
+		public UserMenuFSA stepNext() {
+			if (petrinetMap.isEmpty()) {
+				System.out.println("Nussuna rete di petri presente da visualizzare!");
+			} else {
+				System.out.println("Reti disponibili alla visualizzazione:");
+				petrinetMap.keySet().forEach(e -> System.out.println("-" + e));
+				try {
+					System.out.println(petrinetMap.get(InputDati.leggiStringaNonVuota(INSERT_NET_TO_VIEW)).toString());
 				} catch (NullPointerException e) {
 					System.out.println("Nome della rete inserito non presente!");
 
@@ -158,20 +293,28 @@ public enum UserMenuFSA {
 	};
 
 	public static final String WELCOME_MESSAGE = "BENVENUTO";
-	public static final String[] STARTING_OPTIONS = { "Aggiungi una nuova rete", "Visualizza reti salvate" };
+	public static final String[] STARTING_OPTIONS = { "Aggiungi una nuova rete", "Visualizza reti salvate","Aggiungi una nuova rete di petri","Visualizza rete di petri" };
 
 	static final MyMenu principalMenu = new MyMenu(WELCOME_MESSAGE, STARTING_OPTIONS);
 
 	private static XMLmanager netxmlmanager = new XMLmanager("nets.xml");
+	//private static XMLmanager petrinetxmlmanager = new XMLmanager<Map<String,PetriNet>>("petrinets.xml");
 
 	private static Net temporaryNet = new Net();
 	public static Map<String, Net> netMap = new HashMap<>();
+
+	private static PetriNet temporaryPetriNet = new PetriNet();
+	public static Map<String, PetriNet> petrinetMap = new HashMap<>();
 
 	public abstract UserMenuFSA stepNext();
 
 	public static final String NET_SAVING_MENU = "INSERIMENTO RETE COMPLETATO";
 	public static final String[] NET_SAVING_MENU_OPTIONS = { "Salva e torna al menu principale",
 			"Ritorna al menu principale senza salvare" };
+
+	public static final String PETRI_NET_CHANGE_VALUE = "RETE DI PETRI CREATA CON VALORI DI DEFAULT";
+	public static final String[] PETRI_NET_CHANGE_VALUE_OPTIONS = { "Modifica valori delle marcature dei posti",
+			"Modifica valori delle relazioni di flusso", "Salva la rete di petri" };
 
 	public static final String INSERT_ELEM_MSG = "Inserisci il nome dell'elemento %s:\n > ";
 
