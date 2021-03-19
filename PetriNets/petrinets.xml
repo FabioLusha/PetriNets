@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="13.0.1" class="java.beans.XMLDecoder">
+ <object class="java.util.HashMap">
+  <void method="put">
+   <string>rdp1</string>
+   <object class="net.PetriNet" id="PetriNet0">
+    <void property="marcmap">
+     <void method="put">
+      <object class="net.Place" id="Place0">
+       <void property="name">
+        <string>n1</string>
+       </void>
+      </object>
+      <int>50</int>
+     </void>
+    </void>
+    <void property="name">
+     <string>rdp1</string>
+    </void>
+    <void property="places">
+     <object class="java.util.HashSet"/>
+    </void>
+    <void property="transitions">
+     <object class="java.util.HashSet"/>
+    </void>
+    <void property="valuemap">
+     <void method="put">
+      <object class="net.OrderedPair">
+       <void property="currentPlace">
+        <object idref="Place0"/>
+       </void>
+       <void property="currentTransition">
+        <object class="net.Transition">
+         <void property="name">
+          <string>t1</string>
+         </void>
+        </object>
+       </void>
+       <void property="type">
+        <object class="java.lang.Enum" method="valueOf">
+         <class>net.OrderedPair$typePair</class>
+         <string>pt</string>
+        </object>
+       </void>
+      </object>
+      <int>100</int>
+     </void>
+    </void>
+   </object>
+  </void>
+ </object>
+</java>

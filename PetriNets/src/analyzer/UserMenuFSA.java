@@ -20,13 +20,24 @@ public enum UserMenuFSA {
 
 			if (!(netxmlmanager.isEmpty())) {
 				try {
-					netMap = netxmlmanager.deserializeFromXML();
-					
+					netMap = (Map<String, Net>) netxmlmanager.deserializeFromXML();
+
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
+
+			if (!(petrinetxmlmanager.isEmpty())) {
+				try {
+					petrinetMap = (Map<String, PetriNet>) petrinetxmlmanager.deserializeFromXML();
+
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+
 			return MAIN_MENU;
 		}
 	},
@@ -144,10 +155,10 @@ public enum UserMenuFSA {
 						e -> System.out.println("- " + e + "    valore:" + temporaryPetriNet.getValuemap().get(e)));
 				return CHANGE_FLUX_VALUE;
 			}
-			case 3:{
+			case 3: {
 				return SAVE_PETRI_NET;
 			}
-			default : 
+			default:
 				return MAIN_MENU;
 			}
 		}
@@ -196,7 +207,8 @@ public enum UserMenuFSA {
 						System.out.println("Il valore inserito deve essere un intero positivo");
 					}
 				} while (newValue <= 0);
-				temporaryPetriNet.getValuemap().replace(new OrderedPair(new Place(choiceplace), new Transition(choicetransition)), newValue);
+				temporaryPetriNet.getValuemap()
+						.replace(new OrderedPair(new Place(choiceplace), new Transition(choicetransition)), newValue);
 				return ADD_VALUES_TO_PETRI_NET;
 
 			} else {
@@ -235,12 +247,19 @@ public enum UserMenuFSA {
 			}
 		}
 	},
-	
-	SAVE_PETRI_NET{
+
+	SAVE_PETRI_NET {
 		public UserMenuFSA stepNext() {
 			petrinetMap.put(temporaryPetriNet.getName(), temporaryPetriNet);
 			
+			try {
+				petrinetxmlmanager.serializeToXML(petrinetMap);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace(System.out);
+			}
 			
+
 			return MAIN_MENU;
 		}
 	},
@@ -248,7 +267,7 @@ public enum UserMenuFSA {
 	PRINT_NET {
 		public UserMenuFSA stepNext() {
 			if (netMap.isEmpty()) {
-				System.out.println("Nussuna rete presente da visualizzare!");
+				System.out.println("Nessuna rete presente da visualizzare!");
 			} else {
 				System.out.println("Reti disponibili alla visualizzazione:");
 				netMap.keySet().forEach(e -> System.out.println("-" + e));
@@ -263,11 +282,11 @@ public enum UserMenuFSA {
 			return MAIN_MENU;
 		}
 	},
-	
+
 	PRINT_PETRI_NET {
 		public UserMenuFSA stepNext() {
 			if (petrinetMap.isEmpty()) {
-				System.out.println("Nussuna rete di petri presente da visualizzare!");
+				System.out.println("Nessuna rete di petri presente da visualizzare!");
 			} else {
 				System.out.println("Reti disponibili alla visualizzazione:");
 				petrinetMap.keySet().forEach(e -> System.out.println("-" + e));
@@ -293,12 +312,13 @@ public enum UserMenuFSA {
 	};
 
 	public static final String WELCOME_MESSAGE = "BENVENUTO";
-	public static final String[] STARTING_OPTIONS = { "Aggiungi una nuova rete", "Visualizza reti salvate","Aggiungi una nuova rete di petri","Visualizza rete di petri" };
+	public static final String[] STARTING_OPTIONS = { "Aggiungi una nuova rete", "Visualizza reti salvate",
+			"Aggiungi una nuova rete di petri", "Visualizza rete di petri" };
 
 	static final MyMenu principalMenu = new MyMenu(WELCOME_MESSAGE, STARTING_OPTIONS);
 
-	private static XMLmanager netxmlmanager = new XMLmanager("nets.xml");
-	//private static XMLmanager petrinetxmlmanager = new XMLmanager<Map<String,PetriNet>>("petrinets.xml");
+	private static XMLmanager netxmlmanager = new XMLmanager<Map<String, Net>>("nets.xml");
+	private static XMLmanager petrinetxmlmanager = new XMLmanager<Map<String, PetriNet>>("petrinets.xml");
 
 	private static Net temporaryNet = new Net();
 	public static Map<String, Net> netMap = new HashMap<>();

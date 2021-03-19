@@ -11,7 +11,7 @@ import java.util.Map;
 import net.Net;
 import net.Place;
 
-public class XMLmanager {
+public class XMLmanager<T> {
 
 	private String filename;
 
@@ -19,16 +19,16 @@ public class XMLmanager {
 		this.filename = pfilename;
 	}
 
-	public Map<String, Net> deserializeFromXML() throws IOException {
+	public T deserializeFromXML() throws IOException {
 		FileInputStream fis = new FileInputStream(filename);
 		XMLDecoder decoder = new XMLDecoder(fis);
-		Map<String, Net> savednets = (Map<String, Net>) decoder.readObject();
+		T savednets = (T) decoder.readObject();
 		decoder.close();
 		fis.close();
 		return savednets;
 	}
 
-	public void serializeToXML(Map<String, Net> netlist) throws IOException {
+	public void serializeToXML(T netlist) throws IOException {
 		FileOutputStream fos = new FileOutputStream(filename);
 		XMLEncoder encoder = new XMLEncoder(fos);
 		encoder.setExceptionListener(e -> System.out.println("Exception! :" + e.toString()));
