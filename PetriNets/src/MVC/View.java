@@ -1,29 +1,31 @@
 package MVC;
 
-import it.unibs.fp.mylib.MyMenu;
+import it.unibs.fp.mylib.*;
 
-import javax.swing.*;
-import java.util.Arrays;
-import java.util.HashMap;
+import java.io.BufferedOutputStream;
+import java.io.PrintWriter;
 import java.util.Map;
 
 public class View {
+    public static final PrintWriter OUTPUT_STREAM_PRINTER = new PrintWriter(new BufferedOutputStream(System.out));
 
-    public static final String[] NET_SAVING_MENU_OPTIONS = { "Salva e torna al menu principale",
-            "Ritorna al menu principale senza salvare" };
-    public static final Map<String, Integer> MAP_OPTIONS
     private Controller controller;
 
     //private String currentTransition;
     //private String currentNet;
 
-    public void openView() {
+    public View(Controller controller){
+        this.controller = controller;
+    }
+
+    public void mainMenu() {
         MyMenu mainMenu = new MyMenu(Message.WELCOME_MESSAGE, Message.MAIN_OPTIONS);
 
         int choice = mainMenu.scegli();
         switch (choice) {
             case 1:
                 initializeNet();
+                /*
             case 2:
                 return PRINT_NET;
             case 3:
@@ -32,20 +34,32 @@ public class View {
                 return PRINT_PETRI_NET;
             default:
                 return END;
+
+                 */
+
         }
+
     }
 
 
     public void initializeNet() {
-       // TODO gestire l'input
+        String netName = InputDati.leggiStringaNonVuota(Message.INSERT_NET_NAME_MSG).trim();
+        controller.manageNetCreation(netName);
+    }
 
-        String netName= null;
-        controller.manageNetCreatrion(netName);
+    public void printNet(String name, Map<String, String> fluxRelation){
+
+      StringBuilder strBuilder = new StringBuilder(name + "\n");
+      for(var elem : fluxRelation.entrySet()) {
+          //Se lasciamo il print così non si capsice chi è il posto e chi la transizione
+          strBuilder.append("\t (" + elem.getKey() + " , " + elem.getValue());
+      }
+      OUTPUT_STREAM_PRINTER.println();
     }
 
 
     public void notifyError(String ErrMsg){
-        System.out.println(ErrMsg);
+        OUTPUT_STREAM_PRINTER.println(ErrMsg);
     }
 
 }

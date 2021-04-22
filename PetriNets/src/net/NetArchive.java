@@ -9,6 +9,10 @@ public class NetArchive {
         this.netMap = netMap;
     }
 
+    public NetArchive() {
+        netMap = new HashMap<>();
+    }
+
     public Map<String, Net> getNetMap() {
         return netMap;
     }

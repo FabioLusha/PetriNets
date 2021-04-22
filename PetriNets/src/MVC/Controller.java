@@ -5,9 +5,20 @@ public class Controller {
     private Model model;
     private View view;
 
-    public void manageNetCreatrion(String netName){
-        if(!model.createNet(netName))
+    public Controller(Model model){
+        this.model = model;
+        this.view = new View(this);
+    }
+
+    public void startView(){
+        view.mainMenu();
+    }
+
+    public void manageNetCreation(String netName){
+        if(!model.createNet(netName)) {
             view.notifyError(Message.ERR_MSG_NET_NAME_ALREADY_EXIST);
+            view.mainMenu();
+        }
     }
 
     public void addFluxRel(String posto, String transizione, int direction){
