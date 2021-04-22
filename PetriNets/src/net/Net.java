@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import org.junit.jupiter.api.Order;
 
 
 public class Net {
@@ -17,8 +16,7 @@ public class Net {
 	private Set<OrderedPair> fluxRelation = new HashSet<OrderedPair>();
 
 	// costrutture vuoto senza argomenti per XMLEncoder
-	public Net() {
-	};
+	public Net() { }
 
 	public Net(String name) {
 		this.name = name;

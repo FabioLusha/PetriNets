@@ -70,7 +70,7 @@ public enum UserMenuFSA {
 
 			netName = InputDati.leggiStringaNonVuota(INSERT_NET_NAME_MSG).trim();
 			if (netMap.containsKey(netName)) {
-				System.out.println("Nome della rete già presente!");
+				System.out.println("Nome della rete giÃ  presente!");
 				return CREATE_NET;
 			}
 
@@ -95,7 +95,7 @@ public enum UserMenuFSA {
 						+ String.format(FLUX_DIRECTION_MSG, OrderedPair.typePair.tp.ordinal(), trans, place) + "\n > ",
 						OrderedPair.typePair.pt.ordinal(), OrderedPair.typePair.tp.ordinal());
 
-				// TO-DO messaggio in base al perchè torna false
+				// TO-DO messaggio in base al perchÃ© torna false
 				if (OrderedPair.typePair.ordinalToType(direction) == OrderedPair.typePair.tp
 						&& !temporaryNet.containsTransition(new Transition(trans))) {
 					System.out.println("Transizione non puntata da alcun posto");
@@ -120,7 +120,7 @@ public enum UserMenuFSA {
 		public UserMenuFSA stepNext() {
 
 			if (netMap.isEmpty()) {
-				System.out.println("Non vi è alcuna rete presente per poter definire una rete di Petri!");
+				System.out.println("Non vi ï¿½ alcuna rete presente per poter definire una rete di Petri!");
 				return MAIN_MENU;
 			} else {
 				System.out.println("Reti presenti da cui poter definire una rete di Petri: ");
@@ -182,7 +182,7 @@ public enum UserMenuFSA {
 				return ADD_VALUES_TO_PETRI_NET;
 
 			} else {
-				System.out.println("Non è presente alcun posto con questo nome!");
+				System.out.println("Non ï¿½ presente alcun posto con questo nome!");
 				return ADD_VALUES_TO_PETRI_NET;
 			}
 		}
