@@ -8,7 +8,7 @@ public class NetArchive {
     public NetArchive(Map<String, Net> netMap){
         this.netMap = netMap;
     }
-
+    
     public NetArchive() {
         netMap = new HashMap<>();
     }
@@ -28,4 +28,7 @@ public class NetArchive {
     public boolean contains(String name){
         return netMap.containsKey(name);
     }
+    
+    
+ 
 }

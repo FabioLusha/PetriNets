@@ -5,7 +5,7 @@ import java.util.*;
 
 
 
-public class OrderedPair implements Map.Entry<Place,Transition>{
+public class OrderedPair {
 
 	public enum typePair{
 		pt,
@@ -41,25 +41,6 @@ public class OrderedPair implements Map.Entry<Place,Transition>{
 		this.currentTransition = currentTransition;
 	}
 
-	//Metodi non implementati
-
-	@Override
-	public Place getKey() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Transition getValue() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Transition setValue(Transition value) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	public typePair getType() {
 		return type;
