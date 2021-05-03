@@ -12,8 +12,9 @@ import java.util.stream.Collectors;
 
 
 public class Model {
-
-    private static XMLmanager netxmlmanager = new XMLmanager<Map<String, Net>>("nets.xml");
+	
+	//Messo NetArchive come parametro della classe generica, ora funziona salvataggio
+    private static XMLmanager netxmlmanager = new XMLmanager<NetArchive>("nets.xml");
 
     private NetArchive netArchive;
     private Net controlNet;
