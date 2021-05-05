@@ -1,4 +1,4 @@
-package MVC;
+package petrinets.MVC;
 
 public class Pair <K,V>{
 	

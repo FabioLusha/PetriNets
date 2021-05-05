@@ -1,4 +1,4 @@
-package net;
+package petrinets.net;
 
 import java.util.*;
 

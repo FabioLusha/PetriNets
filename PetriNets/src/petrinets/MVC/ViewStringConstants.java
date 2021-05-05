@@ -1,6 +1,6 @@
-package MVC;
+package petrinets.MVC;
 
-public class Message {
+public class ViewStringConstants {
 
     //Messaggi di interazione
     public static final String WELCOME_MESSAGE = "BENVENUTO";
@@ -31,8 +31,8 @@ public class Message {
     //TO-DO decidere se eliminare elementi di formattazione (%s) oppure modificare messaggi errore nella view
     public static final String FLUX_ELEM_ADD_TRUE = "Elemento %s inserito correttamente";
     public static final String ERR_MSG_FLUX_ELEM_ALREADY_EXSISTS = "Elemento %s gia' presente";
-    public static final String ERR_PLACE_AS_TRANSITION = "%s è gia presente come transizione";
-    public static final String ERR_TRANSITION_AS_PLACE = "%s è gia presente come posto";
+    public static final String ERR_PLACE_AS_TRANSITION = "%s ï¿½ gia presente come transizione";
+    public static final String ERR_TRANSITION_AS_PLACE = "%s ï¿½ gia presente come posto";
     
     public static final String INSERT_NET_TO_VIEW = "Inserisci il nome della rete che vuoi visualizzare:\n";
     public static final String ERR_MSG_NOT_POINTED_TRANSITION = "Transizione non puntata da alcun posto";

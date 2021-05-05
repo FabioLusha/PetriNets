@@ -3,10 +3,10 @@
  <object class="java.util.HashMap">
   <void method="put">
    <string>rdp1</string>
-   <object class="net.PetriNet" id="PetriNet0">
+   <object class="petrinets.net.PetriNet" id="PetriNet0">
     <void property="marcmap">
      <void method="put">
-      <object class="net.Place" id="Place0">
+      <object class="petrinets.net.Place" id="Place0">
        <void property="name">
         <string>n1</string>
        </void>
@@ -25,12 +25,12 @@
     </void>
     <void property="valuemap">
      <void method="put">
-      <object class="net.OrderedPair">
+      <object class="petrinets.net.OrderedPair">
        <void property="currentPlace">
         <object idref="Place0"/>
        </void>
        <void property="currentTransition">
-        <object class="net.Transition">
+        <object class="petrinets.net.Transition">
          <void property="name">
           <string>t1</string>
          </void>
@@ -38,7 +38,7 @@
        </void>
        <void property="type">
         <object class="java.lang.Enum" method="valueOf">
-         <class>net.OrderedPair$typePair</class>
+         <class>petrinets.net.OrderedPair$typePair</class>
          <string>pt</string>
         </object>
        </void>

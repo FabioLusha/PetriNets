@@ -1,4 +1,4 @@
-package net;
+package petrinets.net;
 
 
 import java.util.ArrayList;
@@ -13,15 +13,17 @@ public class Net {
 	private String name;
 	private Set<Transition> transitions;
 	private Set<Place> places;
-	private Set<OrderedPair> fluxRelation = new HashSet<OrderedPair>();
+	private Set<OrderedPair> fluxRelation;
 
 	// costrutture vuoto senza argomenti per XMLEncoder
 	public Net() { }
 
-	public Net(String name) {
-		this.name = name;
-		transitions = new HashSet<>();
-		places = new HashSet<>();
+	public Net(String pname) {
+		//assert pname != null;
+		this.name = pname;
+		this.transitions = new HashSet<>();
+		this.places = new HashSet<>();
+		this.fluxRelation = new HashSet<>();
 	}
 
 	public boolean isTransition(Transition transition) {
@@ -41,7 +43,6 @@ public class Net {
 	}
 
 	public boolean addFluxRelElement(OrderedPair pair) {
-
 		if (isTransition(new Transition(pair.getCurrentPlace().getName()))
 				|| isPlace(new Place(pair.getCurrentTransition().getName()))) {
 			return false;
@@ -54,7 +55,7 @@ public class Net {
 	}
 
 
-
+/*
 	public String toString() {
 		StringBuilder output = new StringBuilder();
 		output.append("Rete: " + name + " \n");
@@ -74,6 +75,7 @@ public class Net {
 		return output.toString();
 
 	}
+	*/
 	
 	public boolean equals(Object obj) {
 		if (obj == this) {
@@ -105,6 +107,7 @@ public class Net {
 	}
 
 	public void setName(String name) {
+		assert name != null;
 		this.name = name;
 	}
 

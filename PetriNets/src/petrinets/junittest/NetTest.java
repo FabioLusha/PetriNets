@@ -1,4 +1,4 @@
-package junittest;
+package petrinets.junittest;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,10 +9,10 @@ import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
-import net.Net;
-import net.OrderedPair;
-import net.Place;
-import net.Transition;
+import petrinets.net.Net;
+import petrinets.net.OrderedPair;
+import petrinets.net.Place;
+import petrinets.net.Transition;
 
 class NetTest {
 

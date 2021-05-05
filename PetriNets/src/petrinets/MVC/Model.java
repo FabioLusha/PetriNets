@@ -1,20 +1,17 @@
-package MVC;
+package petrinets.MVC;
 
-import analyzer.XMLmanager;
-import net.*;
+import petrinets.net.*;
+import systemservices.XMLmanager;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 
 
 public class Model {
 	
-	//Messo NetArchive come parametro della classe generica, ora funziona salvataggio
-    private static XMLmanager netxmlmanager = new XMLmanager<NetArchive>("nets.xml");
+    private static XMLmanager<NetArchive> netxmlmanager = new XMLmanager<NetArchive>("nets2.xml");
 
     private NetArchive netArchive;
     private Net controlNet;
@@ -38,9 +35,8 @@ public class Model {
     }
 
 
-    //return true se in Archive non è presente alcun elemento con chiave name
+    //Ritorna true se in Archive non e' presente alcun elemento con chiave name
     public boolean createNet(String name){
-
         if(netArchive.contains(name))
             return false;
         else{
@@ -49,19 +45,12 @@ public class Model {
         return true;
     }
 
-    //Trasizione non puntata de nessun posto
-    public boolean transitionIsNotPointed(String posto, String trans, int direction){
+    //Trasizione non puntata da nessun posto
+    public boolean transitionIsNotPointed(String placename, String transitionname, int direction){
+    	
         return (OrderedPair.typePair.ordinalToType(direction) == OrderedPair.typePair.tp
-                && !controlNet.containsTransition(new Transition(trans)));
-      
+                && !controlNet.containsTransition(new Transition(transitionname)));
        
-    }
-
-    public boolean giaPresente(String posto, String trans, int direction){
-        return controlNet.addFluxRelElement(
-                new OrderedPair(
-                        new Place(posto), new Transition(trans), OrderedPair.typePair.ordinalToType(direction))
-        );
     }
 
     public boolean containsPlace(String name) {

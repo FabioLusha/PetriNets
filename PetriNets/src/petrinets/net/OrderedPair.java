@@ -1,4 +1,4 @@
-package net;
+package petrinets.net;
 
 
 import java.util.*;
@@ -6,48 +6,52 @@ import java.util.*;
 
 
 public class OrderedPair {
-
-	public enum typePair{
+	//Enum che stabilisce la direzione tra i due elementi
+	public static enum typePair{
 		pt,
 		tp;
-
+		
+		//Metodo che converte un intero corrispondente alla posizione dell'elemento nell' elemento stesso
 		public static typePair ordinalToType(int ordinal){
+			//assert ordinal <= 1 && ordinal >= 0;
 			if ( typePair.pt.ordinal() == ordinal ) return pt;
 			else return tp;
 		}
+	
 	}
 
-	private typePair type;
+	private typePair dir;
 	private Place currentPlace;
 	private Transition currentTransition;
 	
+	//Costruttuore vuoto poichè è richiesto dallo standard beans per utilizzare XMLSerializer
 	public OrderedPair(){};
 
 	public OrderedPair(Place pcurrentPlace, Transition pcurrentTransition) {
 		this.currentPlace=pcurrentPlace;
 		this.currentTransition=pcurrentTransition;
-		this.type=typePair.pt;
+		this.dir=typePair.pt;
 	}
 	
 	public OrderedPair(Transition pcurrentTransition,Place pcurrentPlace) {
 		this.currentTransition=pcurrentTransition;
 		this.currentPlace=pcurrentPlace;
-		this.type=typePair.tp;
+		this.dir=typePair.tp;
 	}
 
 	public OrderedPair(Place currentPlace, Transition currentTransition, typePair type) {
-		this.type = type;
+		this.dir = type;
 		this.currentPlace = currentPlace;
 		this.currentTransition = currentTransition;
 	}
 
 
 	public typePair getType() {
-		return type;
+		return dir;
 	}
 
 	public void setType(typePair type) {
-		this.type = type;
+		this.dir = type;
 	}
 
 	public Place getCurrentPlace() {
@@ -76,7 +80,7 @@ public class OrderedPair {
 			}
 
 			final OrderedPair other = (OrderedPair) obj;
-			if (!Objects.equals(this.type.ordinal(), other.type.ordinal()) || !Objects.equals(this.currentPlace, other.currentPlace)
+			if (!Objects.equals(this.dir.ordinal(), other.dir.ordinal()) || !Objects.equals(this.currentPlace, other.currentPlace)
 					|| !Objects.equals(this.currentTransition, other.currentTransition)) {
 				return false;
 			}
@@ -85,14 +89,14 @@ public class OrderedPair {
 
 	@Override
 	public int hashCode(){
-		return Objects.hash(this.currentPlace, this.currentTransition, this.type.ordinal());
+		return Objects.hash(this.currentPlace, this.currentTransition, this.dir.ordinal());
 	}
 
 	@Override
 	public String toString(){
 		String format = "( %s -> %s )";
 
-		if(type == typePair.pt) return String.format(format, currentPlace, currentTransition);
+		if(dir == typePair.pt) return String.format(format, currentPlace, currentTransition);
 		else return String.format(format, currentTransition, currentPlace);
 	}
 

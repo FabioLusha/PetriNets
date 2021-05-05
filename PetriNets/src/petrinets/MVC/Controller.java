@@ -1,6 +1,7 @@
-package MVC;
+package petrinets.MVC;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 public class Controller {
@@ -18,23 +19,23 @@ public class Controller {
     }
 
     public void manageNetCreation(String netName){
-    	//Il metodo createNet della classe Model non crea la rete se vi è già una rete con questo nome
+    	//Il metodo createNet della classe Model non crea la rete se vi e' giï¿½ una rete con questo nome
         if(!model.createNet(netName)) {
-            view.printToDisplay(Message.ERR_MSG_NET_NAME_ALREADY_EXIST);
+            view.printToDisplay(ViewStringConstants.ERR_MSG_NET_NAME_ALREADY_EXIST);
             view.mainMenu();
         }else {
         	view.addFluxElement();
         }
     }
 
-    public void addFluxRel(String posto, String transizione, int direction){
-        if (model.transitionIsNotPointed(posto,transizione,direction)) {
-        	view.printToDisplay(Message.ERR_MSG_NOT_POINTED_TRANSITION);
+    public void addFluxRel(String place, String transitions, int direction){
+        if (model.transitionIsNotPointed(place,transitions,direction)) {
+        	view.printToDisplay(ViewStringConstants.ERR_MSG_NOT_POINTED_TRANSITION);
         	view.addFluxElement();
         }else {
-        	if(checkPlace(posto) && checkTransition(transizione)) {
-        		if(!model.addFluxElem(posto, transizione, direction)) {
-        			view.printToDisplay(Message.ERR_MSG_FLUX_ELEM_ALREADY_EXSISTS);
+        	if(checkPlace(place) && checkTransition(transitions)) {
+        		if(!model.addFluxElem(place, transitions, direction)) {
+        			view.printToDisplay(ViewStringConstants.ERR_MSG_FLUX_ELEM_ALREADY_EXSISTS);
         		}
         		view.userInputContinueAdding();;
         	}
@@ -44,7 +45,7 @@ public class Controller {
         
         }
     
-    public void choice(boolean userchoice) {
+    public void continueAddingElement(boolean userchoice) {
     	if(userchoice) {
     		view.addFluxElement();
     	}else
@@ -53,7 +54,7 @@ public class Controller {
     
     public boolean checkPlace(String name) {
     	if(model.containsTransition(name)) {
-    		view.printToDisplay(String.format(Message.ERR_PLACE_AS_TRANSITION, name));
+    		view.printToDisplay(String.format(ViewStringConstants.ERR_PLACE_AS_TRANSITION, name));
     		return false;
     	}
     	return true;
@@ -62,7 +63,7 @@ public class Controller {
     
     public boolean checkTransition(String name) {
     	if(model.containsPlace(name)) {
-    		view.printToDisplay(String.format(Message.ERR_TRANSITION_AS_PLACE, name));
+    		view.printToDisplay(String.format(ViewStringConstants.ERR_TRANSITION_AS_PLACE, name));
     		return false;
     	}
     	return true;
@@ -77,7 +78,7 @@ public class Controller {
 			if(model.addNet()) {
 				view.mainMenu();
 			}else {
-				view.printToDisplay(Message.ERR_NET_ALREADY_PRESENT);
+				view.printToDisplay(ViewStringConstants.ERR_NET_ALREADY_PRESENT);
 			}
 				
 			try {
@@ -121,7 +122,7 @@ public class Controller {
     		view.mainMenu();
     	}
     	else {
-    		view.printToDisplay(Message.ERR_NET_NOT_PRESENT);
+    		view.printToDisplay(ViewStringConstants.ERR_NET_NOT_PRESENT);
     		view.visualizeNets(model.getSavedNetsNames());
     	}
     }

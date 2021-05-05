@@ -1,10 +1,11 @@
-package net;
+package petrinets.net;
 
 import java.util.Objects;
 
 public class Place {
 	private String name;
-
+	
+	//Costruttuore vuoto poichè è richiesto dallo standard beans per utilizzare XMLSerializer
 	public Place(){}
 	
 	public String getName() {
@@ -13,11 +14,13 @@ public class Place {
 
 
 	public void setName(String name) {
+		//assert name != null;
 		this.name = name;
 	}
 
 
 	public Place(String pname) {
+		//assert pname != null;
 		this.name = pname;
 	}
 	

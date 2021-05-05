@@ -1,4 +1,4 @@
-package net;
+package petrinets.net;
 
 import java.util.Objects;
 
@@ -12,10 +12,12 @@ public class Transition {
 	}
 
 	public void setName(String name) {
+		//assert name != null;
 		this.name = name;
 	}
 
 	public Transition(String pname) {
+		//assert pname != null;
 		this.name = pname;
 	}
 	

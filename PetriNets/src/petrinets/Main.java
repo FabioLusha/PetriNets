@@ -1,17 +1,13 @@
-package analyzer;
+package petrinets;
 
-import MVC.Controller;
-import MVC.Model;
+import java.io.BufferedOutputStream;
+import java.io.PrintWriter;
+
+import petrinets.MVC.Controller;
+import petrinets.MVC.Model;
 
 public class Main {
 	public static void main(String[] args) {
-		/*
-		UserMenuFSA menu = UserMenuFSA.START;
-		while (true) {
-			menu = menu.stepNext();
-		}
-
-		 */
 		Model model = new Model();
 		Controller controller = new Controller(model);
 		controller.startView();

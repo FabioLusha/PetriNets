@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <class-diagram version="1.2.4" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
   associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
-  <class id="1" language="java" name="net.Net" project="PetriNets" file="/PetriNets/src/net/Net.java" binary="false" 
-    corner="BOTTOM_RIGHT">    
+  <class id="1" language="java" name="petrinets.net.Net" project="PetriNets" 
+    file="/PetriNets/src/petrinets/net/Net.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1182" y="350"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
@@ -10,8 +10,8 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="2" language="java" name="junittest.NetTest" project="PetriNets" 
-    file="/PetriNets/src/junittest/NetTest.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="2" language="java" name="petrinets.junittest.NetTest" project="PetriNets" 
+    file="/PetriNets/src/petrinets/junittest/NetTest.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="111" y="95"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
@@ -19,8 +19,8 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="3" language="java" name="net.Place" project="PetriNets" file="/PetriNets/src/net/Place.java" binary="false" 
-    corner="BOTTOM_RIGHT">    
+  <class id="3" language="java" name="petrinets.net.Place" project="PetriNets" 
+    file="/PetriNets/src/petrinets/net/Place.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="777" y="722"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
@@ -28,8 +28,8 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="4" language="java" name="net.Transition" project="PetriNets" file="/PetriNets/src/net/Transition.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
+  <class id="4" language="java" name="petrinets.net.Transition" project="PetriNets" 
+    file="/PetriNets/src/petrinets/net/Transition.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="765" y="116"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
@@ -37,17 +37,8 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="5" language="java" name="net.Configurator" project="PetriNets" file="/PetriNets/src/net/Configurator.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1177" y="843"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <enumeration id="6" language="java" name="net.OrderedPair.typePair" project="PetriNets" 
-    file="/PetriNets/src/net/OrderedPair.java" binary="false" corner="BOTTOM_RIGHT">    
+  <enumeration id="5" language="java" name="petrinets.net.OrderedPair.typePair" project="PetriNets" 
+    file="/PetriNets/src/petrinets/net/OrderedPair.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="329" y="721"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
@@ -55,8 +46,8 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </enumeration>  
-  <class id="7" language="java" name="net.OrderedPair" project="PetriNets" file="/PetriNets/src/net/OrderedPair.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
+  <class id="6" language="java" name="petrinets.net.OrderedPair" project="PetriNets" 
+    file="/PetriNets/src/petrinets/net/OrderedPair.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="339" y="374"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
@@ -64,66 +55,82 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <association id="8">    
-    <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="9" name="temporaryNet"/>      
-      <multiplicity id="10" minimum="0" maximum="1"/>    
+  <association id="7">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="8" name="places">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="9" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
-    <end type="TARGET" refId="1" navigable="true"/>    
+    <end type="TARGET" refId="3" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
+  <nesting id="10">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="5"/>  
+  </nesting>  
   <association id="11">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="12" name="places"/>      
-      <multiplicity id="13" minimum="0" maximum="2147483647"/>    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="12" name="currentPlace">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="13" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="3" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="14">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="15" name="fluxRelation"/>      
-      <multiplicity id="16" minimum="0" maximum="2147483647"/>    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="15" name="currentTransition">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="16" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
-    <end type="TARGET" refId="7" navigable="true"/>    
+    <end type="TARGET" refId="4" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="17">    
-    <end type="SOURCE" refId="7" navigable="false">      
-      <attribute id="18" name="currentPlace"/>      
-      <multiplicity id="19" minimum="0" maximum="1"/>    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="18" name="fluxRelation">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="19" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
-    <end type="TARGET" refId="3" navigable="true"/>    
+    <end type="TARGET" refId="6" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="20">    
-    <end type="SOURCE" refId="7" navigable="false">      
-      <attribute id="21" name="currentTransition"/>      
-      <multiplicity id="22" minimum="0" maximum="1"/>    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="21" name="transitions">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="22" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="4" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="23">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="24" name="transitions"/>      
-      <multiplicity id="25" minimum="0" maximum="2147483647"/>    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="24" name="dir">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="25" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
-    <end type="TARGET" refId="4" navigable="true"/>    
+    <end type="TARGET" refId="5" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="26">    
-    <end type="SOURCE" refId="7" navigable="false">      
-      <attribute id="27" name="type"/>      
-      <multiplicity id="28" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="6" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <nesting id="29">    
-    <end type="SOURCE" refId="7"/>    
-    <end type="TARGET" refId="6"/>  
-  </nesting>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     sort-features="false" accessors="true" visibility="true">    
     <attributes public="true" package="true" protected="true" private="true" static="true"/>    
