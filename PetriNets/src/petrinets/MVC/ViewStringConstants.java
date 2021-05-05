@@ -40,6 +40,9 @@ public class ViewStringConstants {
     
     public static final String ERR_NET_ALREADY_PRESENT = "La rete che hai inserito esiste gia'";
     public static final String ERR_NET_NOT_PRESENT = "Non ci sono reti salvate con questo nome";
+    
+    public static final String ERR_SAVED_NET_NOT_PRESENT = "Non ci sono reti salvate";
+
 
     
     public static final String AVAILABLE_NETS = "Reti disponibili alla visualizzazione: ";

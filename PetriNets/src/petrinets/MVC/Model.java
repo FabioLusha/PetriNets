@@ -9,9 +9,10 @@ import java.util.stream.Collectors;
 
 
 
+
 public class Model {
 	
-    private static XMLmanager<NetArchive> netxmlmanager = new XMLmanager<NetArchive>("nets2.xml");
+    private static XMLmanager<NetArchive> netxmlmanager = new XMLmanager<NetArchive>("nets.xml");
 
     private NetArchive netArchive;
     private Net controlNet;
@@ -21,17 +22,20 @@ public class Model {
     }
 
     public Model(){
-        if (!(netxmlmanager.isEmpty())) {
+        
             try {
+            	if (!(netxmlmanager.isEmpty())) {
                // netArchive.setNetMap((Map<>) netxmlmanager.deserializeFromXML());
                 netArchive = (NetArchive) netxmlmanager.deserializeFromXML();
+            	}else
+                    netArchive = new NetArchive();
 
             } catch (IOException e) {
                 // TODO Auto-generated catch block
+            	netArchive = new NetArchive();
                 e.printStackTrace();
             }
-        }else
-            netArchive = new NetArchive();
+        
     }
 
 

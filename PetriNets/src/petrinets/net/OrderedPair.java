@@ -7,7 +7,7 @@ import java.util.*;
 
 public class OrderedPair {
 	//Enum che stabilisce la direzione tra i due elementi
-	public static enum typePair{
+	public static enum typePair {
 		pt,
 		tp;
 		
@@ -24,19 +24,19 @@ public class OrderedPair {
 	private Place currentPlace;
 	private Transition currentTransition;
 	
-	//Costruttuore vuoto poichè è richiesto dallo standard beans per utilizzare XMLSerializer
+	//Costruttuore vuoto poichï¿½ ï¿½ richiesto dallo standard beans per utilizzare XMLSerializer
 	public OrderedPair(){};
 
 	public OrderedPair(Place pcurrentPlace, Transition pcurrentTransition) {
 		this.currentPlace=pcurrentPlace;
 		this.currentTransition=pcurrentTransition;
-		this.dir=typePair.pt;
+		this.dir= typePair.pt;
 	}
 	
 	public OrderedPair(Transition pcurrentTransition,Place pcurrentPlace) {
 		this.currentTransition=pcurrentTransition;
 		this.currentPlace=pcurrentPlace;
-		this.dir=typePair.tp;
+		this.dir= typePair.tp;
 	}
 
 	public OrderedPair(Place currentPlace, Transition currentTransition, typePair type) {

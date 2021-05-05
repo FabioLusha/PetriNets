@@ -38,7 +38,7 @@
        </void>
        <void property="type">
         <object class="java.lang.Enum" method="valueOf">
-         <class>petrinets.net.OrderedPair$typePair</class>
+         <class>petrinets.net.OrderedPair.Direction</class>
          <string>pt</string>
         </object>
        </void>

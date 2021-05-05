@@ -34,13 +34,13 @@ public class XMLmanager<T> {
 		fos.close();
 	}
 
-	public boolean isEmpty() {
+	public boolean isEmpty() throws IOException {
 		File file = new File(filename);
-
-		if (file.length() != 0) {
-			return false;
-		} else
-			return true;
+		
+			if (!file.createNewFile()  && file.length() != 0) {
+				return false;
+			} else 
+				return true;
 	}
 
 }

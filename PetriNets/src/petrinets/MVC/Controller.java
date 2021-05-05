@@ -19,7 +19,7 @@ public class Controller {
     }
 
     public void manageNetCreation(String netName){
-    	//Il metodo createNet della classe Model non crea la rete se vi e' giï¿½ una rete con questo nome
+    	//Il metodo createNet della classe Model non crea la rete se vi e' già una rete con questo nome
         if(!model.createNet(netName)) {
             view.printToDisplay(ViewStringConstants.ERR_MSG_NET_NAME_ALREADY_EXIST);
             view.mainMenu();
@@ -75,12 +75,10 @@ public class Controller {
 			System.exit(0);
 			break;
 		case 1: {
-			if(model.addNet()) {
-				view.mainMenu();
-			}else {
+			if(!model.addNet()) {
 				view.printToDisplay(ViewStringConstants.ERR_NET_ALREADY_PRESENT);
 			}
-				
+			
 			try {
 				model.permanentSave();
 			} catch(IOException e) {
@@ -103,8 +101,14 @@ public class Controller {
         case 1:
             view.initializeNet();
             break;
-        case 2:
-            view.visualizeNets(model.getSavedNetsNames());
+        case 2:{
+        	if(model.getSavedNetsNames().isEmpty()) {
+        		view.printToDisplay(ViewStringConstants.ERR_SAVED_NET_NOT_PRESENT);
+        		view.mainMenu();
+        	}
+        	else
+        		view.visualizeNets(model.getSavedNetsNames());
+        }
             break;
        
         default:
