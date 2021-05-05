@@ -7,20 +7,20 @@ import java.util.*;
 
 public class OrderedPair {
 	//Enum che stabilisce la direzione tra i due elementi
-	public static enum typePair {
+	public static enum Direction {
 		pt,
 		tp;
 		
 		//Metodo che converte un intero corrispondente alla posizione dell'elemento nell' elemento stesso
-		public static typePair ordinalToType(int ordinal){
+		public static Direction ordinalToType(int ordinal){
 			//assert ordinal <= 1 && ordinal >= 0;
-			if ( typePair.pt.ordinal() == ordinal ) return pt;
+			if ( Direction.pt.ordinal() == ordinal ) return pt;
 			else return tp;
 		}
 	
 	}
 
-	private typePair dir;
+	private Direction dir;
 	private Place currentPlace;
 	private Transition currentTransition;
 	
@@ -30,27 +30,27 @@ public class OrderedPair {
 	public OrderedPair(Place pcurrentPlace, Transition pcurrentTransition) {
 		this.currentPlace=pcurrentPlace;
 		this.currentTransition=pcurrentTransition;
-		this.dir= typePair.pt;
+		this.dir= Direction.pt;
 	}
 	
 	public OrderedPair(Transition pcurrentTransition,Place pcurrentPlace) {
 		this.currentTransition=pcurrentTransition;
 		this.currentPlace=pcurrentPlace;
-		this.dir= typePair.tp;
+		this.dir= Direction.tp;
 	}
 
-	public OrderedPair(Place currentPlace, Transition currentTransition, typePair type) {
+	public OrderedPair(Place currentPlace, Transition currentTransition, Direction type) {
 		this.dir = type;
 		this.currentPlace = currentPlace;
 		this.currentTransition = currentTransition;
 	}
 
 
-	public typePair getType() {
+	public Direction getDirection() {
 		return dir;
 	}
 
-	public void setType(typePair type) {
+	public void setDirection(Direction type) {
 		this.dir = type;
 	}
 
@@ -96,7 +96,7 @@ public class OrderedPair {
 	public String toString(){
 		String format = "( %s -> %s )";
 
-		if(dir == typePair.pt) return String.format(format, currentPlace, currentTransition);
+		if(dir == Direction.pt) return String.format(format, currentPlace, currentTransition);
 		else return String.format(format, currentTransition, currentPlace);
 	}
 

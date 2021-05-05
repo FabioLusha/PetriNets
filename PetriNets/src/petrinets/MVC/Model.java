@@ -52,7 +52,7 @@ public class Model {
     //Trasizione non puntata da nessun posto
     public boolean transitionIsNotPointed(String placename, String transitionname, int direction){
     	
-        return (OrderedPair.typePair.ordinalToType(direction) == OrderedPair.typePair.tp
+        return (OrderedPair.Direction.ordinalToType(direction) == OrderedPair.Direction.tp
                 && !controlNet.containsTransition(new Transition(transitionname)));
        
     }
@@ -66,7 +66,7 @@ public class Model {
     }
     
    public boolean addFluxElem(String placename,String transitionname, int direction) {
-	    OrderedPair.typePair type = OrderedPair.typePair.ordinalToType(direction);
+	    OrderedPair.Direction type = OrderedPair.Direction.ordinalToType(direction);
 	    
 	    return controlNet.addFluxRelElement(new OrderedPair(new Place(placename) , new Transition(transitionname) , type));
    }

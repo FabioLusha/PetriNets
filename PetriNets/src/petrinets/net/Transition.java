@@ -12,12 +12,12 @@ public class Transition {
 	}
 
 	public void setName(String name) {
-		//assert name != null;
+		assert name != null;
 		this.name = name;
 	}
 
 	public Transition(String pname) {
-		//assert pname != null;
+		assert pname != null;
 		this.name = pname;
 	}
 	

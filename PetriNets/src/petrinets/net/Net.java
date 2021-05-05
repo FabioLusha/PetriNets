@@ -19,7 +19,7 @@ public class Net {
 	public Net() { }
 
 	public Net(String pname) {
-		//assert pname != null;
+		assert pname != null;
 		this.name = pname;
 		this.transitions = new HashSet<>();
 		this.places = new HashSet<>();
