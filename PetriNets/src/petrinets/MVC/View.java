@@ -74,6 +74,11 @@ public class View {
         outputStream.println(ErrMsg);
         outputStream.flush();
     }
+    
+    public String getInput(String message) {
+    	return InputDati.leggiStringaNonVuota(message);
+    }
+
 
 }
 

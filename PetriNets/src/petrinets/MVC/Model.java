@@ -16,6 +16,7 @@ public class Model {
 
     private NetArchive netArchive;
     private Net controlNet;
+    
 
     public Model(NetArchive netArchive){
         this.netArchive = netArchive;
@@ -110,4 +111,12 @@ public class Model {
 	  return netArchive.getNetMap().keySet().stream().collect(Collectors.toList());
   }
    
+  public Net getNet(String netName) {
+	  assert netArchive.contains(netName);
+	  return netArchive.getNetMap().get(netName);
+  }
+  
+  public void addPetriNet(String petriNetName, Net net) {
+	  netArchive.add(petriNetName, net);
+  }
 }

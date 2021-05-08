@@ -2,16 +2,21 @@ package petrinets.net;
 
 import java.util.*;
 
-public class PetriNet extends Net{
-	private Map<Place,Integer> marcmap = new HashMap<>();
-	private Map<OrderedPair, Integer>  valuemap = new HashMap<>();
+public class PetriNet{
+	private Map<Place,Integer> marcmap;
+	private Map<OrderedPair, Integer>  valuemap;
+	private Net basedNet;
+	private String name;
 	
-	public PetriNet(String pname, Net scheletro) {
-		super(pname);
+	public PetriNet(String pname, Net pbasedNet) {
+		name = pname;
+		basedNet = pbasedNet;
 		
-		scheletro.getPlaces().forEach(e -> marcmap.put(e, 1));
-		scheletro.getFluxRelation().forEach(e -> valuemap.put(e, 0));
+		marcmap = new HashMap<>();
+		valuemap = new HashMap<>();
 		
+		basedNet.getPlaces().forEach(e -> marcmap.put(e, 1));
+		basedNet.getFluxRelation().forEach(e -> valuemap.put(e, 0));
 	}
 	
 	public PetriNet() {
@@ -34,6 +39,22 @@ public class PetriNet extends Net{
 		this.valuemap = valuemap;
 	}
 	
+	public Net getBasedNet() {
+		return basedNet;
+	}
+
+	public void setBasedNet(Net basedNet) {
+		this.basedNet = basedNet;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public String toString() {
 		StringBuilder output = new StringBuilder();
 		output.append("Nome: " + this.getName()+ "\n");

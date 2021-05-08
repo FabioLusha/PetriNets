@@ -18,11 +18,13 @@ public class ViewStringConstants {
     public static final String INSERT_ELEM_MSG = "Inserisci il nome dell'elemento %s:\n > ";
 
     public static final String INSERT_NET_NAME_MSG = String.format(INSERT_ELEM_MSG, "rete");
+    public static final String INSERT_PETRI_NET_NAME_MSG = String.format(INSERT_ELEM_MSG, "rete di petri");
     public static final String INSERT_PLACE_MSG = String.format(INSERT_ELEM_MSG, "posto");
     public static final String INSERT_TRANSITION_MSG = String.format(INSERT_ELEM_MSG, "transizione");
 
     public static final String INSERT_DIRECTION_MSG = "Inserisci la direzione della relazione di flusso:\n";
     public static final String CONTINUE_ADDING_QUESTION = "Aggiungere nuova relazione di flusso?";
+    
     
     public static final String FLUX_DIRECTION_MSG = " %d \t %s -> %s\n";
 

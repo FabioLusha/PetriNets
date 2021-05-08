@@ -131,4 +131,19 @@ public class Controller {
     	}
     }
     
+    public void createPetriNet() {
+    	String petrinetname;
+    	String netname;
+    	
+    	//TO-DO
+    	netname = view.getInput(ViewStringConstants.INSERT_NET_NAME_MSG);
+    	
+    	if(model.containsNet(netname)) {
+    		petrinetname = view.getInput(ViewStringConstants.INSERT_PETRI_NET_NAME_MSG);
+    		model.addPetriNet(petrinetname, model.getNet(netname));
+    	}else {
+    		//TO-DO Riportare al menù principale
+    	}
+    }
+    
 }
