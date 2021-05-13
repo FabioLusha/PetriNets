@@ -5,28 +5,28 @@ import java.util.*;
 
 import systemservices.XMLmanager;
 
-public class NetArchive {
+public class Archive {
 	
 	private static XMLmanager<Map<String, INet>> netxmlmanager = new XMLmanager<>("nets.xml");
 	
-	private static NetArchive instance;
+	private static Archive instance;
 
 	private static  Map<String, INet> inetMap;
     
     //per l'eccezione guarda il metodo open()
-    public static NetArchive getInstance() throws Exception{
+    public static Archive getInstance() throws Exception{
     	if(instance == null) {
     		open();
-    		instance = new NetArchive(inetMap);
+    		instance = new Archive(inetMap);
     	}
     	return instance;
     }
 
-    public NetArchive(Map<String, INet> pinetMap){
+    public Archive(Map<String, INet> pinetMap){
         inetMap = pinetMap;
     }
     
-    public NetArchive() {
+    public Archive() {
         inetMap = new HashMap<>();
     }
     
@@ -55,7 +55,7 @@ public class NetArchive {
     }
 
     public static void setInetMap(Map<String, INet> inetMap) {
-        NetArchive.inetMap = inetMap;
+        Archive.inetMap = inetMap;
     }
 
     public static void add(String name, INet net){
@@ -65,7 +65,10 @@ public class NetArchive {
     public static boolean contains(String name){
         return inetMap.containsKey(name);
     }
-    
+
+    public void remove(String key){
+        inetMap.remove(key);
+    }
     
  
 }

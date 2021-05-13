@@ -37,7 +37,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="5" language="java" name="petrinets.net.NetArchive" project="PetriNets" 
+  <class id="5" language="java" name="petrinets.net.Archive" project="PetriNets"
     file="/PetriNets/src/petrinets/net/NetArchive.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="614" y="730"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 

@@ -13,18 +13,18 @@ public class Model {
 	
     //private static XMLmanager<NetArchive> netxmlmanager = new XMLmanager<NetArchive>("nets.xml");
 
-    private NetArchive netArchive;
+    private Archive netArchive;
 
     private Net controlNet;
     private PetriNet controlPetriNet;
     
 
-    public Model(NetArchive netArchive){
+    public Model(Archive netArchive){
         this.netArchive = netArchive;
     }
 
     public Model() throws Exception{
-    	netArchive = NetArchive.getInstance();
+    	netArchive = Archive.getInstance();
     }
 
 
@@ -65,8 +65,8 @@ public class Model {
 		   return false;
 	   }
 	    netArchive.add(controlNet.getName(), controlNet);
-	   //pulisco la variabile di comodo
-	    //controlNet = null;
+	    //pulisco la variabile di comodo per evidenziare eventuali errori
+	    controlNet = null;
 
 	    return true;
    }
@@ -91,9 +91,11 @@ public class Model {
    
    public List<Pair<String,String>> getFluxRelation(String netname){
 	   return netArchive.getInetMap().get(netname).getFluxRelation().
-			   stream().
-			   map(e -> new Pair<String,String>(e.getCurrentPlace().getName(), e.getCurrentTransition().getName())).
-			   collect(Collectors.toList());
+			   stream()
+			   .map(e -> e.getDirection() == OrderedPair.Direction.pt ?
+                       new Pair<String,String>(e.getCurrentPlace().getName(), e.getCurrentTransition().getName()) :
+                        new Pair<String,String>(e.getCurrentTransition().getName(), e.getCurrentPlace().getName()))
+			   .collect(Collectors.toList());
 	   
    }
    
@@ -118,12 +120,8 @@ public class Model {
 
 
     //PARTE RETE PETRI
-    public boolean addPetriNet() {
-        if(netArchive.contains(controlNet.getName())) {
-            return false;
-        }
+    public boolean saveCurrentPetriNet() {
         netArchive.add(controlPetriNet.getName(), controlPetriNet);
-
         return true;
 
     }
@@ -141,5 +139,28 @@ public class Model {
         return getSavedGenericNetsNames(PetriNet.class.toString());
     }
 
-    public List<String> getMarc()
+    public List<String> getMarc(String netname){
+        assert netArchive.getInetMap().get(netname).getClass() == PetriNet.class;
+        PetriNet tmp = (PetriNet) netArchive.getInetMap().get(netname);
+        return tmp.getMarcmap().values().stream().
+                map(e -> Integer.toString(e)).
+                collect(Collectors.toList());
+    }
+
+    public List<String> getValues(String netname){
+        assert netArchive.getInetMap().get(netname).getClass() == PetriNet.class;
+        PetriNet tmp = (PetriNet) netArchive.getInetMap().get(netname);
+        return tmp.getValuemap().values().stream().
+                map(e -> Integer.toString(e)).
+                collect(Collectors.toList());
+    }
+
+    public String getCurrentPetriNetName(){
+        return controlPetriNet.getName();
+    }
+
+    public void remove(String name){
+        netArchive.remove(name);
+    }
+
 }

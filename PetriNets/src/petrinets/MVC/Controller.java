@@ -1,9 +1,6 @@
 package petrinets.MVC;
 
-import it.unibs.fp.mylib.InputDati;
-
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 
 public class Controller {
@@ -36,6 +33,7 @@ public class Controller {
     }
 
     public void addFluxRel(String place, String transitions, int direction){
+
         if (model.transitionIsNotPointed(place,transitions,direction)) {
         	view.printToDisplay(ViewStringConstants.ERR_MSG_NOT_POINTED_TRANSITION);
         	view.addFluxElement();
@@ -46,11 +44,9 @@ public class Controller {
         		}
         		view.userInputContinueAdding();;
         	}
-        	
         }
-        	
-        
-        }
+
+    }
     
     public void continueAddingElement(boolean userchoice) {
     	if(userchoice) {
@@ -105,34 +101,31 @@ public class Controller {
 				break;
 			case 2:
 			{
-				if (model.getSavedNetsNames().isEmpty()) {
-					view.printToDisplay(ViewStringConstants.ERR_SAVED_NET_NOT_PRESENT);
-					view.mainMenu();
-				} else {
-					view.visualizeNets(model.getSavedNetsNames());
-					requestPrintNet(view.getInput(ViewStringConstants.INSERT_NET_TO_VIEW));
-				}
+				manageNetsVis();
 				break;
 			}
 			case 3:
-				createPetriNet();
+				managePetriNetCreation();
 				view.petriNetMenu();
 				break;
 			case 4:
-				if (model.getSavedNetsNames().isEmpty()) {
-					view.printToDisplay(ViewStringConstants.ERR_SAVED_NET_NOT_PRESENT);
-					view.mainMenu();
-				} else {
-					view.visualizeNets(model.getSavedNetsNames());
-					//TODO costruire metodo apposito per Reti di petri
-					requestPrintNet(view.getInput(ViewStringConstants.INSERT_NET_TO_VIEW));
-				}
+				menagePetriNetVis();
 				break;
-        default:
-            exit();
+			default:
+				exit();
 
+    	}
     }
-    }
+
+	private void manageNetsVis() {
+		if (model.getSavedNetsNames().isEmpty()) {
+			view.printToDisplay(ViewStringConstants.ERR_SAVED_NET_NOT_PRESENT);
+			view.mainMenu();
+		} else {
+			view.visualizeNets(model.getSavedNetsNames());
+			requestPrintNet(view.getInput(ViewStringConstants.INSERT_NET_TO_VIEW));
+		}
+	}
 
 	private void exit() {
 		try {
@@ -160,7 +153,7 @@ public class Controller {
 
 
     //PARTE RETRI NET
-    public void createPetriNet() {
+    public void managePetriNetCreation() {
     	String petrinetname;
     	String netname;
     	
@@ -170,13 +163,14 @@ public class Controller {
     	
     	if(model.containsNet(netname)) {
 
-    		do {
-				petrinetname = view.getInput(ViewStringConstants.INSERT_PETRI_NET_NAME_MSG);
-			}while(model.containsNet(petrinetname));
-    		model.createPetriNet(petrinetname, model.getNet(netname));
-
+    		petrinetname = view.getInput(ViewStringConstants.INSERT_PETRI_NET_NAME_MSG);
+    		if(!model.createPetriNet(petrinetname, model.getNet(netname))) {
+				view.printToDisplay(ViewStringConstants.ERR_MSG_NET_NAME_ALREADY_EXIST);
+				view.mainMenu();
+			}
+			model.saveCurrentPetriNet();
     	}else {
-    		view.printToDisplay(ViewStringConstants.ERR_MSG_NET_NAME_ALREADY_EXIST);
+    		view.printToDisplay(ViewStringConstants.ERR_NET_NOT_PRESENT);
     		view.mainMenu();
     	}
 
@@ -196,21 +190,48 @@ public class Controller {
 				//TODO;
 				break;
 			case 3:
-				if (model.getSavedNetsNames().isEmpty()) {
-					view.printToDisplay(ViewStringConstants.ERR_SAVED_NET_NOT_PRESENT);
-					view.mainMenu();
-				} else {
-					view.visualizeNets(model.getSavedNetsNames());
-					//TODO costruire metodo apposito per Reti di petri
-					requestPrintNet(view.getInput(ViewStringConstants.INSERT_NET_TO_VIEW));
-				}
+				visualizeCurrentPetriNet();
 				break;
 			case 4:
-				model.addPetriNet();
+				model.saveCurrentPetriNet();
 				break;
-			default:
+			case 5:
+				model.remove(model.getCurrentPetriNetName());
 				view.mainMenu();
 				break;
+			default:
+				view.petriNetMenu();
+				break;
+		}
+	}
+
+	private void visualizeCurrentPetriNet() {
+    	requestPrintPetriNet(model.getCurrentPetriNetName());
+	}
+
+	private void menagePetriNetVis() {
+		if (model.getSavedPetriNetsNames().isEmpty()) {
+			view.printToDisplay(ViewStringConstants.ERR_SAVED_NET_NOT_PRESENT);
+			view.mainMenu();
+		} else {
+			view.visualizeNets(model.getSavedPetriNetsNames());
+			requestPrintPetriNet(view.getInput(ViewStringConstants.INSERT_NET_TO_VIEW));
+		}
+	}
+
+	public void requestPrintPetriNet(String netname) {
+		if(model.containsNet(netname)) {
+			List<String> placesname = model.getPlaces(netname);
+			List<String> transitionsname = model.getTransitions(netname);
+			List<Pair<String,String>> fluxrelations = model.getFluxRelation(netname);
+			var marc = model.getMarc(netname);
+			var values = model.getValues(netname);
+			view.printPetriNet(netname, placesname, marc, transitionsname, fluxrelations, values);
+			view.petriNetMenu();
+		}
+		else {
+			view.printToDisplay(ViewStringConstants.ERR_NET_NOT_PRESENT);
+			view.visualizeNets(model.getSavedPetriNetsNames());
 		}
 	}
 }

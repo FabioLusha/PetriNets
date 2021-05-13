@@ -84,20 +84,23 @@ public class View {
         controller.petriNetMenuChoice(mymenu.scegli());
     }
 
-    public void printPetriNet(String name, List<String> places, List<String> transitions, List<Pair<String,String>> fluxRelations){
+    public void printPetriNet(String name, List<String> places, List<String> marc, List<String> transitions,
+                              List<Pair<String,String>> fluxRelations, List<String> cost){
         StringBuilder output = new StringBuilder();
         output.append("Rete: " + name + " \n");
         output.append("Posti: \n");
-        for (String p : places) {
-            output.append("\t" + p.toString() + "\n");
+        for(int i = 0; i < places.size(); i++){
+            output.append("\t" + places.get(i).toString())
+                    .append("\t" + "marcatura: " + marc.get(i) + "\n");
         }
         output.append("Transizioni: \n");
         for (String t : transitions) {
             output.append("\t" + t.toString() + "\n");
         }
         output.append("Relazioni di flusso: \n");
-        for(Pair<String,String> elem : fluxRelations) {
-            output.append("\t (" + elem.getFirst() + " , " + elem.getSecond() + ") \n");
+        for(int i = 0; i < fluxRelations.size(); i++) {
+            output.append("\t (" +  fluxRelations.get(i).getFirst() + " , " + fluxRelations.get(i).getSecond() + ")")
+                    .append("\t" + "costo: " + cost.get(i) + "\n");
         }
         printToDisplay(output.toString());
     }
