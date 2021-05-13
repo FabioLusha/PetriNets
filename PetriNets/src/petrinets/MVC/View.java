@@ -17,7 +17,7 @@ public class View {
 
     public void mainMenu() {
         MyMenu mainMenu = new MyMenu(ViewStringConstants.WELCOME_MESSAGE, ViewStringConstants.MAIN_OPTIONS);
-        controller.menuChoice(mainMenu.scegli());
+        controller.mainMenuChoice(mainMenu.scegli());
     }
 
 
@@ -29,8 +29,6 @@ public class View {
     public void visualizeNets(List<String> names) {
     	printToDisplay(ViewStringConstants.AVAILABLE_NETS);
     	names.forEach(e -> printToDisplay(" - " + e));
-    	controller.requestPrintNet(InputDati.leggiStringaNonVuota(ViewStringConstants.INSERT_NET_TO_VIEW).toString().trim());
- 
     }
 
     public void printNet(String name, List<String> places, List<String> transitions, List<Pair<String,String>> fluxRelations){
@@ -76,9 +74,33 @@ public class View {
     }
     
     public String getInput(String message) {
-    	return InputDati.leggiStringaNonVuota(message);
+    	return InputDati.leggiStringaNonVuota(message).trim();
     }
 
+
+
+    public void petriNetMenu(){
+        MyMenu mymenu = new MyMenu(ViewStringConstants.PETRI_NET_MENU_TITLE, ViewStringConstants.CHANGE_PETRI_NET_OPTIONS);
+        controller.petriNetMenuChoice(mymenu.scegli());
+    }
+
+    public void printPetriNet(String name, List<String> places, List<String> transitions, List<Pair<String,String>> fluxRelations){
+        StringBuilder output = new StringBuilder();
+        output.append("Rete: " + name + " \n");
+        output.append("Posti: \n");
+        for (String p : places) {
+            output.append("\t" + p.toString() + "\n");
+        }
+        output.append("Transizioni: \n");
+        for (String t : transitions) {
+            output.append("\t" + t.toString() + "\n");
+        }
+        output.append("Relazioni di flusso: \n");
+        for(Pair<String,String> elem : fluxRelations) {
+            output.append("\t (" + elem.getFirst() + " , " + elem.getSecond() + ") \n");
+        }
+        printToDisplay(output.toString());
+    }
 
 }
 

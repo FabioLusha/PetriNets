@@ -8,7 +8,7 @@ import java.util.Set;
 
 
 
-public class Net {
+public class Net implements INet {
 
 	private String name;
 	private Set<Transition> transitions;

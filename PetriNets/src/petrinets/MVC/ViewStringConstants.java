@@ -24,7 +24,9 @@ public class ViewStringConstants {
 
     public static final String INSERT_DIRECTION_MSG = "Inserisci la direzione della relazione di flusso:\n";
     public static final String CONTINUE_ADDING_QUESTION = "Aggiungere nuova relazione di flusso?";
-    
+
+    public static final String PETRI_NET_INITIALIZED_DEFAULT = "La rete di Petri è stata creata e inizializzata con i valori di default" +
+            " (marcatura 0, peso 1)\n";
     
     public static final String FLUX_DIRECTION_MSG = " %d \t %s -> %s\n";
 
@@ -32,7 +34,7 @@ public class ViewStringConstants {
 
     //TO-DO decidere se eliminare elementi di formattazione (%s) oppure modificare messaggi errore nella view
     public static final String FLUX_ELEM_ADD_TRUE = "Elemento %s inserito correttamente";
-    public static final String ERR_MSG_FLUX_ELEM_ALREADY_EXSISTS = "Elemento %s gia' presente";
+    public static final String ERR_MSG_FLUX_ELEM_ALREADY_EXSISTS = "Elemento gia' presente";
     public static final String ERR_PLACE_AS_TRANSITION = "%s � gia presente come transizione";
     public static final String ERR_TRANSITION_AS_PLACE = "%s � gia presente come posto";
     
@@ -40,12 +42,18 @@ public class ViewStringConstants {
     public static final String ERR_MSG_NOT_POINTED_TRANSITION = "Transizione non puntata da alcun posto";
     public static final String ERR_MSG_NET_NAME_ALREADY_EXIST = "Nome della rete già presente!";
     
-    public static final String ERR_NET_ALREADY_PRESENT = "La rete che hai inserito esiste gia'";
+    //TODO ritornare anche il nome della rete con la stessa tipologia
+    public static final String ERR_NET_ALREADY_PRESENT = "Esiste gia' una rete con la topologia che hai inserito.";
     public static final String ERR_NET_NOT_PRESENT = "Non ci sono reti salvate con questo nome";
     
     public static final String ERR_SAVED_NET_NOT_PRESENT = "Non ci sono reti salvate";
-
+    public static final String ERR_MSG_DESERIALIZATION_FAILED = "Atenzione! Non è stato posibile caricare le reti salvate. E' stato inizializzato un nuvo archivio.";
 
     
-    public static final String AVAILABLE_NETS = "Reti disponibili alla visualizzazione: ";
+    public static final String AVAILABLE_NETS = "Reti disponibili: ";
+    public static final String INSERT_BASE_NET_NAME_FOR_PETRI = String.format(INSERT_ELEM_MSG, "Inserisci il nome della rete da utilizzare come base");
+
+    public static final String PETRI_NET_MENU_TITLE = "OPZIONI SULLE RETI DI PETRI";
+    public static final String[] CHANGE_PETRI_NET_OPTIONS = { "Modifica valori delle marcature dei posti", "Modifica valori delle relazioni di flusso",
+            "Visualizza rete di petri", "Salva la rete di Petri", "Ritorna al menu principale senza salvare" };
 }

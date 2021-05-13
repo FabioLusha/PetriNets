@@ -1,7 +1,6 @@
 package petrinets.MVC;
 
 import petrinets.net.*;
-import systemservices.XMLmanager;
 
 import java.io.IOException;
 import java.util.List;
@@ -12,31 +11,20 @@ import java.util.stream.Collectors;
 
 public class Model {
 	
-    private static XMLmanager<NetArchive> netxmlmanager = new XMLmanager<NetArchive>("nets.xml");
+    //private static XMLmanager<NetArchive> netxmlmanager = new XMLmanager<NetArchive>("nets.xml");
 
     private NetArchive netArchive;
+
     private Net controlNet;
+    private PetriNet controlPetriNet;
     
 
     public Model(NetArchive netArchive){
         this.netArchive = netArchive;
     }
 
-    public Model(){
-        
-            try {
-            	if (!(netxmlmanager.isEmpty())) {
-               // netArchive.setNetMap((Map<>) netxmlmanager.deserializeFromXML());
-                netArchive = (NetArchive) netxmlmanager.deserializeFromXML();
-            	}else
-                    netArchive = new NetArchive();
-
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-            	netArchive = new NetArchive();
-                e.printStackTrace();
-            }
-        
+    public Model() throws Exception{
+    	netArchive = NetArchive.getInstance();
     }
 
 
@@ -51,10 +39,10 @@ public class Model {
     }
 
     //Trasizione non puntata da nessun posto
-    public boolean transitionIsNotPointed(String placename, String transitionname, int direction){
+    public boolean transitionIsNotPointed(String placeName, String transitionName, int direction){
     	
         return (OrderedPair.Direction.ordinalToType(direction) == OrderedPair.Direction.tp
-                && !controlNet.containsTransition(new Transition(transitionname)));
+                && !controlNet.containsTransition(new Transition(transitionName)));
        
     }
 
@@ -77,30 +65,32 @@ public class Model {
 		   return false;
 	   }
 	    netArchive.add(controlNet.getName(), controlNet);
-	    
+	   //pulisco la variabile di comodo
+	    //controlNet = null;
+
 	    return true;
    }
 
    public void permanentSave() throws IOException {
-			netxmlmanager.serializeToXML(netArchive);
-   }
+			netArchive.permanentSave();
+		}
    
    public boolean containsNet(String netname) {
 	   return netArchive.contains(netname);
    }
    
    public List<String> getPlaces(String netname) {
-	   return netArchive.getNetMap().get(netname).getPlaces().stream().map(e -> e.getName()).collect(Collectors.toList());
+	   return netArchive.getInetMap().get(netname).getPlaces().stream().map(e -> e.getName()).collect(Collectors.toList());
    }
    
    public List<String> getTransitions(String netname) {
-	   return netArchive.getNetMap().get(netname).getTransitions().stream().
+	   return netArchive.getInetMap().get(netname).getTransitions().stream().
 			   map(e -> e.getName()).
 			   collect(Collectors.toList());
    }
    
    public List<Pair<String,String>> getFluxRelation(String netname){
-	   return netArchive.getNetMap().get(netname).getFluxRelation().
+	   return netArchive.getInetMap().get(netname).getFluxRelation().
 			   stream().
 			   map(e -> new Pair<String,String>(e.getCurrentPlace().getName(), e.getCurrentTransition().getName())).
 			   collect(Collectors.toList());
@@ -108,15 +98,48 @@ public class Model {
    }
    
   public List<String> getSavedNetsNames(){
-	  return netArchive.getNetMap().keySet().stream().collect(Collectors.toList());
+	  return getSavedGenericNetsNames(Net.class.toString());
   }
+
+    private List<String> getSavedGenericNetsNames(String className){
+        return netArchive.getInetMap().entrySet().stream()
+                .filter(e -> e.getValue().getClass().toString().equals(className))
+                .map(e -> e.getKey())
+                .collect(Collectors.toList());
+    }
    
   public Net getNet(String netName) {
 	  assert netArchive.contains(netName);
-	  return netArchive.getNetMap().get(netName);
+	  INet tmpNet = netArchive.getInetMap().get(netName);
+	  assert tmpNet.getClass() == controlNet.getClass();
+
+	  return (Net) tmpNet;
   }
-  
-  public void addPetriNet(String petriNetName, Net net) {
-	  netArchive.add(petriNetName, net);
-  }
+
+
+    //PARTE RETE PETRI
+    public boolean addPetriNet() {
+        if(netArchive.contains(controlNet.getName())) {
+            return false;
+        }
+        netArchive.add(controlPetriNet.getName(), controlPetriNet);
+
+        return true;
+
+    }
+
+    public boolean createPetriNet(String name, Net net){
+        if(netArchive.contains(name))
+            return false;
+        else{
+            controlPetriNet = new PetriNet(name,net);
+        }
+        return true;
+    }
+
+    public List<String> getSavedPetriNetsNames(){
+        return getSavedGenericNetsNames(PetriNet.class.toString());
+    }
+
+    public List<String> getMarc()
 }

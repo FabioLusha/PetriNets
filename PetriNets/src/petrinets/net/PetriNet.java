@@ -2,7 +2,7 @@ package petrinets.net;
 
 import java.util.*;
 
-public class PetriNet{
+public class PetriNet implements INet{
 	private Map<Place,Integer> marcmap;
 	private Map<OrderedPair, Integer>  valuemap;
 	private Net basedNet;
@@ -53,6 +53,18 @@ public class PetriNet{
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Set<Transition> getTransitions(){
+		return basedNet.getTransitions();
+	}
+
+	public Set<Place> getPlaces(){
+		return basedNet.getPlaces();
+	}
+
+	public Set<OrderedPair> getFluxRelation(){
+		return basedNet.getFluxRelation();
 	}
 
 	public String toString() {
