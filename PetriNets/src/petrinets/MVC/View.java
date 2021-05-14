@@ -76,7 +76,14 @@ public class View {
     public String getInput(String message) {
     	return InputDati.leggiStringaNonVuota(message).trim();
     }
+    
+    public int getIntInput(String message,int min ,int max) {
+    	return InputDati.leggiIntero(message, min, max);
+    }
 
+    public int getNotNegativeInt(String message) {
+    	return InputDati.leggiInteroNonNegativo(message);
+    }
 
 
     public void petriNetMenu(){
@@ -88,22 +95,35 @@ public class View {
                               List<Pair<String,String>> fluxRelations, List<String> cost){
         StringBuilder output = new StringBuilder();
         output.append("Rete: " + name + " \n");
-        output.append("Posti: \n");
-        for(int i = 0; i < places.size(); i++){
-            output.append("\t" + places.get(i).toString())
-                    .append("\t" + "marcatura: " + marc.get(i) + "\n");
-        }
+        output.append(marcFormatter(places, marc));
         output.append("Transizioni: \n");
         for (String t : transitions) {
             output.append("\t" + t.toString() + "\n");
         }
-        output.append("Relazioni di flusso: \n");
-        for(int i = 0; i < fluxRelations.size(); i++) {
-            output.append("\t (" +  fluxRelations.get(i).getFirst() + " , " + fluxRelations.get(i).getSecond() + ")")
-                    .append("\t" + "costo: " + cost.get(i) + "\n");
-        }
+        output.append(fluxrelFormatter(fluxRelations, cost));
         printToDisplay(output.toString());
     }
 
+    public String marcFormatter(List<String> places, List<String> marcs) {
+    	StringBuilder output =  new StringBuilder();
+    	output.append("Posti: \n");
+        for(int i = 0; i < places.size(); i++){
+            output.append("\t" + places.get(i).toString())
+                    .append("\t" + "marcatura: " + marcs.get(i) + "\n");
+        }
+        return output.toString();
+    }
+    
+    public String fluxrelFormatter(List<Pair<String,String>> fluxRelations, List<String> cost) {
+    	  StringBuilder output =  new StringBuilder();
+    	  output.append("Relazioni di flusso: \n");
+          for(int i = 0; i < fluxRelations.size(); i++) {
+              output.append("\t (" +  fluxRelations.get(i).getFirst() + " , " + fluxRelations.get(i).getSecond() + ")")
+                      .append("\t" + "costo: " + cost.get(i) + "\n");
+          }
+          return output.toString();
+    }
+    
+    
 }
 

@@ -5,7 +5,7 @@ public class ViewStringConstants {
     //Messaggi di interazione
     public static final String WELCOME_MESSAGE = "BENVENUTO";
     public static final String[] MAIN_OPTIONS = { "Aggiungi una nuova rete", "Visualizza reti salvate",
-            "Aggiungi una nuova rete di petri", "Visualizza rete di petri" };
+            "Aggiungi una nuova rete di petri", "Visualizza rete di petri", "Rimuovi una rete" };
 
     public static final String NET_SAVING_MENU = "INSERIMENTO RETE COMPLETATO";
     public static final String[] NET_SAVING_MENU_OPTIONS = { "Salva e torna al menu principale",
@@ -21,6 +21,7 @@ public class ViewStringConstants {
     public static final String INSERT_PETRI_NET_NAME_MSG = String.format(INSERT_ELEM_MSG, "rete di petri");
     public static final String INSERT_PLACE_MSG = String.format(INSERT_ELEM_MSG, "posto");
     public static final String INSERT_TRANSITION_MSG = String.format(INSERT_ELEM_MSG, "transizione");
+    public static final String INSERT_NET_NAME_TO_REMOVE = "Inserisci il nome della rete da eliminare: \n > ";
 
     public static final String INSERT_DIRECTION_MSG = "Inserisci la direzione della relazione di flusso:\n";
     public static final String CONTINUE_ADDING_QUESTION = "Aggiungere nuova relazione di flusso?";
@@ -56,4 +57,9 @@ public class ViewStringConstants {
     public static final String PETRI_NET_MENU_TITLE = "OPZIONI SULLE RETI DI PETRI";
     public static final String[] CHANGE_PETRI_NET_OPTIONS = { "Modifica valori delle marcature dei posti", "Modifica valori delle relazioni di flusso",
             "Visualizza la rete di petri che si sta configurando", "Salva la rete di Petri", "Ritorna al menu principale senza salvare" };
+	public static final String INSERT_PLACE_NAME_TO_MODIFY = "Inserisci il nome del posto di cui vuoi modificare la marcatura: \n > ";
+	public static final String ERR_PLACE_NOT_PRESENT = "Il nome del posto inserito non e' presente!";
+	public static final String ERR_FLUX_REL_NOT_PRESENT = "Relazione di flusso non presente!";
+	public static final String INSERT_NEW_MARC = "Inserisci la nuova marcatura: \n > ";
+	public static final String INSERT_NEW_VAL = "Inserisci il nuovo valore: \n > ";
 }

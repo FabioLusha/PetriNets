@@ -49,9 +49,16 @@ public class Model {
     public boolean containsPlace(String name) {
     	return controlNet.isPlace(new Place(name));
     }
+    public boolean petriNetContainsPlace(String name) {
+    	return controlPetriNet.getBasedNet().isPlace(new Place(name));
+    }
     
     public boolean containsTransition(String name) {
     	return controlNet.isTransition(new Transition(name));
+    }
+    
+    public boolean petriNetContainsTransition(String name){
+    	return controlPetriNet.getBasedNet().isTransition(new Transition(name));
     }
     
    public boolean addFluxElem(String placename,String transitionname, int direction) {
@@ -72,11 +79,18 @@ public class Model {
    }
 
    public void permanentSave() throws IOException {
+	   		if(controlPetriNet != null) {
+	   			netArchive.removeFromArchive(getCurrentPetriNet().getName());
+	   		}else
 			netArchive.permanentSave();
 		}
    
    public boolean containsNet(String netname) {
 	   return netArchive.contains(netname);
+   }
+   
+   public boolean containsFluxRel(String placeName, String transName, int direction) {
+	   return controlPetriNet.getFluxRelation().contains(new OrderedPair(new Place(placeName), new Transition(transName), OrderedPair.Direction.ordinalToType(direction)));
    }
    
    public List<String> getPlaces(String netname) {
@@ -120,12 +134,15 @@ public class Model {
 
 
     //PARTE RETE PETRI
-    public boolean saveCurrentPetriNet() {
+    public void saveCurrentPetriNet() {
         netArchive.add(controlPetriNet.getName(), controlPetriNet);
-        return true;
-
+        controlPetriNet = null;
     }
-
+    
+    public void temporarySave() {
+        netArchive.add(controlPetriNet.getName(), controlPetriNet);
+    }
+    
     public boolean createPetriNet(String name, Net net){
         if(netArchive.contains(name))
             return false;
@@ -155,12 +172,21 @@ public class Model {
                 collect(Collectors.toList());
     }
 
-    public String getCurrentPetriNetName(){
-        return controlPetriNet.getName();
+    public PetriNet getCurrentPetriNet(){
+        return controlPetriNet;
     }
 
     public void remove(String name){
-        netArchive.remove(name);
+        netArchive.removeFromArchive(name);
+    }
+    
+    public void changeMarc(String name, int newValue) {
+    	controlPetriNet.getMarcmap().replace(new Place(name), newValue);
+    	temporarySave();
     }
 
+    public void changeFluxRelVal(String placeName, String transName, int direction, int newValue) {
+    	controlPetriNet.getValuemap().replace(new OrderedPair(new Place(placeName), new Transition(transName), OrderedPair.Direction.ordinalToType(direction)), newValue);
+    	temporarySave();
+    }
 }

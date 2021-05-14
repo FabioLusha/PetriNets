@@ -66,8 +66,8 @@ public class Archive {
         return inetMap.containsKey(name);
     }
 
-    public void remove(String key){
-        inetMap.remove(key);
+    public void removeFromArchive(String key){
+        inetMap.keySet().remove(key);
     }
     
  
