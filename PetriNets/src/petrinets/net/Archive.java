@@ -7,7 +7,7 @@ import systemservices.XMLmanager;
 
 public class Archive {
 	
-	private static XMLmanager<Map<String, INet>> netxmlmanager = new XMLmanager<>("nets.xml");
+	private static XMLmanager<Map<String, INet>> mapXMLmanager = new XMLmanager<>("nets.xml");
 	
 	private static Archive instance;
 
@@ -22,11 +22,11 @@ public class Archive {
     	return instance;
     }
 
-    public Archive(Map<String, INet> pinetMap){
+    private Archive(Map<String, INet> pinetMap){
         inetMap = pinetMap;
     }
     
-    public Archive() {
+    private Archive() {
         inetMap = new HashMap<>();
     }
     
@@ -35,9 +35,9 @@ public class Archive {
      */
     public static void open() throws Exception {
     
-        	if (!(netxmlmanager.isEmpty())) {
+        	if (!(mapXMLmanager.isEmpty())) {
         	    try {
-                    inetMap = (Map<String, INet>) netxmlmanager.deserializeFromXML();
+                    inetMap = (Map<String, INet>) mapXMLmanager.deserializeFromXML();
                 }catch(Exception e){
         	        inetMap = new HashMap();
         	        throw e;
@@ -47,7 +47,7 @@ public class Archive {
     }
     
     public void permanentSave() throws IOException {
-		netxmlmanager.serializeToXML(inetMap);
+		mapXMLmanager.serializeToXML(inetMap);
     }
 
     public static Map<String, INet> getInetMap() {
