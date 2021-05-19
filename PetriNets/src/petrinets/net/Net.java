@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 
@@ -32,14 +33,6 @@ public class Net implements INet {
 
 	public boolean isPlace(Place place) {
 		return places.contains(place);
-	}
-
-	public boolean addPlace(Place p) {
-		return places.add(p);
-	}
-
-	public boolean addTransition(Transition t) {
-		return transitions.add(t);
 	}
 
 	public boolean addFluxRelElement(OrderedPair pair) {
@@ -110,21 +103,23 @@ public class Net implements INet {
 		assert name != null;
 		this.name = name;
 	}
+	
+	//I setter servono per essere conformi allo standard Beans
+	// per poter usare XMLManager
+	public void setTransitions(Set<Transition> transitions) {
+		this.transitions = transitions;
+	}
+
+	public void setPlaces(Set<Place> places) {
+		this.places = places;
+	}
 
 	public Set<Transition> getTransitions() {
 		return transitions;
 	}
 
-	public void setTransitions(Set<Transition> transitions) {
-		this.transitions = transitions;
-	}
-
 	public Set<Place> getPlaces() {
 		return places;
-	}
-
-	public void setPlaces(Set<Place> places) {
-		this.places = places;
 	}
 
 	public Set<OrderedPair> getFluxRelation() {
@@ -135,8 +130,16 @@ public class Net implements INet {
 		this.fluxRelation = fluxRelation;
 	}
 	
-	public boolean containsTransition(Transition t) {
-		return transitions.contains(t);
+	public boolean invariant() {
+		return
+				fluxRelation.stream()
+				.map(e -> e.getCurrentPlace())
+				.collect(Collectors.toSet())
+				.equals(places)
+				&&
+				fluxRelation.stream()
+				.map(e -> e.getCurrentTransition())
+				.collect(Collectors.toSet())
+				.equals(transitions);
 	}
-
 }

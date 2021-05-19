@@ -36,7 +36,6 @@ public class XMLmanager<T> {
 
 	public boolean isEmpty() throws IOException {
 		File file = new File(filename);
-		
 			if (!file.createNewFile()  && file.length() != 0) {
 				return false;
 			} else 

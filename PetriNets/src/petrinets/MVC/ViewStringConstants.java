@@ -33,8 +33,7 @@ public class ViewStringConstants {
 
     //Messaggi di risposta in funzione dell'azione compiuta
 
-    //TO-DO decidere se eliminare elementi di formattazione (%s) oppure modificare messaggi errore nella view
-    public static final String FLUX_ELEM_ADD_TRUE = "Elemento %s inserito correttamente";
+    public static final String FLUX_ELEM_ADD_TRUE = "Elemento inserito correttamente";
     public static final String ERR_MSG_FLUX_ELEM_ALREADY_EXSISTS = "Elemento gia' presente";
     public static final String ERR_PLACE_AS_TRANSITION = "%s e' gia presente come transizione";
     public static final String ERR_TRANSITION_AS_PLACE = "%s e' gia presente come posto";
@@ -43,8 +42,8 @@ public class ViewStringConstants {
     public static final String ERR_MSG_NOT_POINTED_TRANSITION = "Transizione non puntata da alcun posto";
     public static final String ERR_MSG_NET_NAME_ALREADY_EXIST = "Nome della rete già presente!";
     
-    //TODO ritornare anche il nome della rete con la stessa tipologia
-    public static final String ERR_NET_ALREADY_PRESENT = "Esiste gia' una rete con la topologia che hai inserito.";
+
+    public static final String ERR_NET_ALREADY_PRESENT = "Esiste gia' una rete con la topologia che hai inserito!";
     public static final String ERR_NET_NOT_PRESENT = "Non ci sono reti salvate con questo nome";
     
     public static final String ERR_SAVED_NET_NOT_PRESENT = "Non ci sono reti salvate";

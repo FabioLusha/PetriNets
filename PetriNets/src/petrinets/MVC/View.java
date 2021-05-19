@@ -7,12 +7,12 @@ import java.io.PrintWriter;
 import java.util.List;
 
 public class View {
-    private static final PrintWriter outputStream = new PrintWriter(new BufferedOutputStream(System.out));
+    private PrintWriter outputStream;
     private Controller controller;
     
-    public View(Controller controller){
+    public View(Controller controller, PrintWriter out){
         this.controller = controller;
-        //this.outputStream = out;
+        this.outputStream = out;
     }
 
     public void mainMenu() {

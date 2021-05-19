@@ -78,5 +78,27 @@ public class PetriNet implements INet{
 		
 	}
 	
+	public boolean equals(Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (obj.getClass() != this.getClass() || obj == null) {
+			return false;
+		}
+
+		final PetriNet other = (PetriNet) obj;
+		
+		if(!basedNet.equals(other.basedNet)
+				|| !marcmap.equals(other.marcmap)
+				|| !valuemap.equals(other.valuemap)) return false;
+		
+		
+		return true;
+		
+	}
+	
+	public int hashCode(){
+		return Objects.hash(name, basedNet, marcmap, valuemap);
+	}
 	
 }

@@ -1,9 +1,9 @@
 package petrinets.MVC;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
-import it.unibs.fp.mylib.InputDati;
 
 public class Controller {
 
@@ -12,11 +12,11 @@ public class Controller {
 	private Model model;
     private View view;
 
-    public Controller(){
-		this.view = new View(this);
+    public Controller(PrintWriter out){
+		this.view = new View(this,out);
     	try {
 			this.model = new Model();
-		}catch(Exception e){
+		}catch(IOException e){
     		view.printToDisplay(ViewStringConstants.ERR_MSG_DESERIALIZATION_FAILED);
 		}
     }
@@ -83,7 +83,7 @@ public class Controller {
 			//salva la rete
 		case 1: {
 			//addNet: salva la rete nella Lista
-			if(!model.addNet()) {
+			if(!model.saveCurrentNet()) {
 				view.printToDisplay(ViewStringConstants.ERR_NET_ALREADY_PRESENT);
 			}
 			
@@ -172,7 +172,6 @@ public class Controller {
     	String petrinetname;
     	String netname;
     	
-    	//TODO
 		view.visualizeNets(model.getSavedNetsNames());
     	netname = view.getInput(ViewStringConstants.INSERT_NET_NAME_MSG);
     	
@@ -211,7 +210,10 @@ public class Controller {
 				view.petriNetMenu();
 				break;
 			case 4:
-				model.saveCurrentPetriNet();
+				if(!model.saveCurrentPetriNet()) {
+					view.printToDisplay(ViewStringConstants.ERR_NET_ALREADY_PRESENT);
+				}
+				
 				view.mainMenu();
 				break;
 			case 5:

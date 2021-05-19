@@ -74,8 +74,30 @@ class NetTest {
 		
 		fluxrelationcopy.removeAll(new ArrayList<OrderedPair>(Arrays.asList(coppia1)));
 		
-		assert fluxrelationcopy.isEmpty();
+		assert !fluxrelationcopy.isEmpty();
 
+	}
+	
+	@Test
+	void mapEqualsTest() {
+		Map<Integer, String> a = new HashMap<>();
+		Map<Integer, String> b = new HashMap<>();
+		
+		a.put(1, "a");
+		b.put(1, "a");
+		
+		assert a.equals(b);
+	}
+	
+	@Test
+	void mapNotEqualsTest() {
+		Map<Integer, String> a = new HashMap<>();
+		Map<Integer, String> b = new HashMap<>();
+		
+		a.put(1, "a");
+		b.put(1, "b");
+		
+		assert !a.equals(b);
 	}
 
 }

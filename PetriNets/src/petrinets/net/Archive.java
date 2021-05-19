@@ -14,7 +14,7 @@ public class Archive {
 	private static  Map<String, INet> inetMap;
     
     //per l'eccezione guarda il metodo open()
-    public static Archive getInstance() throws Exception{
+    public static Archive getInstance() throws IOException{
     	if(instance == null) {
     		open();
     		instance = new Archive(inetMap);
@@ -30,16 +30,14 @@ public class Archive {
         inetMap = new HashMap<>();
     }
     
-    /*TODO
-     * Creare un tipo di eccezione apposito
-     */
-    public static void open() throws Exception {
+ 
+    public static void open() throws IOException{
     
         	if (!(mapXMLmanager.isEmpty())) {
         	    try {
                     inetMap = (Map<String, INet>) mapXMLmanager.deserializeFromXML();
-                }catch(Exception e){
-        	        inetMap = new HashMap();
+                }catch(IOException e){
+        	        inetMap = new HashMap<>();
         	        throw e;
                 }
         	}else
@@ -50,20 +48,24 @@ public class Archive {
 		mapXMLmanager.serializeToXML(inetMap);
     }
 
-    public static Map<String, INet> getInetMap() {
+    public Map<String, INet> getInetMap() {
         return inetMap;
     }
 
-    public static void setInetMap(Map<String, INet> inetMap) {
+    public void setInetMap(Map<String, INet> inetMap) {
         Archive.inetMap = inetMap;
     }
 
-    public static void add(String name, INet net){
+    public void add(String name, INet net){
         inetMap.put(name, net);
     }
 
-    public static boolean contains(String name){
+    public boolean contains(String name){
         return inetMap.containsKey(name);
+    }
+    
+    public boolean containsValue(INet inet){
+        return inetMap.containsValue(inet);
     }
 
     public void removeFromArchive(String key){

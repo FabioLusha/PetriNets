@@ -17,13 +17,15 @@ public class Model {
 
     private Net controlNet;
     private PetriNet controlPetriNet;
+    //Flag, default a false
+    private boolean petriNetModified = false;
     
 
     public Model(Archive netArchive){
         this.netArchive = netArchive;
     }
 
-    public Model() throws Exception{
+    public Model() throws IOException{
     	netArchive = Archive.getInstance();
     }
 
@@ -42,7 +44,7 @@ public class Model {
     public boolean transitionIsNotPointed(String placeName, String transitionName, int direction){
     	
         return (OrderedPair.Direction.ordinalToType(direction) == OrderedPair.Direction.tp
-                && !controlNet.containsTransition(new Transition(transitionName)));
+                && !controlNet.isTransition(new Transition(transitionName)));
        
     }
 
@@ -67,8 +69,9 @@ public class Model {
 	    return controlNet.addFluxRelElement(new OrderedPair(new Place(placename) , new Transition(transitionname) , type));
    }
    
-   public boolean addNet() {
-	   if(netArchive.contains(controlNet.getName())) {
+   public boolean saveCurrentNet() {
+	   
+	   if(netArchive.containsValue(controlNet)) {
 		   return false;
 	   }
 	    netArchive.add(controlNet.getName(), controlNet);
@@ -134,9 +137,14 @@ public class Model {
 
 
     //PARTE RETE PETRI
-    public void saveCurrentPetriNet() {
+    public boolean saveCurrentPetriNet() {
+    	
+    	if(netArchive.containsValue(controlPetriNet) && petriNetModified)
+    		return false;
+  
         netArchive.add(controlPetriNet.getName(), controlPetriNet);
         controlPetriNet = null;
+        return true;
     }
     
     public void temporarySave() {
@@ -158,6 +166,7 @@ public class Model {
 
     public List<String> getMarc(String netname){
         assert netArchive.getInetMap().get(netname).getClass() == PetriNet.class;
+        
         PetriNet tmp = (PetriNet) netArchive.getInetMap().get(netname);
         return tmp.getMarcmap().values().stream().
                 map(e -> Integer.toString(e)).
@@ -166,6 +175,7 @@ public class Model {
 
     public List<String> getValues(String netname){
         assert netArchive.getInetMap().get(netname).getClass() == PetriNet.class;
+        
         PetriNet tmp = (PetriNet) netArchive.getInetMap().get(netname);
         return tmp.getValuemap().values().stream().
                 map(e -> Integer.toString(e)).
@@ -181,11 +191,15 @@ public class Model {
     }
     
     public void changeMarc(String name, int newValue) {
+    	
+    	petriNetModified = true;
     	controlPetriNet.getMarcmap().replace(new Place(name), newValue);
     	temporarySave();
     }
 
     public void changeFluxRelVal(String placeName, String transName, int direction, int newValue) {
+    	
+    	petriNetModified = true;
     	controlPetriNet.getValuemap().replace(new OrderedPair(new Place(placeName), new Transition(transName), OrderedPair.Direction.ordinalToType(direction)), newValue);
     	temporarySave();
     }
