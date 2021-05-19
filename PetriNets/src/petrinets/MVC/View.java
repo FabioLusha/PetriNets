@@ -1,8 +1,8 @@
 package petrinets.MVC;
 
 import it.unibs.fp.mylib.*;
+import petrinets.MVC.controller.Controller;
 
-import java.io.BufferedOutputStream;
 import java.io.PrintWriter;
 import java.util.List;
 
@@ -13,6 +13,11 @@ public class View {
     public View(Controller controller, PrintWriter out){
         this.controller = controller;
         this.outputStream = out;
+    }
+    
+    public void loginMenu() {
+    	MyMenu logMenu = new MyMenu(ViewStringConstants.WELCOME_MESSAGE, ViewStringConstants.LOGIN_MENU_OPTIONS);
+    	controller.logMenuChoice(logMenu.scegli());
     }
 
     public void mainMenu() {

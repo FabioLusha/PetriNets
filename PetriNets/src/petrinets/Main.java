@@ -2,7 +2,8 @@ package petrinets;
 
 import java.io.BufferedOutputStream;
 import java.io.PrintWriter;
-import petrinets.MVC.Controller;
+
+import petrinets.MVC.controller.Controller;
 
 
 public class Main {
@@ -10,6 +11,5 @@ public class Main {
 		
 		Controller controller = new Controller(new PrintWriter(new BufferedOutputStream(System.out)));
 		controller.startView();
-		
 	}
 }

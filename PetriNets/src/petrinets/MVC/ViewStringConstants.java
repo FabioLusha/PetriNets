@@ -61,4 +61,9 @@ public class ViewStringConstants {
 	public static final String ERR_FLUX_REL_NOT_PRESENT = "Relazione di flusso non presente!";
 	public static final String INSERT_NEW_MARC = "Inserisci la nuova marcatura: \n > ";
 	public static final String INSERT_NEW_VAL = "Inserisci il nuovo valore: \n > ";
+	
+	//versione 3 (simulazione)
+	public static final String SIMULATOR_WELCOME_TITLE = "BENVENUTO";
+	public static final String[] SIMULATOR_WELCOME_OPTIONS = {"Inizia la simulazione"};
+	public static final String[] LOGIN_MENU_OPTIONS = {"Accedi come configuratore", "Accedi come fruitore"};
 }
