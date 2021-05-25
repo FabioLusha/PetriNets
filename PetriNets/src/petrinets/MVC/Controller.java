@@ -19,29 +19,6 @@ public class Controller {
 		}
     }
 
-    public void logMenuChoice(int scegli) {
-		switch(scegli) {
-			case 0:
-				exit();
-				break;
-			//scelto configuratore
-			case 1:
-				view.mainMenu();
-				break;
-			//scelto fruitore
-			case 2:
-				new SimulatorController();
-				break;
-			default:
-				view.loginMenu();
-				break;			
-		}
-		
-	}
-
-	public void startView(){
-        view.loginMenu();
-    }
 
     public void mainMenuChoice(int menuchoice) {
 		switch (menuchoice) {
