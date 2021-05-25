@@ -3,6 +3,7 @@ package petrinets.net;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -26,7 +27,36 @@ public class Net implements INet {
 		this.places = new HashSet<>();
 		this.fluxRelation = new HashSet<>();
 	}
-
+	
+	public List<Place> getPreviousPlaces(Transition trans){
+		return fluxRelation.stream().
+				filter(e -> e.getCurrentTransition() == trans  && e.getDirection() == OrderedPair.Direction.pt).
+				map(e -> e.getCurrentPlace()).
+				collect(Collectors.toList());
+	}
+	
+	public List<Place> getSuccessorPlaces(Transition trans){
+		return fluxRelation.stream().
+				filter(e -> e.getCurrentTransition() == trans  && e.getDirection() == OrderedPair.Direction.tp).
+				map(e -> e.getCurrentPlace()).
+				collect(Collectors.toList());
+	}
+	
+	public List<Transition> getPreviousTransitions(Place place){
+		return fluxRelation.stream().
+				filter(e -> e.getCurrentPlace() == place  && e.getDirection() == OrderedPair.Direction.tp).
+				map(e -> e.getCurrentTransition()).
+				collect(Collectors.toList());
+	}
+	
+	public List<Transition> getSuccessorTransitions(Place place){
+		return fluxRelation.stream().
+				filter(e -> e.getCurrentPlace() == place  && e.getDirection() == OrderedPair.Direction.pt).
+				map(e -> e.getCurrentTransition()).
+				collect(Collectors.toList());
+	}
+	
+	
 	public boolean isTransition(Transition transition) {
 		return transitions.contains(transition);
 	}

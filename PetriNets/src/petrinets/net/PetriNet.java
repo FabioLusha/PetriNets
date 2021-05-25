@@ -2,7 +2,7 @@ package petrinets.net;
 
 import java.util.*;
 
-public class PetriNet implements INet{
+public class PetriNet implements INet,Simulatable{
 	private Map<Place,Integer> marcmap;
 	private Map<OrderedPair, Integer>  valuemap;
 	private Net basedNet;
@@ -65,6 +65,26 @@ public class PetriNet implements INet{
 
 	public Set<OrderedPair> getFluxRelation(){
 		return basedNet.getFluxRelation();
+	}
+	
+	public void simulate(Transition toExecute){
+		var pred = this.getBasedNet().getPreviousPlaces(toExecute);
+		var succ = this.getBasedNet().getSuccessorPlaces(toExecute);
+		
+		for(var placeMark : marcmap.entrySet()) {
+			if(pred.contains(placeMark.getKey())) {
+				var tmpOrderedPair = new OrderedPair(placeMark.getKey(),toExecute);
+				int cost = valuemap.get(tmpOrderedPair);
+				
+				assert placeMark.getValue() >= cost;
+				
+				placeMark.setValue(placeMark.getValue() - cost);
+			}else if(succ.contains(placeMark.getKey())) {
+				var tmpOrderedPair = new OrderedPair(toExecute,placeMark.getKey());
+				placeMark.setValue(placeMark.getValue() + valuemap.get(tmpOrderedPair));
+			}
+		}
+
 	}
 
 	public String toString() {
