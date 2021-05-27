@@ -13,7 +13,7 @@ public class Model {
 	
     //private static XMLmanager<NetArchive> netxmlmanager = new XMLmanager<NetArchive>("nets.xml");
 
-    private Archive netArchive;
+    private final Archive netArchive;
 
     private Net controlNet;
     private PetriNet controlPetriNet;
@@ -56,11 +56,10 @@ public class Model {
     public boolean containsTransition(String name) {
     	return controlNet.isTransition(new Transition(name));
     }
-    
     public boolean petriNetContainsTransition(String name){
     	return controlPetriNet.getBasedNet().isTransition(new Transition(name));
     }
-    
+
    public boolean addFluxElem(String placename,String transitionname, int direction) {
 	    OrderedPair.Direction type = OrderedPair.Direction.ordinalToType(direction);
 	    
@@ -90,8 +89,7 @@ public class Model {
    
    public boolean containsNet(String netname) {
 	   if(netArchive.contains(netname))
-   		if(netArchive.getInetMap().get(netname) instanceof Net)
-   			return true;
+           return netArchive.getInetMap().get(netname) instanceof Net;
    	
    	return false;
    }
@@ -101,22 +99,23 @@ public class Model {
    }
    
    public List<String> getPlaces(INet net) {
-	   return net.getPlaces().stream().map(e -> e.getName()).collect(Collectors.toList());
+	   return net.getPlaces().stream().map(Place::getName).collect(Collectors.toList());
    }
    
    public List<String> getTransitions(INet net) {
 	   return net.getTransitions().stream().
-			   map(e -> e.getName()).
+			   map(Transition::getName).
 			   collect(Collectors.toList());
    }
    
    public List<Pair<String,String>> getFluxRelation(INet net){
 	   return net.getFluxRelation().
-			   stream()
-			   .map(e -> e.getDirection() == OrderedPair.Direction.pt ?
-                       new Pair<String,String>(e.getCurrentPlace().getName(), e.getCurrentTransition().getName()) :
-                        new Pair<String,String>(e.getCurrentTransition().getName(), e.getCurrentPlace().getName()))
-			   .collect(Collectors.toList());
+			   stream().
+			   map(e -> e.getDirection() == OrderedPair.Direction.pt ?
+                       new Pair<>(e.getCurrentPlace().getName(), e.getCurrentTransition().getName()) :
+                       new Pair<>(e.getCurrentTransition().getName(), e.getCurrentPlace().getName())
+               ).
+			   collect(Collectors.toList());
 	   
    }
    
@@ -133,10 +132,8 @@ public class Model {
    
   public INet getNet(String netName) {
 	  assert netArchive.contains(netName);
-	  INet tmpNet = netArchive.getInetMap().get(netName);
-	 
 
-	  return  tmpNet;
+      return netArchive.getInetMap().get(netName);
   }
 
 
@@ -153,8 +150,7 @@ public class Model {
     
     public boolean containsPetriNet(String petriNetName) {
     	if(netArchive.contains(petriNetName))
-    		if(netArchive.getInetMap().get(petriNetName) instanceof PetriNet)
-    			return true;
+            return netArchive.getInetMap().get(petriNetName) instanceof PetriNet;
     	
     	return false;
     }
@@ -172,12 +168,6 @@ public class Model {
     public List<String> getSavedPetriNetsNames(){
         return getSavedGenericNetsNames(PetriNet.class.toString());
     }
-    
-    public List<String> getSavedPetriNetsNames(){
-        return getSavedGenericNetsNames(PetriNet.class.toString());
-    }
-    
-    
 
     public List<String> getMarc(PetriNet petrinet){
       
@@ -208,11 +198,13 @@ public class Model {
     public void changeFluxRelVal(String placeName, String transName, int direction, int newValue) {
     	controlPetriNet.getValuemap().replace(new OrderedPair(new Place(placeName), new Transition(transName), OrderedPair.Direction.ordinalToType(direction)), newValue);
     }
-    
+
+
+    //PARTE SIMULATOR
+
     public boolean containsSimulatableNet(String netName) {
     	if(netArchive.contains(netName))
-    		if(netArchive.getInetMap().get(netName) instanceof Simulatable)
-    			return true;
+            return netArchive.getInetMap().get(netName) instanceof SimulatableNet;
     	
     	return false;
     }

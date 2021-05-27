@@ -2,7 +2,6 @@ package petrinets.MVC;
 
 import java.util.List;
 
-import it.unibs.fp.mylib.InputDati;
 import it.unibs.fp.mylib.MyMenu;
 import petrinets.MVC.controller.SimulatorController;
 
@@ -24,8 +23,8 @@ public class SimulatorView {
         mainView.printToDisplay(ErrMsg);;
     }
     
-    public String getInput(String message) {
-    	return mainView.getInput(message);
+    public String readNotEmpyString(String message) {
+    	return mainView.readNotEmptyString(message);
     }
     
     public int getIntInput(String message,int min ,int max) {

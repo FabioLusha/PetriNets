@@ -72,24 +72,6 @@ public class View {
     	MyMenu netSaving = new MyMenu(ViewStringConstants.NET_SAVING_MENU, ViewStringConstants.NET_SAVING_MENU_OPTIONS);
     	controller.userSavingChoice(netSaving.scegli());
 	}
-    
-    public void printToDisplay(String ErrMsg){
-        outputStream.println(ErrMsg);
-        outputStream.flush();
-    }
-    
-    public String getInput(String message) {
-    	return InputDati.leggiStringaNonVuota(message).trim();
-    }
-    
-    public int getIntInput(String message,int min ,int max) {
-    	return InputDati.leggiIntero(message, min, max);
-    }
-
-    public int getNotNegativeInt(String message) {
-    	return InputDati.leggiInteroNonNegativo(message);
-    }
-
 
     public void petriNetMenu(){
         MyMenu mymenu = new MyMenu(ViewStringConstants.PETRI_NET_MENU_TITLE, ViewStringConstants.CHANGE_PETRI_NET_OPTIONS);
@@ -127,6 +109,23 @@ public class View {
                       .append("\t" + "costo: " + cost.get(i) + "\n");
           }
           return output.toString();
+    }
+
+    public void printToDisplay(String ErrMsg){
+        outputStream.println(ErrMsg);
+        outputStream.flush();
+    }
+
+    public String readNotEmptyString(String message) {
+        return InputDati.leggiStringaNonVuota(message).trim();
+    }
+
+    public int getIntInput(String message,int min ,int max) {
+        return InputDati.leggiIntero(message, min, max);
+    }
+
+    public int getNotNegativeInt(String message) {
+        return InputDati.leggiInteroNonNegativo(message);
     }
     
     

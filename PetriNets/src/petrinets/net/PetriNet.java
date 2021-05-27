@@ -5,13 +5,14 @@ import java.util.*;
 
 
 
-public class PetriNet implements INet,Simulatable,Serializable{
+public class PetriNet implements INet, SimulatableNet,Serializable{
 	private Map<Place,Integer> marcmap;
 	private Map<OrderedPair, Integer>  valuemap;
 	private Net basedNet;
 	private String name;
 	
 	public PetriNet(String pname, Net pbasedNet) {
+
 		name = pname;
 		basedNet = pbasedNet;
 		
@@ -20,11 +21,10 @@ public class PetriNet implements INet,Simulatable,Serializable{
 		
 		basedNet.getPlaces().forEach(e -> marcmap.put(e, 1));
 		basedNet.getFluxRelation().forEach(e -> valuemap.put(e, 0));
+
 	}
 	
-	public PetriNet() {
-		
-	}
+	public PetriNet() {}
 
 	public Map<Place, Integer> getMarcmap() {
 		return marcmap;
@@ -70,28 +70,28 @@ public class PetriNet implements INet,Simulatable,Serializable{
 		return basedNet.getFluxRelation();
 	}
 	
-	public void simulate(Transition toExecute){
-		var pred = this.getBasedNet().getPreviousPlaces(toExecute);
-		var succ = this.getBasedNet().getSuccessorPlaces(toExecute);
+	public void fire(Transition toFire){
+		var pred = this.getBasedNet().getPreviousPlaces(toFire);
+		var succ = this.getBasedNet().getSuccessorPlaces(toFire);
 		
 		for(var placeMark : marcmap.entrySet()) {
 			if(pred.contains(placeMark.getKey())) {
-				var tmpOrderedPair = new OrderedPair(placeMark.getKey(),toExecute);
+				var tmpOrderedPair = new OrderedPair(placeMark.getKey(), toFire);
 				int cost = valuemap.get(tmpOrderedPair);
 				
 				assert placeMark.getValue() >= cost;
 				
 				placeMark.setValue(placeMark.getValue() - cost);
 			}else if(succ.contains(placeMark.getKey())) {
-				var tmpOrderedPair = new OrderedPair(toExecute,placeMark.getKey());
+				var tmpOrderedPair = new OrderedPair(toFire,placeMark.getKey());
 				placeMark.setValue(placeMark.getValue() + valuemap.get(tmpOrderedPair));
 			}
 		}
 
 	}
 	
-	public Collection<Transition> getActiveTransitions(){
-		Collection<Transition> transCollection = new ArrayList<>();
+	public Set<Transition> getEnabledTransitions(){
+		Set<Transition> transCollection = new HashSet<>();
 		for(Transition transition : basedNet.getTransitions()) {
 			for(Place place : basedNet.getPreviousPlaces(transition)) {
 				if(marcmap.get(place) >= valuemap.get(new OrderedPair(place,transition))) {
@@ -136,7 +136,5 @@ public class PetriNet implements INet,Simulatable,Serializable{
 	public int hashCode(){
 		return Objects.hash(name, basedNet, marcmap, valuemap);
 	}
-	
 
-	
 }

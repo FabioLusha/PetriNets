@@ -69,7 +69,7 @@ public class Controller {
 				break;
 			case 4:
 				if(menagePetriNetVis())
-					requestPrintPetriNet(view.getInput(ViewStringConstants.INSERT_NET_TO_VIEW));
+					requestPrintPetriNet(view.readNotEmptyString(ViewStringConstants.INSERT_NET_TO_VIEW));
 				view.mainMenu();
 				break;
 			case 5:
@@ -174,7 +174,7 @@ public class Controller {
 			view.mainMenu();
 		} else {
 			view.visualizeNets(model.getSavedNetsNames());
-			requestPrintNet(view.getInput(ViewStringConstants.INSERT_NET_TO_VIEW));
+			requestPrintNet(view.readNotEmptyString(ViewStringConstants.INSERT_NET_TO_VIEW));
 		}
 	}
 
@@ -188,7 +188,7 @@ public class Controller {
 	}
     
     public void removeNet(){
-    	String name = view.getInput(ViewStringConstants.INSERT_NET_NAME_TO_REMOVE);
+    	String name = view.readNotEmptyString(ViewStringConstants.INSERT_NET_NAME_TO_REMOVE);
     	if(model.containsINet(name)){
     		model.remove(name);
     	}else
@@ -238,10 +238,10 @@ public class Controller {
     	String netname;
     	
 		view.visualizeNets(model.getSavedNetsNames());
-    	netname = view.getInput(ViewStringConstants.INSERT_NET_NAME_MSG);
+    	netname = view.readNotEmptyString(ViewStringConstants.INSERT_NET_NAME_MSG);
     	
     	if(model.containsINet(netname)) {
-    		petrinetname = view.getInput(ViewStringConstants.INSERT_PETRI_NET_NAME_MSG);
+    		petrinetname = view.readNotEmptyString(ViewStringConstants.INSERT_PETRI_NET_NAME_MSG);
     		if(!model.createPetriNet(petrinetname, (Net) model.getNet(netname))) {
 				view.printToDisplay(ViewStringConstants.ERR_MSG_NET_NAME_ALREADY_EXIST);
 				view.mainMenu();
@@ -274,27 +274,37 @@ public class Controller {
 
 	public void requestPrintPetriNet(String netname) {
 		if(model.containsPetriNet(netname)) {
-			PetriNet petrinet = (PetriNet) model.getNet(netname);
-			List<String> placesname = model.getPlaces(petrinet);
-			List<String> transitionsname = model.getTransitions(petrinet);
-			List<Pair<String,String>> fluxrelations = model.getFluxRelation(petrinet);
-			var marc = model.getMarc(petrinet);
-			var values = model.getValues(petrinet);
-			view.printPetriNet(netname, placesname, marc, transitionsname, fluxrelations, values);
+			PetriNet petriNet = (PetriNet) model.getNet(netname);
+			printPetriNet(petriNet);
 		}
 		else {
 			view.printToDisplay(ViewStringConstants.ERR_NET_NOT_PRESENT);
-			
 		}
+	}
+
+	public void printPetriNet(PetriNet petriNet){
+
+    	String netname = petriNet.getName();
+		List<String> placesname = model.getPlaces(petriNet);
+		List<String> transitionsname = model.getTransitions(petriNet);
+		List<Pair<String,String>> fluxrelations = model.getFluxRelation(petriNet);
+		List<String> marc = model.getMarc(petriNet);
+		List<String> values = model.getValues(petriNet);
+
+		view.printPetriNet(netname, placesname, marc, transitionsname, fluxrelations, values);
 	}
 	
 	public void changeMarc() {
+
 		PetriNet currentPetriNet = model.getCurrentPetriNet();
 		
 		List<String> placesname = model.getPlaces(currentPetriNet);
-		var marc = model.getMarc(currentPetriNet);
+		List<String> marc = model.getMarc(currentPetriNet);
+
 		view.printToDisplay(view.marcFormatter(placesname, marc));
-		String name = view.getInput(ViewStringConstants.INSERT_PLACE_NAME_TO_MODIFY);
+
+		String name = view.readNotEmptyString(ViewStringConstants.INSERT_PLACE_NAME_TO_MODIFY);
+
 		if(!model.petriNetContainsPlace(name)) 
 			view.printToDisplay(ViewStringConstants.ERR_PLACE_NOT_PRESENT);	
 		else {
@@ -304,23 +314,25 @@ public class Controller {
 	}
 	
 	public void changeFluxRelationVal() {
-		PetriNet currentPetriNet = model.getCurrentPetriNet();
+
+		var currentPetriNet = model.getCurrentPetriNet();
 		var relFluxName = model.getFluxRelation(currentPetriNet);
 		var values = model.getValues(currentPetriNet);
 		view.printToDisplay(view.fluxrelFormatter(relFluxName, values));
 		
-		String placename = view.getInput(ViewStringConstants.INSERT_PLACE_MSG).trim();
-    	String transitionname = view.getInput(ViewStringConstants.INSERT_TRANSITION_MSG).trim();
+		String placeName = view.readNotEmptyString(ViewStringConstants.INSERT_PLACE_MSG).trim();
+    	String transitionName = view.readNotEmptyString(ViewStringConstants.INSERT_TRANSITION_MSG).trim();
+
     	int direction = view.getIntInput(ViewStringConstants.INSERT_DIRECTION_MSG
-				+ String.format(ViewStringConstants.FLUX_DIRECTION_MSG, 0, placename, transitionname)
-				+ String.format(ViewStringConstants.FLUX_DIRECTION_MSG, 1, transitionname, placename) + "\n > ",
+				+ String.format(ViewStringConstants.FLUX_DIRECTION_MSG, 0, placeName, transitionName)
+				+ String.format(ViewStringConstants.FLUX_DIRECTION_MSG, 1, transitionName, placeName) + "\n > ",
 				0, 1);
     	
-		if(!model.containsFluxRel(placename, transitionname, direction)) 
+		if(!model.containsFluxRel(placeName, transitionName, direction))
 			view.printToDisplay(ViewStringConstants.ERR_FLUX_REL_NOT_PRESENT);	
 		else {
 			int newValue  = view.getNotNegativeInt(ViewStringConstants.INSERT_NEW_VAL);
-			model.changeFluxRelVal(placename, transitionname, direction, newValue);
+			model.changeFluxRelVal(placeName, transitionName, direction, newValue);
 		}
 	}
 	
