@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang3.SerializationUtils;
 import org.junit.jupiter.api.Test;
 
 import petrinets.net.Net;
@@ -100,4 +101,16 @@ class NetTest {
 		assert !a.equals(b);
 	}
 
+	@Test
+	void testMapCopy() {
+		StringBuilder a = new StringBuilder();
+		a.append("1");
+		
+		StringBuilder b = SerializationUtils.clone(a);
+		a.append("ssss");
+		
+		System.out.println(a.toString());
+		System.out.println(b.toString());
+
+	}
 }

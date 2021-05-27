@@ -172,6 +172,12 @@ public class Model {
     public List<String> getSavedPetriNetsNames(){
         return getSavedGenericNetsNames(PetriNet.class.toString());
     }
+    
+    public List<String> getSavedPetriNetsNames(){
+        return getSavedGenericNetsNames(PetriNet.class.toString());
+    }
+    
+    
 
     public List<String> getMarc(PetriNet petrinet){
       
@@ -201,6 +207,14 @@ public class Model {
 
     public void changeFluxRelVal(String placeName, String transName, int direction, int newValue) {
     	controlPetriNet.getValuemap().replace(new OrderedPair(new Place(placeName), new Transition(transName), OrderedPair.Direction.ordinalToType(direction)), newValue);
-    
     }
+    
+    public boolean containsSimulatableNet(String netName) {
+    	if(netArchive.contains(netName))
+    		if(netArchive.getInetMap().get(netName) instanceof Simulatable)
+    			return true;
+    	
+    	return false;
+    }
+    
 }

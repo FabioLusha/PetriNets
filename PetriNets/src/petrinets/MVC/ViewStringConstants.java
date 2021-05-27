@@ -66,4 +66,5 @@ public class ViewStringConstants {
 	public static final String SIMULATOR_WELCOME_TITLE = "BENVENUTO";
 	public static final String[] SIMULATOR_WELCOME_OPTIONS = {"Inizia la simulazione"};
 	public static final String[] LOGIN_MENU_OPTIONS = {"Accedi come configuratore", "Accedi come fruitore"};
+	public static final String MSG_CRITICAL_BLOCK = "La rete ha raggiunto un blocco critico!";
 }

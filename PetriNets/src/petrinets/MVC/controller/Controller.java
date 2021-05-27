@@ -40,7 +40,7 @@ public class Controller {
 				break;
 			//scelto fruitore
 			case 2:
-				new SimulatorController();
+				new SimulatorController(view);
 				break;
 			default:
 				view.loginMenu();
@@ -269,6 +269,8 @@ public class Controller {
 		
 		}
 	}
+	
+	
 
 	public void requestPrintPetriNet(String netname) {
 		if(model.containsPetriNet(netname)) {

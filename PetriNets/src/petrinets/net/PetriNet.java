@@ -1,8 +1,11 @@
 package petrinets.net;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class PetriNet implements INet,Simulatable{
+
+
+public class PetriNet implements INet,Simulatable,Serializable{
 	private Map<Place,Integer> marcmap;
 	private Map<OrderedPair, Integer>  valuemap;
 	private Net basedNet;
@@ -86,6 +89,19 @@ public class PetriNet implements INet,Simulatable{
 		}
 
 	}
+	
+	public Collection<Transition> getActiveTransitions(){
+		Collection<Transition> transCollection = new ArrayList<>();
+		for(Transition transition : basedNet.getTransitions()) {
+			for(Place place : basedNet.getPreviousPlaces(transition)) {
+				if(marcmap.get(place) >= valuemap.get(new OrderedPair(place,transition))) {
+					transCollection.add(transition);
+				}
+			}
+		}
+		
+		return transCollection;
+	}
 
 	public String toString() {
 		StringBuilder output = new StringBuilder();
@@ -120,5 +136,7 @@ public class PetriNet implements INet,Simulatable{
 	public int hashCode(){
 		return Objects.hash(name, basedNet, marcmap, valuemap);
 	}
+	
+
 	
 }
