@@ -26,70 +26,26 @@ public class PetriNet implements INet, SimulatableNet,Serializable{
 	
 	public PetriNet() {}
 
-	public Map<Place, Integer> getMarcmap() {
-		return marcmap;
-	}
-
-	public void setMarcmap(Map<Place, Integer> marcmap) {
-		this.marcmap = marcmap;
-	}
-
-	public Map<OrderedPair, Integer> getValuemap() {
-		return valuemap;
-	}
-
-	public void setValuemap(Map<OrderedPair, Integer> valuemap) {
-		this.valuemap = valuemap;
-	}
-	
-	public Net getBasedNet() {
-		return basedNet;
-	}
-
-	public void setBasedNet(Net basedNet) {
-		this.basedNet = basedNet;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public Set<Transition> getTransitions(){
-		return basedNet.getTransitions();
-	}
-
-	public Set<Place> getPlaces(){
-		return basedNet.getPlaces();
-	}
-
-	public Set<OrderedPair> getFluxRelation(){
-		return basedNet.getFluxRelation();
-	}
-	
 	public void fire(Transition toFire){
 		var pred = this.getBasedNet().getPreviousPlaces(toFire);
 		var succ = this.getBasedNet().getSuccessorPlaces(toFire);
 		
 		for(var placeMark : marcmap.entrySet()) {
+
 			if(pred.contains(placeMark.getKey())) {
 				var tmpOrderedPair = new OrderedPair(placeMark.getKey(), toFire);
-				int cost = valuemap.get(tmpOrderedPair);
-				
-				assert placeMark.getValue() >= cost;
-				
-				placeMark.setValue(placeMark.getValue() - cost);
+				placeMark.setValue(placeMark.getValue() - valuemap.get(tmpOrderedPair));
+
 			}else if(succ.contains(placeMark.getKey())) {
 				var tmpOrderedPair = new OrderedPair(toFire,placeMark.getKey());
 				placeMark.setValue(placeMark.getValue() + valuemap.get(tmpOrderedPair));
 			}
 		}
 
+		assert markingIsCorrect();
+
 	}
-	
+
 	public Set<Transition> getEnabledTransitions(){
 		Set<Transition> transCollection = new HashSet<>();
 		for(Transition transition : basedNet.getTransitions()) {
@@ -137,4 +93,53 @@ public class PetriNet implements INet, SimulatableNet,Serializable{
 		return Objects.hash(name, basedNet, marcmap, valuemap);
 	}
 
+	private boolean markingIsCorrect() {
+		return marcmap.values().stream()
+				.reduce(true,(aBoolean, aInteger) -> aBoolean && (aInteger >= 1), (id, u) -> id && u);
+	}
+
+	public Map<Place, Integer> getMarcmap() {
+		return marcmap;
+	}
+
+	public void setMarcmap(Map<Place, Integer> marcmap) {
+		this.marcmap = marcmap;
+		assert markingIsCorrect();
+	}
+
+	public Map<OrderedPair, Integer> getValuemap() {
+		return valuemap;
+	}
+
+	public void setValuemap(Map<OrderedPair, Integer> valuemap) {
+		this.valuemap = valuemap;
+	}
+
+	public Net getBasedNet() {
+		return basedNet;
+	}
+
+	public void setBasedNet(Net basedNet) {
+		this.basedNet = basedNet;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Set<Transition> getTransitions(){
+		return basedNet.getTransitions();
+	}
+
+	public Set<Place> getPlaces(){
+		return basedNet.getPlaces();
+	}
+
+	public Set<OrderedPair> getFluxRelation(){
+		return basedNet.getFluxRelation();
+	}
 }
