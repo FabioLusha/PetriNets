@@ -16,8 +16,8 @@ public class PetriNet implements INet, SimulatableNet,Serializable{
 		name = pname;
 		basedNet = pbasedNet;
 		
-		marcmap = new HashMap<>();
-		valuemap = new HashMap<>();
+		marcmap = new LinkedHashMap<>();
+		valuemap = new LinkedHashMap<>();
 		
 		basedNet.getPlaces().forEach(e -> marcmap.put(e, 1));
 		basedNet.getFluxRelation().forEach(e -> valuemap.put(e, 0));

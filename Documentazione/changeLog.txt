@@ -1,0 +1,1 @@
+Si è passati da HashMap/HashSet a LinkedHash... per conservare l'ordine.

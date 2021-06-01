@@ -2,6 +2,7 @@ package petrinets.MVC.controller;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.SerializationUtils;
@@ -11,6 +12,8 @@ import petrinets.net.SimulatableNet;
 import petrinets.net.Transition;
 
 public class SimulatorController {
+	public static final String MSG_NEW_MARC = "Nuova marcatura raggiunta:\n";
+	public static final String MSG_AUTOMATIC_FIRE_TRANSITION = "Transizione scatta automaticamente %s.\n";
 	private SimulatorView simView;
 	private Controller mainController;
 	private Model model;
@@ -51,14 +54,14 @@ public class SimulatorController {
 				simulate();
 			} else {
 				simView.print(ViewStringConstants.ERR_NET_NOT_PRESENT);
-
+				simView.mainMenu();
 
 			}
 		}
 	}
 
 	private void exitWithoutSaving() {
-		System.exit(0);
+		mainController.startView();
 	}
 
 
@@ -74,22 +77,27 @@ public class SimulatorController {
 					map(e -> e.getName()).
 					collect(Collectors.toList());
 
+			if(activeTransitions.size() != 1){
+				while(true) {
+					simView.printActiveTransitions(listNames);
+					String name = simView.readNotEmpyString(ViewStringConstants.INSERT_TRANSITION_MSG);
 
-			simView.printActiveTransitions(listNames);
-
-			while(true) {
-				String name = simView.readNotEmpyString(ViewStringConstants.INSERT_TRANSITION_MSG);
-
-				if (activeTransitions.contains(new Transition(name))) {
-					netToSimulate.fire(new Transition(name));
-					simView.printMarking(model.getPlaces(netToSimulate), model.getMarc(netToSimulate));
-					break;
-				} else {
-					simView.print(ViewStringConstants.ERR_ELEMENT_NAME_DOES_NOT_EXSIST);
-					continue;
+					if (activeTransitions.contains(new Transition(name))) {
+						netToSimulate.fire(new Transition(name));
+						break;
+					} else {
+						simView.print(ViewStringConstants.ERR_ELEMENT_NAME_DOES_NOT_EXSIST);
+						continue;
+					}
 				}
+			}else{
+				Transition toBeFired = activeTransitions.iterator().next();
+				simView.print(String.format(MSG_AUTOMATIC_FIRE_TRANSITION, toBeFired ));
+				netToSimulate.fire(toBeFired);
 			}
 
+			simView.print(MSG_NEW_MARC);
+			simView.printMarking(model.getPlaces(netToSimulate), model.getMarc(netToSimulate));
 			if(simView.userInputContinueAdding(ViewStringConstants.ASK_CONTINUE_SIMULATION))
 				simulate();
 			else
