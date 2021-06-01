@@ -32,7 +32,7 @@ public class Controller {
     public void logMenuChoice(int scegli) {
 		switch(scegli) {
 			case 0:
-				exit();
+				closeApp();
 				break;
 			//scelto configuratore
 			case 1:
@@ -77,7 +77,7 @@ public class Controller {
 				view.mainMenu();
 				break;
 			default:
-				exit();
+				saveAndExit();
 	
 		}
 	}
@@ -136,7 +136,7 @@ public class Controller {
     public void userSavingChoice(int userchoice) {
 		switch (userchoice) {
 		case 0:
-			exit();
+			saveAndExit();
 			break;
 			//salva la rete
 		case 1: {
@@ -179,7 +179,11 @@ public class Controller {
 		}
 	}
 
-	public void exit() {
+	public void closeApp(){
+    	System.exit(0);
+	}
+
+	public void saveAndExit() {
 		try {
 			model.permanentSave();
 		} catch(IOException e) {
@@ -201,7 +205,7 @@ public class Controller {
     public void petriNetMenuChoice(int choice) {
 		switch (choice){
 			case 0:
-				exit();
+				saveAndExit();
 			//modifica vlaore maracatura
 			case 1:
 				changeMarc();

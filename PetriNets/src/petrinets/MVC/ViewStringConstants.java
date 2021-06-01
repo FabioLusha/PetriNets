@@ -64,7 +64,7 @@ public class ViewStringConstants {
 	
 	//versione 3 (simulazione)
 	public static final String SIMULATOR_WELCOME_TITLE = "BENVENUTO";
-	public static final String[] SIMULATOR_WELCOME_OPTIONS = {"Inizia la simulazione"};
+	public static final String[] SIMULATOR_WELCOME_OPTIONS = {"Scegli la rete di petri da simulare"};
 	public static final String[] LOGIN_MENU_OPTIONS = {"Accedi come configuratore", "Accedi come fruitore"};
 	public static final String ERR_CRITICAL_BLOCK = "La rete ha raggiunto un blocco critico!";
     public static final String ERR_ELEMENT_NAME_DOES_NOT_EXSIST = "Il nome che hai inserito non comabacia con nessuno degli elementi elencati!";

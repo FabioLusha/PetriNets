@@ -1,11 +1,7 @@
 package petrinets.net;
 
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -23,9 +19,9 @@ public class Net implements INet {
 	public Net(String pname) {
 		assert pname != null;
 		this.name = pname;
-		this.transitions = new HashSet<>();
-		this.places = new HashSet<>();
-		this.fluxRelation = new HashSet<>();
+		this.transitions = new LinkedHashSet<>();
+		this.places = new LinkedHashSet<>();
+		this.fluxRelation = new LinkedHashSet<>();
 	}
 	
 	public List<Place> getPreviousPlaces(Transition trans){
