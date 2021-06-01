@@ -19,7 +19,7 @@ public class SimulatorView {
 		simController.mainMenuChoice(mainMenu.scegli());
 	}
 	
-    public void printToDisplay(String ErrMsg){
+    public void print(String ErrMsg){
         mainView.printToDisplay(ErrMsg);;
     }
     
@@ -42,7 +42,7 @@ public class SimulatorView {
 			output.append("\t" + t.toString() + "\n");
 		}
 		
-		printToDisplay(output.toString());
+		print(output.toString());
 	}
 	
 

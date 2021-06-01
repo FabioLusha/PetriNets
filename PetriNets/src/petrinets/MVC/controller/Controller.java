@@ -170,7 +170,7 @@ public class Controller {
 
 	private void manageNetsVis() {
 		if (model.getSavedNetsNames().isEmpty()) {
-			view.printToDisplay(ViewStringConstants.ERR_SAVED_NET_NOT_PRESENT);
+			view.printToDisplay(ViewStringConstants.ERR_NO_NET_SAVED);
 			view.mainMenu();
 		} else {
 			view.visualizeNets(model.getSavedNetsNames());
@@ -261,7 +261,7 @@ public class Controller {
 
 	public boolean menagePetriNetVis() {
 		if (model.getSavedPetriNetsNames().isEmpty()) {
-			view.printToDisplay(ViewStringConstants.ERR_SAVED_NET_NOT_PRESENT);
+			view.printToDisplay(ViewStringConstants.ERR_NO_NET_SAVED);
 			return false;
 		} else {
 			view.visualizeNets(model.getSavedPetriNetsNames());

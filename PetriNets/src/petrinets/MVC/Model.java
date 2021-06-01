@@ -60,68 +60,68 @@ public class Model {
     	return controlPetriNet.getBasedNet().isTransition(new Transition(name));
     }
 
-   public boolean addFluxElem(String placename,String transitionname, int direction) {
-	    OrderedPair.Direction type = OrderedPair.Direction.ordinalToType(direction);
-	    
-	    return controlNet.addFluxRelElement(new OrderedPair(new Place(placename) , new Transition(transitionname) , type));
-   }
-   
-   public boolean saveCurrentNet() {
-	   
-	   if(netArchive.containsValue(controlNet)) {
-		   return false;
-	   }
-	    netArchive.add(controlNet.getName(), controlNet);
-	    //pulisco la variabile di comodo per evidenziare eventuali errori
-	    controlNet = null;
+    public boolean addFluxElem(String placename,String transitionname, int direction) {
+        OrderedPair.Direction type = OrderedPair.Direction.ordinalToType(direction);
 
-	    return true;
-   }
+        return controlNet.addFluxRelElement(new OrderedPair(new Place(placename) , new Transition(transitionname) , type));
+    }
 
-   public void permanentSave() throws IOException {
-	   
-			netArchive.permanentSave();
-		}
-   
-   public boolean containsINet(String inetname) {
-	   return netArchive.contains(inetname);
-   }
-   
-   public boolean containsNet(String netname) {
-	   if(netArchive.contains(netname))
+    public boolean saveCurrentNet() {
+
+       if(netArchive.containsValue(controlNet)) {
+           return false;
+       }
+        netArchive.add(controlNet.getName(), controlNet);
+        //pulisco la variabile di comodo per evidenziare eventuali errori
+        controlNet = null;
+
+        return true;
+    }
+
+    public void permanentSave() throws IOException {
+
+            netArchive.permanentSave();
+        }
+
+    public boolean containsINet(String inetname) {
+       return netArchive.contains(inetname);
+    }
+
+    public boolean containsNet(String netname) {
+       if(netArchive.contains(netname))
            return netArchive.getInetMap().get(netname) instanceof Net;
-   	
-   	return false;
-   }
-   
-   public boolean containsFluxRel(String placeName, String transName, int direction) {
-	   return controlPetriNet.getFluxRelation().contains(new OrderedPair(new Place(placeName), new Transition(transName), OrderedPair.Direction.ordinalToType(direction)));
-   }
-   
-   public List<String> getPlaces(INet net) {
-	   return net.getPlaces().stream().map(Place::getName).collect(Collectors.toList());
-   }
-   
-   public List<String> getTransitions(INet net) {
-	   return net.getTransitions().stream().
-			   map(Transition::getName).
-			   collect(Collectors.toList());
-   }
-   
-   public List<Pair<String,String>> getFluxRelation(INet net){
-	   return net.getFluxRelation().
-			   stream().
-			   map(e -> e.getDirection() == OrderedPair.Direction.pt ?
+
+    return false;
+    }
+
+    public boolean containsFluxRel(String placeName, String transName, int direction) {
+       return controlPetriNet.getFluxRelation().contains(new OrderedPair(new Place(placeName), new Transition(transName), OrderedPair.Direction.ordinalToType(direction)));
+    }
+
+    public List<String> getPlaces(INet net) {
+       return net.getPlaces().stream().map(Place::getName).collect(Collectors.toList());
+    }
+
+    public List<String> getTransitions(INet net) {
+       return net.getTransitions().stream().
+               map(Transition::getName).
+               collect(Collectors.toList());
+    }
+
+    public List<Pair<String,String>> getFluxRelation(INet net){
+       return net.getFluxRelation().
+               stream().
+               map(e -> e.getDirection() == OrderedPair.Direction.pt ?
                        new Pair<>(e.getCurrentPlace().getName(), e.getCurrentTransition().getName()) :
                        new Pair<>(e.getCurrentTransition().getName(), e.getCurrentPlace().getName())
                ).
-			   collect(Collectors.toList());
-	   
-   }
-   
-  public List<String> getSavedNetsNames(){
-	  return getSavedGenericNetsNames(Net.class.toString());
-  }
+               collect(Collectors.toList());
+
+    }
+
+    public List<String> getSavedNetsNames(){
+      return getSavedGenericNetsNames(Net.class.toString());
+    }
 
     private List<String> getSavedGenericNetsNames(String className){
         return netArchive.getInetMap().entrySet().stream()
@@ -129,8 +129,8 @@ public class Model {
                 .map(e -> e.getKey())
                 .collect(Collectors.toList());
     }
-   
-  public INet getNet(String netName) {
+
+    public INet getNet(String netName) {
 	  assert netArchive.contains(netName);
 
       return netArchive.getInetMap().get(netName);
@@ -169,9 +169,9 @@ public class Model {
         return getSavedGenericNetsNames(PetriNet.class.toString());
     }
 
-    public List<String> getMarc(PetriNet petrinet){
+    public List<String> getMarc(SimulatableNet petrinet){
       
-        return petrinet.getMarcmap().values().stream().
+        return petrinet.getMarking().values().stream().
                 map(e -> Integer.toString(e)).
                 collect(Collectors.toList());
     }
@@ -191,7 +191,7 @@ public class Model {
     }
     
     public void changeMarc(String name, int newValue) {
-    	controlPetriNet.getMarcmap().replace(new Place(name), newValue);
+    	controlPetriNet.getMarking().replace(new Place(name), newValue);
     	
     }
 

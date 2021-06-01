@@ -28,16 +28,23 @@ public class SimulatorController {
 			exitWithoutSaving();
 			break;
 		case 1:
-			if(mainController.menagePetriNetVis())
-				//richiedi il nome della rete da simulare;
-				if(requestNetToSimulateName())
-					startSimulation();
+			//Simula rete di Petri
+			simulatePetriNet();
 
-				break;
+			break;
 		default:
 			simView.mainMenu();
 			break;
 		}
+	}
+
+	private void simulatePetriNet() {
+		if(mainController.menagePetriNetVis())
+			//richiedi il nome della rete da simulare;
+			if(mainController.managePetriNetCreation();) {
+				simulate();
+
+			}
 	}
 
 	private void exitWithoutSaving() {
@@ -53,20 +60,19 @@ public class SimulatorController {
 			netToSimulate = (SimulatableNet) SerializationUtils.clone(net);
 			return true;
 		}else {
-			simView.printToDisplay(ViewStringConstants.ERR_NET_NOT_PRESENT);
+			simView.print(ViewStringConstants.ERR_NET_NOT_PRESENT);
 			return false;
 		}
 		
 			
 	}
 	
-	private void startSimulation() {
+	private void simulate() {
 		Collection<Transition> activeTransitions = netToSimulate.getEnabledTransitions();
 		
 		if(activeTransitions.isEmpty()) {
-			simView.printToDisplay(ViewStringConstants.MSG_CRITICAL_BLOCK);
+			simView.print(ViewStringConstants.ERR_CRITICAL_BLOCK);
 		}else {
-
 			List<String> listNames =
 					activeTransitions.stream().
 					map(e -> e.getName()).
@@ -77,12 +83,10 @@ public class SimulatorController {
 
 			if(activeTransitions.contains(new Transition(name))) {
 				netToSimulate.fire(new Transition(name));
-				printMarking(netToSimulate);
+			} else{
+				simView.print(ViewStringConstants.ERR_ELEMENT_NAME_DOES_NOT_EXSIST);
 			}
-
 		}
-		
-		
 	}
 
 	private void printMarking(SimulatableNet netToSimulate) {

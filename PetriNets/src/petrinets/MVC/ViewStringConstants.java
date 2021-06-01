@@ -46,7 +46,7 @@ public class ViewStringConstants {
     public static final String ERR_NET_ALREADY_PRESENT = "Esiste gia' una rete con la topologia che hai inserito!";
     public static final String ERR_NET_NOT_PRESENT = "Non ci sono reti salvate con questo nome";
     
-    public static final String ERR_SAVED_NET_NOT_PRESENT = "Non ci sono reti salvate";
+    public static final String ERR_NO_NET_SAVED = "Non ci sono reti salvate";
     public static final String ERR_MSG_DESERIALIZATION_FAILED = "Atenzione! Non è stato posibile caricare le reti salvate. E' stato inizializzato un nuvo archivio.";
 
     
@@ -66,5 +66,6 @@ public class ViewStringConstants {
 	public static final String SIMULATOR_WELCOME_TITLE = "BENVENUTO";
 	public static final String[] SIMULATOR_WELCOME_OPTIONS = {"Inizia la simulazione"};
 	public static final String[] LOGIN_MENU_OPTIONS = {"Accedi come configuratore", "Accedi come fruitore"};
-	public static final String MSG_CRITICAL_BLOCK = "La rete ha raggiunto un blocco critico!";
+	public static final String ERR_CRITICAL_BLOCK = "La rete ha raggiunto un blocco critico!";
+    public static final String ERR_ELEMENT_NAME_DOES_NOT_EXSIST = "Il nome che hai inserito non comabacia con nessuno degli elementi elencati!";
 }
