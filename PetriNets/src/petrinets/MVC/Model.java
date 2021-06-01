@@ -1,6 +1,7 @@
 package petrinets.MVC;
 
-import petrinets.net.*;
+import petrinets.domain.*;
+import petrinets.domain.net.*;
 
 import java.io.IOException;
 import java.util.List;

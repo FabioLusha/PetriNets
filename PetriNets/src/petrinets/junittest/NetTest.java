@@ -10,10 +10,10 @@ import java.util.Set;
 import org.apache.commons.lang3.SerializationUtils;
 import org.junit.jupiter.api.Test;
 
-import petrinets.net.Net;
-import petrinets.net.OrderedPair;
-import petrinets.net.Place;
-import petrinets.net.Transition;
+import petrinets.domain.net.Net;
+import petrinets.domain.net.OrderedPair;
+import petrinets.domain.net.Place;
+import petrinets.domain.net.Transition;
 
 class NetTest {
 

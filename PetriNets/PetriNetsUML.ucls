@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <class-diagram version="1.2.4" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
   associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
-  <class id="1" language="java" name="petrinets.net.Net" project="PetriNets" 
+  <class id="1" language="java" name="petrinets.domain.net.Net" project="PetriNets"
     file="/PetriNets/src/petrinets/net/Net.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1182" y="350"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -19,7 +19,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="3" language="java" name="petrinets.net.Place" project="PetriNets" 
+  <class id="3" language="java" name="petrinets.domain.net.Place" project="PetriNets"
     file="/PetriNets/src/petrinets/net/Place.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="777" y="722"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -28,7 +28,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="4" language="java" name="petrinets.net.Transition" project="PetriNets" 
+  <class id="4" language="java" name="petrinets.domain.net.Transition" project="PetriNets"
     file="/PetriNets/src/petrinets/net/Transition.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="765" y="116"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -37,7 +37,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <enumeration id="5" language="java" name="petrinets.net.OrderedPair.Direction" project="PetriNets" 
+  <enumeration id="5" language="java" name="petrinets.domain.net.OrderedPair.Direction" project="PetriNets"
     file="/PetriNets/src/petrinets/net/OrderedPair.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="329" y="721"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -46,7 +46,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </enumeration>  
-  <class id="6" language="java" name="petrinets.net.OrderedPair" project="PetriNets" 
+  <class id="6" language="java" name="petrinets.domain.net.OrderedPair" project="PetriNets"
     file="/PetriNets/src/petrinets/net/OrderedPair.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="339" y="374"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 

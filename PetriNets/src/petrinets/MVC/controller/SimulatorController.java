@@ -2,18 +2,15 @@ package petrinets.MVC.controller;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.SerializationUtils;
 
 import petrinets.MVC.*;
-import petrinets.net.SimulatableNet;
-import petrinets.net.Transition;
+import petrinets.domain.SimulatableNet;
+import petrinets.domain.net.Transition;
 
 public class SimulatorController {
-	public static final String MSG_NEW_MARC = "Nuova marcatura raggiunta:\n";
-	public static final String MSG_AUTOMATIC_FIRE_TRANSITION = "Transizione scatta automaticamente %s.\n";
 	private SimulatorView simView;
 	private Controller mainController;
 	private Model model;
@@ -92,11 +89,11 @@ public class SimulatorController {
 				}
 			}else{
 				Transition toBeFired = activeTransitions.iterator().next();
-				simView.print(String.format(MSG_AUTOMATIC_FIRE_TRANSITION, toBeFired ));
+				simView.print(String.format(ViewStringConstants.MSG_AUTOMATIC_FIRE_TRANSITION, toBeFired ));
 				netToSimulate.fire(toBeFired);
 			}
 
-			simView.print(MSG_NEW_MARC);
+			simView.print(ViewStringConstants.MSG_NEW_MARC);
 			simView.printMarking(model.getPlaces(netToSimulate), model.getMarc(netToSimulate));
 			if(simView.userInputContinueAdding(ViewStringConstants.ASK_CONTINUE_SIMULATION))
 				simulate();

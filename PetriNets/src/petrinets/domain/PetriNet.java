@@ -1,11 +1,12 @@
-package petrinets.net;
+package petrinets.domain;
 
-import java.io.Serializable;
+import petrinets.domain.net.*;
+
 import java.util.*;
 
 
 
-public class PetriNet implements INet, SimulatableNet,Serializable{
+public class PetriNet implements INet, SimulatableNet {
 	private Map<Place,Integer> marcmap;
 	private Map<OrderedPair, Integer>  valuemap;
 	private Net basedNet;
@@ -88,8 +89,7 @@ public class PetriNet implements INet, SimulatableNet,Serializable{
 		if(!basedNet.equals(other.basedNet)
 				|| !marcmap.equals(other.marcmap)
 				|| !valuemap.equals(other.valuemap)) return false;
-		
-		
+
 		return true;
 		
 	}
@@ -102,6 +102,13 @@ public class PetriNet implements INet, SimulatableNet,Serializable{
 		return marcmap.values().stream()
 				.reduce(true,
 						(aBoolean, anInt) -> aBoolean && (anInt >= 1),
+						Boolean::logicalAnd);
+	}
+
+	private boolean valueMapIsCorrect() {
+		return valuemap.values().stream()
+				.reduce(true,
+						(aBoolean, anInt) -> aBoolean && (anInt >= 0),
 						Boolean::logicalAnd);
 	}
 
@@ -120,6 +127,7 @@ public class PetriNet implements INet, SimulatableNet,Serializable{
 
 	public void setValuemap(Map<OrderedPair, Integer> valuemap) {
 		this.valuemap = valuemap;
+		assert valueMapIsCorrect();
 	}
 
 	public Net getBasedNet() {

@@ -69,4 +69,6 @@ public class ViewStringConstants {
 	public static final String ERR_CRITICAL_BLOCK = "La rete ha raggiunto un blocco critico!";
     public static final String ERR_ELEMENT_NAME_DOES_NOT_EXSIST = "Il nome che hai inserito non comabacia con nessuno degli elementi elencati!";
     public static final String ASK_CONTINUE_SIMULATION = "Vuoi continuare con la simulazione?";
+    public static final String MSG_NEW_MARC = "Nuova marcatura raggiunta:\n";
+    public static final String MSG_AUTOMATIC_FIRE_TRANSITION = "Transizione scatta automaticamente %s.\n";
 }

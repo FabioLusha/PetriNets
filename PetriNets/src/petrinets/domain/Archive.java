@@ -1,8 +1,9 @@
-package petrinets.net;
+package petrinets.domain;
 
 import java.io.IOException;
 import java.util.*;
 
+import petrinets.domain.net.INet;
 import systemservices.XMLmanager;
 
 public class Archive {

@@ -1,6 +1,9 @@
-package petrinets.net;
+package petrinets.domain;
 
-import java.io.Serializable;
+import petrinets.domain.net.INet;
+import petrinets.domain.net.Place;
+import petrinets.domain.net.Transition;
+
 import java.util.Map;
 import java.util.Set;
 

@@ -28,7 +28,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="4" language="java" name="petrinets.net.Net" project="PetriNets" 
+  <class id="4" language="java" name="petrinets.domain.net.Net" project="PetriNets"
     file="/PetriNets/src/petrinets/net/Net.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="-20" y="866"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -37,7 +37,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="5" language="java" name="petrinets.net.Archive" project="PetriNets" 
+  <class id="5" language="java" name="petrinets.domain.Archive" project="PetriNets"
     file="/PetriNets/src/petrinets/net/Archive.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="753" y="715"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -55,7 +55,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="7" language="java" name="petrinets.net.PetriNet" project="PetriNets" 
+  <class id="7" language="java" name="petrinets.domain.PetriNet" project="PetriNets"
     file="/PetriNets/src/petrinets/net/PetriNet.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="402" y="868"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -64,7 +64,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <interface id="8" language="java" name="petrinets.net.INet" project="PetriNets" 
+  <interface id="8" language="java" name="petrinets.domain.net.INet" project="PetriNets"
     file="/PetriNets/src/petrinets/net/INet.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="404" y="1280"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -73,7 +73,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </interface>  
-  <enumeration id="9" language="java" name="petrinets.net.OrderedPair.Direction" project="PetriNets" 
+  <enumeration id="9" language="java" name="petrinets.domain.net.OrderedPair.Direction" project="PetriNets"
     file="/PetriNets/src/petrinets/net/OrderedPair.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="22" y="1639"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -82,7 +82,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </enumeration>  
-  <class id="10" language="java" name="petrinets.net.OrderedPair" project="PetriNets" 
+  <class id="10" language="java" name="petrinets.domain.net.OrderedPair" project="PetriNets"
     file="/PetriNets/src/petrinets/net/OrderedPair.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="50" y="1367"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -91,7 +91,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="11" language="java" name="petrinets.net.Place" project="PetriNets" 
+  <class id="11" language="java" name="petrinets.domain.net.Place" project="PetriNets"
     file="/PetriNets/src/petrinets/net/Place.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="323" y="1505"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 

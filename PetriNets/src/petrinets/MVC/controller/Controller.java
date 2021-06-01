@@ -8,9 +8,9 @@ import petrinets.MVC.Model;
 import petrinets.MVC.Pair;
 import petrinets.MVC.View;
 import petrinets.MVC.ViewStringConstants;
-import petrinets.net.PetriNet;
+import petrinets.domain.PetriNet;
 
-import petrinets.net.*;
+import petrinets.domain.net.Net;
 
 
 public class Controller {

@@ -1,4 +1,4 @@
-package petrinets.net;
+package petrinets.domain.net;
 
 
 import java.io.Serializable;
