@@ -5,6 +5,7 @@ import petrinets.domain.net.*;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -51,15 +52,17 @@ public class Model {
     public boolean containsPlace(String name) {
     	return controlNet.isPlace(new Place(name));
     }
-    public boolean petriNetContainsPlace(String name) {
-    	return controlPetriNet.getBasedNet().isPlace(new Place(name));
+
+    public boolean inetContainsPlace(INet inet, String  name) {
+    	return inet.getPlaces().contains(new Place(name));
+    }
+
+    public boolean inetContainsTransition(INet inet, String name){
+        return inet.getTransitions().contains(new Transition(name));
     }
     
-    public boolean containsTransition(String name) {
+    public boolean inetContainsTransition(String name) {
     	return controlNet.isTransition(new Transition(name));
-    }
-    public boolean petriNetContainsTransition(String name){
-    	return controlPetriNet.getBasedNet().isTransition(new Transition(name));
     }
 
     public boolean addFluxElem(String placename,String transitionname, int direction) {
@@ -122,12 +125,12 @@ public class Model {
     }
 
     public List<String> getSavedNetsNames(){
-      return getSavedGenericNetsNames(Net.class.toString());
+      return getSavedGenericNetsNames(Net.class.getName());
     }
 
     private List<String> getSavedGenericNetsNames(String className){
         return netArchive.getInetMap().entrySet().stream()
-                .filter(e -> e.getValue().getClass().toString().equals(className))
+                .filter(e -> e.getValue().getClass().getName().equals(className))
                 .map(e -> e.getKey())
                 .collect(Collectors.toList());
     }
@@ -168,7 +171,7 @@ public class Model {
     }
 
     public List<String> getSavedPetriNetsNames(){
-        return getSavedGenericNetsNames(PetriNet.class.toString());
+        return getSavedGenericNetsNames(PetriNet.class.getName());
     }
 
     public List<String> getMarc(SimulatableNet petrinet){
@@ -178,7 +181,7 @@ public class Model {
                 collect(Collectors.toList());
     }
 
-    public List<String> getValues(PetriNet petrinet){
+    public List<String> getValues(SimulatableNet petrinet){
         return petrinet.getValuemap().values().stream().
                 map(e -> Integer.toString(e)).
                 collect(Collectors.toList());
@@ -202,15 +205,7 @@ public class Model {
     }
 
 
-    //PARTE SIMULATOR
-
-    public boolean containsSimulatableNet(String netName) {
-    	if(netArchive.contains(netName))
-            return netArchive.getInetMap().get(netName) instanceof SimulatableNet;
-    	
-    	return false;
-    }
-
+    //PRIORITY PETRI NET
     public boolean createPriorityPetriNet(String priorityPetriNetName, PetriNet petriNet) {
            if(netArchive.contains(priorityPetriNetName))
                return false;
@@ -218,7 +213,6 @@ public class Model {
                controlPriorityPetriNet = new PriorityPetriNet(priorityPetriNetName,petriNet);
 
            return true;
-
     }
 
     public boolean saveCurrentPriorityPetriNet() {
@@ -234,5 +228,25 @@ public class Model {
 
     public PriorityPetriNet getCurrentPriorityPetriNet() {
         return controlPriorityPetriNet;
+    }
+
+    public Map<String, Integer> getPriorityMapInString(PriorityPetriNet priorityPetriNet){
+        return priorityPetriNet.getPriorityMap().entrySet().stream()
+                .collect(Collectors.toMap(e -> e.getKey().getName(), e ->  e.getValue()));
+    }
+
+    public void changePriority(String transName, int newValue) {
+        controlPriorityPetriNet.getPriorityMap().replace(new Transition(transName),newValue);
+    }
+
+    public List<String> getSavedPriorityPetriNetsNames() {
+        return getSavedGenericNetsNames(PriorityPetriNet.class.getName());
+    }
+
+    public boolean containsPriorityPetriNet(String netname) {
+        if(netArchive.contains(netname))
+            return netArchive.getInetMap().get(netname) instanceof PriorityPetriNet;
+
+        return false;
     }
 }

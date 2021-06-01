@@ -4,8 +4,9 @@ public class ViewStringConstants {
 
     //Messaggi di interazione
     public static final String WELCOME_MESSAGE = "BENVENUTO";
-    public static final String[] MAIN_OPTIONS = { "Aggiungi una nuova rete", "Visualizza reti salvate",
-            "Aggiungi una nuova rete di petri", "Visualizza rete di petri", "Rimuovi una rete" };
+    public static final String[] MAIN_OPTIONS = { "Aggiungi una nuova rete", "Visualizza le reti salvate",
+            "Aggiungi una nuova rete di petri", "Visualizza le rete di petri salvate",
+            "Aggiungi una nuova rete di Petri con priorita'", "Visualizza le reti di Petri con priorità salvate", "Rimuovi una rete" };
 
     public static final String NET_SAVING_MENU = "INSERIMENTO RETE COMPLETATO";
     public static final String[] NET_SAVING_MENU_OPTIONS = { "Salva e torna al menu principale",
@@ -39,7 +40,7 @@ public class ViewStringConstants {
     public static final String ERR_PLACE_AS_TRANSITION = "%s e' gia presente come transizione";
     public static final String ERR_TRANSITION_AS_PLACE = "%s e' gia presente come posto";
     
-    public static final String INSERT_NET_TO_VIEW = "Inserisci il nome della rete che vuoi visualizzare:\n>";
+    public static final String INSERT_NET_TO_VIEW = "Inserisci il nome della rete che vuoi visualizzare:\n > ";
     public static final String ERR_MSG_NOT_POINTED_TRANSITION = "Transizione non puntata da alcun posto";
     public static final String ERR_MSG_NET_NAME_ALREADY_EXIST = "Nome della rete già presente!";
     
@@ -52,7 +53,7 @@ public class ViewStringConstants {
 
     
     public static final String AVAILABLE_NETS = "Reti disponibili: ";
-    public static final String INSERT_BASE_NET_NAME_FOR_PETRI = String.format(INSERT_ELEM_MSG, "Inserisci il nome della rete da utilizzare come base:\n> ");
+    public static final String INSERT_BASE_NET_NAME_FOR_PETRI = "Inserisci il nome della rete da utilizzare come base:\n > ";
 
     public static final String PETRI_NET_MENU_TITLE = "OPZIONI SULLE RETI DI PETRI";
     public static final String[] CHANGE_PETRI_NET_OPTIONS = { "Modifica valori delle marcature dei posti", "Modifica valori delle relazioni di flusso",
@@ -60,8 +61,8 @@ public class ViewStringConstants {
 	public static final String INSERT_PLACE_NAME_TO_MODIFY = "Inserisci il nome del posto di cui vuoi modificare la marcatura: \n > ";
 	public static final String ERR_PLACE_NOT_PRESENT = "Il nome del posto inserito non e' presente!";
 	public static final String ERR_FLUX_REL_NOT_PRESENT = "Relazione di flusso non presente!";
-	public static final String INSERT_NEW_MARC = "Inserisci la nuova marcatura: \n > ";
-	public static final String INSERT_NEW_VAL = "Inserisci il nuovo valore: \n > ";
+	public static final String INSERT_NEW_MARC = "Inserisci il nuovo valore della marcatura: \n > ";
+	public static final String INSERT_NEW_COST = "Inserisci il nuovo valore del costo della relazio di flusso: \n > ";
 	
 	//versione 3 (simulazione)
 	public static final String SIMULATOR_WELCOME_TITLE = "BENVENUTO";
@@ -79,4 +80,9 @@ public class ViewStringConstants {
             "Visualizza la rete di Petri con priorità che si sta modificando",
             "Salva la rete di Petri con priorità",
             "Non salvare e torna al menù principale"};
+    public static final String INSERT_TRANSITION_NAME_TO_MODIFY = "Inserisci il nome della transizione di cui vuoi modificare la priorità: \n > ";
+    public static final String ERR_TRANSITION_NOT_PRESENT = "Errore! Non esiste una transizione con questo nome!";
+    public static final String INSERT_NEW_PRIORITY = "Inserisci il nuovo valore della prioirtà: \n > ";
+    public static final String PRIORITY_PETRI_NET_INITIALIZED_DEFAULT = "La rete di Petri con priorita' e' stata creata e inizializzata con i valori di default" +
+            " (priorità = 1)\n";
 }

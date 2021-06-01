@@ -1,6 +1,7 @@
 package petrinets.domain;
 
 import petrinets.domain.net.INet;
+import petrinets.domain.net.OrderedPair;
 import petrinets.domain.net.Place;
 import petrinets.domain.net.Transition;
 
@@ -13,5 +14,5 @@ public interface SimulatableNet extends INet {
 	void fire(Transition toFire);
 	Set<Transition> getEnabledTransitions();
 	Map<Place, Integer> getMarcmap();
-	//magari aggiunger anche getValueMap
+	Map<OrderedPair, Integer> getValuemap();
 }

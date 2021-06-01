@@ -5,6 +5,7 @@ import petrinets.MVC.controller.Controller;
 
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.Map;
 
 public class View {
     private PrintWriter outputStream;
@@ -95,8 +96,8 @@ public class View {
     	StringBuilder output =  new StringBuilder();
     	output.append("Posti: \n");
         for(int i = 0; i < places.size(); i++){
-            output.append("\t" + places.get(i).toString())
-                    .append("\t" + "marcatura: " + marcs.get(i) + "\n");
+            output.append("\t" + places.get(i))
+                    .append("\t" + "- marcatura: " + marcs.get(i) + "\n");
         }
         return output.toString();
     }
@@ -106,7 +107,7 @@ public class View {
     	  output.append("Relazioni di flusso: \n");
           for(int i = 0; i < fluxRelations.size(); i++) {
               output.append("\t (" +  fluxRelations.get(i).getFirst() + " , " + fluxRelations.get(i).getSecond() + ")")
-                      .append("\t" + "costo: " + cost.get(i) + "\n");
+                      .append("\t" + "- costo: " + cost.get(i) + "\n");
           }
           return output.toString();
     }
@@ -133,6 +134,24 @@ public class View {
     public void priorityPetriNetMenu() {
         MyMenu mymenu = new MyMenu(ViewStringConstants.PRIORITY_PETRI_NET_MENU_TITLE, ViewStringConstants.CHANGE_PRIORITY_PETRI_NET_OPTIONS);
         controller.priorityPetriNetMenuChoice(mymenu.scegli());
+    }
+
+    public void printPriorityPetriNet(String netname, List<String> placesNames, List<String> marc, Map<String, Integer> transAndPriorities, List<Pair<String, String>> fluxrelations, List<String> values) {
+        StringBuilder output = new StringBuilder();
+        output.append(String.format("Nome rete con priorità: %s\n ",netname));
+        output.append(marcFormatter(placesNames, marc));
+        output.append(prioritiesFormatter(transAndPriorities));
+        output.append(fluxrelFormatter(fluxrelations,values));
+
+        printToDisplay(output.toString());
+    }
+
+    public String prioritiesFormatter(Map<String, Integer> transWithPriorities){
+        StringBuilder strb = new StringBuilder();
+        strb.append("Transizioni con priorità:\n");
+        transWithPriorities.entrySet().forEach(e -> strb.append(String.format("\t%s\t - priorità: %2d\n", e.getKey(), e.getValue())));
+
+        return strb.toString();
     }
 }
 

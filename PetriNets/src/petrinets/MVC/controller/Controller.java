@@ -3,6 +3,7 @@ package petrinets.MVC.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.Map;
 
 import petrinets.MVC.Model;
 import petrinets.MVC.Pair;
@@ -62,6 +63,7 @@ public class Controller {
 			case 2:
 			{
 				manageNetsVis();
+				view.mainMenu();
 				break;
 			}
 			case 3:
@@ -74,6 +76,15 @@ public class Controller {
 				view.mainMenu();
 				break;
 			case 5:
+				managePriorityPetriNetCreation();
+				view.priorityPetriNetMenu();
+				break;
+			case 6:
+				if(managePriorityPetriNetVis())
+					requestPrintPriorityPetriNet(view.readNotEmptyString(ViewStringConstants.INSERT_NET_TO_VIEW));
+				view.mainMenu();
+				break;
+			case 7:
 				removeNet();
 				view.mainMenu();
 				break;
@@ -118,7 +129,7 @@ public class Controller {
     }
     
     public boolean checkPlace(String name) {
-    	if(model.containsTransition(name)) {
+    	if(model.inetContainsTransition(name)) {
     		view.printToDisplay(String.format(ViewStringConstants.ERR_PLACE_AS_TRANSITION, name));
     		return false;
     	}
@@ -173,7 +184,6 @@ public class Controller {
 	private void manageNetsVis() {
 		if (model.getSavedNetsNames().isEmpty()) {
 			view.printToDisplay(ViewStringConstants.ERR_NO_NET_SAVED);
-			view.mainMenu();
 		} else {
 			view.visualizeNets(model.getSavedNetsNames());
 			requestPrintNet(view.readNotEmptyString(ViewStringConstants.INSERT_NET_TO_VIEW));
@@ -207,6 +217,7 @@ public class Controller {
 		switch (choice){
 			case 0:
 				saveAndExit();
+				break;
 			//modifica vlaore maracatura
 			case 1:
 				changeMarc();
@@ -310,7 +321,7 @@ public class Controller {
 
 		String name = view.readNotEmptyString(ViewStringConstants.INSERT_PLACE_NAME_TO_MODIFY);
 
-		if(!model.petriNetContainsPlace(name)) 
+		if(!model.inetContainsPlace(currentPetriNet, name))
 			view.printToDisplay(ViewStringConstants.ERR_PLACE_NOT_PRESENT);	
 		else {
 			int newValue  = view.getNotNegativeInt(ViewStringConstants.INSERT_NEW_MARC);
@@ -336,7 +347,7 @@ public class Controller {
 		if(!model.containsFluxRel(placeName, transitionName, direction))
 			view.printToDisplay(ViewStringConstants.ERR_FLUX_REL_NOT_PRESENT);	
 		else {
-			int newValue  = view.getNotNegativeInt(ViewStringConstants.INSERT_NEW_VAL);
+			int newValue  = view.getNotNegativeInt(ViewStringConstants.INSERT_NEW_COST);
 			model.changeFluxRelVal(placeName, transitionName, direction, newValue);
 		}
 	}
@@ -346,10 +357,11 @@ public class Controller {
 		switch (choice){
 			case 0:
 				saveAndExit();
-				//modifica vlaore maracatura
+				break;
+				//modifica vlaore priorità
 			case 1:
 				changePriority();
-				view.priorituPetriNetMenu();
+				view.priorityPetriNetMenu();
 				break;
 			//visualizza la rete
 			case 2:
@@ -376,8 +388,15 @@ public class Controller {
     	printPriorityPetriNet(model.getCurrentPriorityPetriNet());
 	}
 
-	private void printPriorityPetriNet(PriorityPetriNet currentPriorityPetriNet) {
-		//TODO
+	private void printPriorityPetriNet(PriorityPetriNet priorityPetriNet) {
+		String netname = priorityPetriNet.getName();
+		List<String> placesname = model.getPlaces(priorityPetriNet);
+		List<Pair<String,String>> fluxrelations = model.getFluxRelation(priorityPetriNet);
+		List<String> marc = model.getMarc(priorityPetriNet);
+		List<String> values = model.getValues(priorityPetriNet);
+		Map<String, Integer> transAndPriorities = model.getPriorityMapInString(priorityPetriNet);
+
+		view.printPriorityPetriNet(netname, placesname, marc, transAndPriorities, fluxrelations, values);
 	}
 
 	public void managePriorityPetriNetCreation(){
@@ -399,7 +418,44 @@ public class Controller {
 			view.mainMenu();
 		}
 
-		view.printToDisplay(ViewStringConstants.PETRI_NET_INITIALIZED_DEFAULT);
-	};
+		view.printToDisplay(ViewStringConstants.PRIORITY_PETRI_NET_INITIALIZED_DEFAULT);
+	}
+
+	public void changePriority(){
+		PriorityPetriNet currentPriorityPetriNet = model.getCurrentPriorityPetriNet();
+
+		Map<String, Integer> transPriorities = model.getPriorityMapInString(currentPriorityPetriNet);
+
+		view.printToDisplay(view.prioritiesFormatter(transPriorities));
+
+		String transName = view.readNotEmptyString(ViewStringConstants.INSERT_TRANSITION_NAME_TO_MODIFY);
+
+		if(!model.inetContainsTransition(currentPriorityPetriNet,transName))
+			view.printToDisplay(ViewStringConstants.ERR_TRANSITION_NOT_PRESENT);
+		else {
+			int newValue  = view.getNotNegativeInt(ViewStringConstants.INSERT_NEW_PRIORITY);
+			model.changePriority(transName, newValue);
+		}
+	}
+
+	public boolean managePriorityPetriNetVis() {
+    	List<String> priorityPetriNetNames = model.getSavedPriorityPetriNetsNames();
+		if (priorityPetriNetNames.isEmpty()) {
+			view.printToDisplay(ViewStringConstants.ERR_NO_NET_SAVED);
+			return false;
+		} else {
+			view.visualizeNets(priorityPetriNetNames);
+			return true;
+		}
+	}
+
+	public void requestPrintPriorityPetriNet(String netname) {
+		if(model.containsPriorityPetriNet(netname)) {
+			printPriorityPetriNet((PriorityPetriNet) model.getINet(netname));
+		}
+		else {
+			view.printToDisplay(ViewStringConstants.ERR_NET_NOT_PRESENT);
+		}
+	}
 	
 }
