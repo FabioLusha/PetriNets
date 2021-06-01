@@ -19,6 +19,7 @@ public class ViewStringConstants {
 
     public static final String INSERT_NET_NAME_MSG = String.format(INSERT_ELEM_MSG, "rete");
     public static final String INSERT_PETRI_NET_NAME_MSG = String.format(INSERT_ELEM_MSG, "rete di petri");
+    public static final String INSERT_PRIORITY_PETRI_NET_NAME_MSG = String.format(INSERT_ELEM_MSG, "rete di petri con priorita'");
     public static final String INSERT_PLACE_MSG = String.format(INSERT_ELEM_MSG, "posto");
     public static final String INSERT_TRANSITION_MSG = String.format(INSERT_ELEM_MSG, "transizione");
     public static final String INSERT_NET_NAME_TO_REMOVE = "Inserisci il nome della rete da eliminare: \n > ";
@@ -71,4 +72,11 @@ public class ViewStringConstants {
     public static final String ASK_CONTINUE_SIMULATION = "Vuoi continuare con la simulazione?";
     public static final String MSG_NEW_MARC = "Nuova marcatura raggiunta:\n";
     public static final String MSG_AUTOMATIC_FIRE_TRANSITION = "Transizione scatta automaticamente %s.\n";
+
+    //VERSIONE 4
+    public static final String PRIORITY_PETRI_NET_MENU_TITLE = "CONFIGURAZIONE RETI DI PETRI CON PRIORITA'";
+    public static final String[] CHANGE_PRIORITY_PETRI_NET_OPTIONS = { "Modifica valori delle priorità",
+            "Visualizza la rete di Petri con priorità che si sta modificando",
+            "Salva la rete di Petri con priorità",
+            "Non salvare e torna al menù principale"};
 }

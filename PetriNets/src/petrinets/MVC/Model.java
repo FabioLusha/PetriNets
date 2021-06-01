@@ -18,6 +18,7 @@ public class Model {
 
     private Net controlNet;
     private PetriNet controlPetriNet;
+    private PriorityPetriNet controlPriorityPetriNet;
     
 
     public Model(Archive netArchive){
@@ -131,7 +132,7 @@ public class Model {
                 .collect(Collectors.toList());
     }
 
-    public INet getNet(String netName) {
+    public INet getINet(String netName) {
 	  assert netArchive.contains(netName);
 
       return netArchive.getInetMap().get(netName);
@@ -209,5 +210,29 @@ public class Model {
     	
     	return false;
     }
-    
+
+    public boolean createPriorityPetriNet(String priorityPetriNetName, PetriNet petriNet) {
+           if(netArchive.contains(priorityPetriNetName))
+               return false;
+           else
+               controlPriorityPetriNet = new PriorityPetriNet(priorityPetriNetName,petriNet);
+
+           return true;
+
+    }
+
+    public boolean saveCurrentPriorityPetriNet() {
+
+        if(netArchive.containsValue(controlPriorityPetriNet))
+            return false;
+
+        netArchive.add(controlPriorityPetriNet.getName(), controlPriorityPetriNet);
+        controlPetriNet = null;
+        return true;
+    }
+
+
+    public PriorityPetriNet getCurrentPriorityPetriNet() {
+        return controlPriorityPetriNet;
+    }
 }

@@ -13,5 +13,5 @@ public interface SimulatableNet extends INet {
 	void fire(Transition toFire);
 	Set<Transition> getEnabledTransitions();
 	Map<Place, Integer> getMarcmap();
-
+	//magari aggiunger anche getValueMap
 }

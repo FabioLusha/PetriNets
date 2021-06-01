@@ -10,6 +10,7 @@ import petrinets.MVC.View;
 import petrinets.MVC.ViewStringConstants;
 import petrinets.domain.PetriNet;
 
+import petrinets.domain.PriorityPetriNet;
 import petrinets.domain.net.Net;
 
 
@@ -157,7 +158,7 @@ public class Controller {
     
     public void requestPrintNet(String netname) {
 		if(model.containsNet(netname)) {
-			Net net = (Net) model.getNet(netname);
+			Net net = (Net) model.getINet(netname);
 			List<String> placesname = model.getPlaces(net);
 			List<String> transitionsname = model.getTransitions(net);
 			List<Pair<String,String>> fluxrelations = model.getFluxRelation(net);
@@ -228,7 +229,6 @@ public class Controller {
 				view.mainMenu();
 				break;
 			case 5:
-				model.remove(model.getCurrentPetriNet().getName());
 				view.mainMenu();
 				break;
 			default:
@@ -247,7 +247,7 @@ public class Controller {
     	
     	if(model.containsINet(netname)) {
     		petrinetname = view.readNotEmptyString(ViewStringConstants.INSERT_PETRI_NET_NAME_MSG);
-    		if(!model.createPetriNet(petrinetname, (Net) model.getNet(netname))) {
+    		if(!model.createPetriNet(petrinetname, (Net) model.getINet(netname))) {
 				view.printToDisplay(ViewStringConstants.ERR_MSG_NET_NAME_ALREADY_EXIST);
 				view.mainMenu();
 			}
@@ -279,7 +279,7 @@ public class Controller {
 
 	public void requestPrintPetriNet(String netname) {
 		if(model.containsPetriNet(netname)) {
-			PetriNet petriNet = (PetriNet) model.getNet(netname);
+			PetriNet petriNet = (PetriNet) model.getINet(netname);
 			printPetriNet(petriNet);
 		}
 		else {
@@ -340,6 +340,66 @@ public class Controller {
 			model.changeFluxRelVal(placeName, transitionName, direction, newValue);
 		}
 	}
-	
+
+	//PARTE RETI DI PETRI CON PRIORITA'
+	public void priorityPetriNetMenuChoice(int choice) {
+		switch (choice){
+			case 0:
+				saveAndExit();
+				//modifica vlaore maracatura
+			case 1:
+				changePriority();
+				view.priorituPetriNetMenu();
+				break;
+			//visualizza la rete
+			case 2:
+				visualizeCurrentPriorityPetriNet();
+				view.priorityPetriNetMenu();
+				break;
+			case 3:
+				if(!model.saveCurrentPriorityPetriNet()) {
+					view.printToDisplay(ViewStringConstants.ERR_NET_ALREADY_PRESENT);
+				}
+
+				view.mainMenu();
+				break;
+			case 4:
+				view.mainMenu();
+				break;
+			default:
+				view.petriNetMenu();
+				break;
+		}
+	}
+
+	private void visualizeCurrentPriorityPetriNet() {
+    	printPriorityPetriNet(model.getCurrentPriorityPetriNet());
+	}
+
+	private void printPriorityPetriNet(PriorityPetriNet currentPriorityPetriNet) {
+		//TODO
+	}
+
+	public void managePriorityPetriNetCreation(){
+		String pPetriNetName;
+		String petriNetName;
+
+		view.visualizeNets(model.getSavedPetriNetsNames());
+		petriNetName = view.readNotEmptyString(ViewStringConstants.INSERT_PETRI_NET_NAME_MSG);
+
+		if(model.containsINet(petriNetName)) {
+			pPetriNetName = view.readNotEmptyString(ViewStringConstants.INSERT_PRIORITY_PETRI_NET_NAME_MSG);
+			if(!model.createPriorityPetriNet(pPetriNetName, (PetriNet) model.getINet(petriNetName))) {
+				view.printToDisplay(ViewStringConstants.ERR_MSG_NET_NAME_ALREADY_EXIST);
+				view.mainMenu();
+			}
+
+		}else {
+			view.printToDisplay(ViewStringConstants.ERR_NET_NOT_PRESENT);
+			view.mainMenu();
+		}
+
+		view.printToDisplay(ViewStringConstants.PETRI_NET_INITIALIZED_DEFAULT);
+	};
 	
 }

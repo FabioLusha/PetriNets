@@ -127,7 +127,12 @@ public class View {
     public int getNotNegativeInt(String message) {
         return InputDati.leggiInteroNonNegativo(message);
     }
-    
-    
+
+
+    //RETI DI PETRI CON PRIORITA'
+    public void priorityPetriNetMenu() {
+        MyMenu mymenu = new MyMenu(ViewStringConstants.PRIORITY_PETRI_NET_MENU_TITLE, ViewStringConstants.CHANGE_PRIORITY_PETRI_NET_OPTIONS);
+        controller.priorityPetriNetMenuChoice(mymenu.scegli());
+    }
 }
 

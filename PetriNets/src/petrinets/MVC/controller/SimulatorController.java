@@ -46,7 +46,7 @@ public class SimulatorController {
 			String netname = simView.readNotEmpyString(ViewStringConstants.INSERT_PETRI_NET_NAME_MSG);
 			if (model.containsPetriNet(netname)) {
 				mainController.requestPrintPetriNet(netname);
-				SimulatableNet net = (SimulatableNet) model.getNet(netname);
+				SimulatableNet net = (SimulatableNet) model.getINet(netname);
 				netToSimulate = (SimulatableNet) SerializationUtils.clone(net);
 				simulate();
 			} else {
