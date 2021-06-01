@@ -171,7 +171,7 @@ public class Model {
 
     public List<String> getMarc(SimulatableNet petrinet){
       
-        return petrinet.getMarking().values().stream().
+        return petrinet.getMarcmap().values().stream().
                 map(e -> Integer.toString(e)).
                 collect(Collectors.toList());
     }
@@ -191,7 +191,7 @@ public class Model {
     }
     
     public void changeMarc(String name, int newValue) {
-    	controlPetriNet.getMarking().replace(new Place(name), newValue);
+    	controlPetriNet.getMarcmap().replace(new Place(name), newValue);
     	
     }
 

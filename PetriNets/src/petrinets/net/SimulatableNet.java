@@ -9,6 +9,6 @@ public interface SimulatableNet extends Serializable,INet {
 
 	void fire(Transition toFire);
 	Set<Transition> getEnabledTransitions();
-	Map<Place, Integer> getMarking();
+	Map<Place, Integer> getMarcmap();
 
 }

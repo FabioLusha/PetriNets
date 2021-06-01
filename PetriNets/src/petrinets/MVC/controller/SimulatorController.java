@@ -17,8 +17,10 @@ public class SimulatorController {
 
 	private SimulatableNet netToSimulate;
 
-	public SimulatorController(View mainView) {
+	public SimulatorController(View mainView, Controller pcontroller, Model pmodel) {
 		simView = new SimulatorView(this, mainView);
+		mainController = pcontroller;
+		model = pmodel;
 		simView.mainMenu();
 	}
 	
@@ -39,58 +41,60 @@ public class SimulatorController {
 	}
 
 	private void simulatePetriNet() {
-		if(mainController.menagePetriNetVis())
+		if (mainController.menagePetriNetVis()) {
 			//richiedi il nome della rete da simulare;
-			if(mainController.managePetriNetCreation();) {
+			String netname = simView.readNotEmpyString(ViewStringConstants.INSERT_PETRI_NET_NAME_MSG);
+			if (model.containsPetriNet(netname)) {
+				mainController.requestPrintPetriNet(netname);
+				SimulatableNet net = (SimulatableNet) model.getNet(netname);
+				netToSimulate = (SimulatableNet) SerializationUtils.clone(net);
 				simulate();
+			} else {
+				simView.print(ViewStringConstants.ERR_NET_NOT_PRESENT);
+
 
 			}
+		}
 	}
 
 	private void exitWithoutSaving() {
 		System.exit(0);
 	}
-	
-	private boolean requestNetToSimulateName() {
 
-		String input = simView.readNotEmpyString(ViewStringConstants.INSERT_NET_NAME_MSG);
 
-		if(model.containsSimulatableNet(input)) {
-			SimulatableNet net = (SimulatableNet) model.getNet(input);
-			netToSimulate = (SimulatableNet) SerializationUtils.clone(net);
-			return true;
-		}else {
-			simView.print(ViewStringConstants.ERR_NET_NOT_PRESENT);
-			return false;
-		}
-		
-			
-	}
-	
 	private void simulate() {
 		Collection<Transition> activeTransitions = netToSimulate.getEnabledTransitions();
 		
 		if(activeTransitions.isEmpty()) {
 			simView.print(ViewStringConstants.ERR_CRITICAL_BLOCK);
+			simView.mainMenu();
 		}else {
 			List<String> listNames =
 					activeTransitions.stream().
 					map(e -> e.getName()).
 					collect(Collectors.toList());
 
+
 			simView.printActiveTransitions(listNames);
-			String name = simView.readNotEmpyString(ViewStringConstants.INSERT_TRANSITION_MSG);
 
-			if(activeTransitions.contains(new Transition(name))) {
-				netToSimulate.fire(new Transition(name));
-			} else{
-				simView.print(ViewStringConstants.ERR_ELEMENT_NAME_DOES_NOT_EXSIST);
+			while(true) {
+				String name = simView.readNotEmpyString(ViewStringConstants.INSERT_TRANSITION_MSG);
+
+				if (activeTransitions.contains(new Transition(name))) {
+					netToSimulate.fire(new Transition(name));
+					simView.printMarking(model.getPlaces(netToSimulate), model.getMarc(netToSimulate));
+					break;
+				} else {
+					simView.print(ViewStringConstants.ERR_ELEMENT_NAME_DOES_NOT_EXSIST);
+					continue;
+				}
 			}
+
+			if(simView.userInputContinueAdding(ViewStringConstants.ASK_CONTINUE_SIMULATION))
+				simulate();
+			else
+				simView.mainMenu();
 		}
-	}
-
-	private void printMarking(SimulatableNet netToSimulate) {
-
 	}
 
 }

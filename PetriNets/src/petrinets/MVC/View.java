@@ -64,8 +64,8 @@ public class View {
     	controller.addFluxRel(placename, transitionname, direction);
     }
     
-    public void userInputContinueAdding() {
-    	controller.continueAddingElement(InputDati.yesOrNo(ViewStringConstants.CONTINUE_ADDING_QUESTION));
+    public boolean userInputContinueAdding(String message) {
+    	return InputDati.yesOrNo(message);
     }
     
     public void saveMenu() {

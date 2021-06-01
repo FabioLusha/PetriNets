@@ -1,11 +1,12 @@
 package petrinets.net;
 
 
+import java.io.Serializable;
 import java.util.*;
 
 
 
-public class OrderedPair {
+public class OrderedPair implements Serializable {
 	//Enum che stabilisce la direzione tra i due elementi
 	public static enum Direction {
 		pt,

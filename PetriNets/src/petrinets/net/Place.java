@@ -1,11 +1,12 @@
 package petrinets.net;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Place {
+public class Place implements Serializable {
 	private String name;
 	
-	//Costruttuore vuoto poichè è richiesto dallo standard beans per utilizzare XMLSerializer
+	//Costruttuore vuoto poichï¿½ ï¿½ richiesto dallo standard beans per utilizzare XMLSerializer
 	public Place(){}
 	
 	public String getName() {

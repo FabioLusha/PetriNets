@@ -6,7 +6,7 @@ import java.util.*;
 
 
 public class PetriNet implements INet, SimulatableNet,Serializable{
-	private Map<Place,Integer> marking;
+	private Map<Place,Integer> marcmap;
 	private Map<OrderedPair, Integer>  valuemap;
 	private Net basedNet;
 	private String name;
@@ -16,10 +16,10 @@ public class PetriNet implements INet, SimulatableNet,Serializable{
 		name = pname;
 		basedNet = pbasedNet;
 		
-		marking = new HashMap<>();
+		marcmap = new HashMap<>();
 		valuemap = new HashMap<>();
 		
-		basedNet.getPlaces().forEach(e -> marking.put(e, 1));
+		basedNet.getPlaces().forEach(e -> marcmap.put(e, 1));
 		basedNet.getFluxRelation().forEach(e -> valuemap.put(e, 0));
 
 	}
@@ -30,7 +30,7 @@ public class PetriNet implements INet, SimulatableNet,Serializable{
 		var pred = this.getBasedNet().getPreviousPlaces(toFire);
 		var succ = this.getBasedNet().getSuccessorPlaces(toFire);
 		
-		for(var placeMark : marking.entrySet()) {
+		for(var placeMark : marcmap.entrySet()) {
 
 			if(pred.contains(placeMark.getKey())) {
 				var tmpOrderedPair = new OrderedPair(placeMark.getKey(), toFire);
@@ -48,12 +48,17 @@ public class PetriNet implements INet, SimulatableNet,Serializable{
 
 	public Set<Transition> getEnabledTransitions(){
 		Set<Transition> transCollection = new HashSet<>();
+
 		for(Transition transition : basedNet.getTransitions()) {
+			boolean isEnabled = true;
 			for(Place place : basedNet.getPreviousPlaces(transition)) {
-				if(marking.get(place) >= valuemap.get(new OrderedPair(place,transition))) {
-					transCollection.add(transition);
+				if(  !(marcmap.get(place) >= valuemap.get(new OrderedPair(place,transition))) ) {
+					isEnabled = false;
+					break;
 				}
 			}
+			if(isEnabled)
+				transCollection.add(transition);
 		}
 		
 		return transCollection;
@@ -63,7 +68,7 @@ public class PetriNet implements INet, SimulatableNet,Serializable{
 		StringBuilder output = new StringBuilder();
 		output.append("Nome: " + this.getName()+ "\n");
 		output.append("Posti: \n");
-		getMarking().forEach((p, v) -> output.append("-" + p.getName() + "    marcatura: " + v + "\n"));
+		getMarcmap().forEach((p, v) -> output.append("-" + p.getName() + "    marcatura: " + v + "\n"));
 		output.append("Transizioni: \n");
 		getValuemap().forEach((p,v) -> output.append("-" + p.getCurrentPlace().getName() + "->" + p.getCurrentTransition().getName() + "    valore: " + v + "\n"));
 		return output.toString();
@@ -81,7 +86,7 @@ public class PetriNet implements INet, SimulatableNet,Serializable{
 		final PetriNet other = (PetriNet) obj;
 		
 		if(!basedNet.equals(other.basedNet)
-				|| !marking.equals(other.marking)
+				|| !marcmap.equals(other.marcmap)
 				|| !valuemap.equals(other.valuemap)) return false;
 		
 		
@@ -90,22 +95,22 @@ public class PetriNet implements INet, SimulatableNet,Serializable{
 	}
 	
 	public int hashCode(){
-		return Objects.hash(name, basedNet, marking, valuemap);
+		return Objects.hash(name, basedNet, marcmap, valuemap);
 	}
 
 	private boolean markingIsCorrect() {
-		return marking.values().stream()
+		return marcmap.values().stream()
 				.reduce(true,
 						(aBoolean, anInt) -> aBoolean && (anInt >= 1),
 						Boolean::logicalAnd);
 	}
 
-	public Map<Place, Integer> getMarking() {
-		return marking;
+	public Map<Place, Integer> getMarcmap() {
+		return marcmap;
 	}
 
-	public void setMarking(Map<Place, Integer> marking) {
-		this.marking = marking;
+	public void setMarcmap(Map<Place, Integer> marcmap) {
+		this.marcmap = marcmap;
 		assert markingIsCorrect();
 	}
 

@@ -30,14 +30,14 @@ public class Net implements INet {
 	
 	public List<Place> getPreviousPlaces(Transition trans){
 		return fluxRelation.stream().
-				filter(e -> e.getCurrentTransition() == trans  && e.getDirection() == OrderedPair.Direction.pt).
+				filter(e -> e.getCurrentTransition().equals(trans)  && e.getDirection() == OrderedPair.Direction.pt).
 				map(e -> e.getCurrentPlace()).
 				collect(Collectors.toList());
 	}
 	
 	public List<Place> getSuccessorPlaces(Transition trans){
 		return fluxRelation.stream().
-				filter(e -> e.getCurrentTransition() == trans  && e.getDirection() == OrderedPair.Direction.tp).
+				filter(e -> e.getCurrentTransition().equals(trans)  && e.getDirection() == OrderedPair.Direction.tp).
 				map(e -> e.getCurrentPlace()).
 				collect(Collectors.toList());
 	}

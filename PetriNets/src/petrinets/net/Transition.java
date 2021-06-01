@@ -1,8 +1,9 @@
 package petrinets.net;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Transition {
+public class Transition implements Serializable {
 	private String name;
 
 	public Transition(){}

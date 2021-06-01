@@ -40,7 +40,7 @@ public class Controller {
 				break;
 			//scelto fruitore
 			case 2:
-				new SimulatorController(view);
+				new SimulatorController(view, this, model);
 				break;
 			default:
 				view.loginMenu();
@@ -102,13 +102,14 @@ public class Controller {
         		if(!model.addFluxElem(place, transitions, direction)) {
         			view.printToDisplay(ViewStringConstants.ERR_MSG_FLUX_ELEM_ALREADY_EXSISTS);
         		}
-        		view.userInputContinueAdding();;
+        		continueAddingElement();
         	}
         }
 
     }
     
-    public void continueAddingElement(boolean userchoice) {
+    public void continueAddingElement() {
+    	boolean userchoice = view.userInputContinueAdding(ViewStringConstants.CONTINUE_ADDING_QUESTION);
     	if(userchoice) {
     		view.addFluxElement();
     	}else
@@ -184,7 +185,7 @@ public class Controller {
 		} catch(IOException e) {
 			view.printToDisplay(e.getMessage());
 		}
-		System.exit(0);
+		view.loginMenu();
 	}
     
     public void removeNet(){
@@ -256,7 +257,7 @@ public class Controller {
     }
 
 	public void visualizeCurrentPetriNet() {
-    	requestPrintPetriNet(model.getCurrentPetriNet().getName());
+    	printPetriNet(model.getCurrentPetriNet());
 	}
 
 	public boolean menagePetriNetVis() {

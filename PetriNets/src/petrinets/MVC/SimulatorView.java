@@ -2,6 +2,7 @@ package petrinets.MVC;
 
 import java.util.List;
 
+import it.unibs.fp.mylib.InputDati;
 import it.unibs.fp.mylib.MyMenu;
 import petrinets.MVC.controller.SimulatorController;
 
@@ -18,7 +19,10 @@ public class SimulatorView {
 		MyMenu mainMenu = new MyMenu(ViewStringConstants.SIMULATOR_WELCOME_TITLE, ViewStringConstants.SIMULATOR_WELCOME_OPTIONS);
 		simController.mainMenuChoice(mainMenu.scegli());
 	}
-	
+
+    public boolean userInputContinueAdding(String message) {
+        return mainView.userInputContinueAdding(message);
+    }
     public void print(String ErrMsg){
         mainView.printToDisplay(ErrMsg);;
     }
@@ -44,6 +48,10 @@ public class SimulatorView {
 		
 		print(output.toString());
 	}
-	
 
+
+	public void printMarking(List<String> places, List<String> marc) {
+		String mark = mainView.marcFormatter(places, marc);
+		print(mark);
+	}
 }
