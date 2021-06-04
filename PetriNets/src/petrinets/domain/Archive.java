@@ -8,7 +8,7 @@ import systemservices.XMLmanager;
 
 public class Archive {
 	
-	private static XMLmanager<Map<String, INet>> mapXMLmanager = new XMLmanager<>("nets.xml");
+	private  XMLmanager<Map<String, INet>> mapXMLmanager;
 	
 	private static Archive instance;
 
@@ -21,14 +21,9 @@ public class Archive {
     	}
     	return instance;
     }
-
-    private Archive(Map<String, INet> pinetMap){
-        inetMap = pinetMap;
-    }
-    
  
     private Archive() throws IOException{
-    
+    		mapXMLmanager = new XMLmanager<>("nets.xml");
         	if (!(mapXMLmanager.isEmpty())) {
         	    try {
                     inetMap = (Map<String, INet>) mapXMLmanager.deserializeFromXML();

@@ -127,6 +127,7 @@ public class Model {
     public List<String> getSavedNetsNames(){
       return getSavedGenericNetsNames(Net.class.getName());
     }
+    
 
     private List<String> getSavedGenericNetsNames(String className){
         return netArchive.getInetMap().entrySet().stream()
@@ -141,7 +142,9 @@ public class Model {
       return netArchive.getInetMap().get(netName);
   }
 
-
+    public void saveINet(INet inet) {
+    	netArchive.add(inet.getName(), inet);
+    }
     //PARTE RETE PETRI
     public boolean saveCurrentPetriNet() {
     	

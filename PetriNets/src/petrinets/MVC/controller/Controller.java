@@ -12,7 +12,9 @@ import petrinets.MVC.ViewStringConstants;
 import petrinets.domain.PetriNet;
 
 import petrinets.domain.PriorityPetriNet;
+import petrinets.domain.net.INet;
 import petrinets.domain.net.Net;
+import systemservices.NetImportExport;
 
 
 public class Controller {
@@ -86,6 +88,15 @@ public class Controller {
 				break;
 			case 7:
 				removeNet();
+				view.mainMenu();
+				break;
+			case 8:
+				exportNet();
+				view.mainMenu();
+				break;
+				
+			case 9:
+				importNet();
 				view.mainMenu();
 				break;
 			default:
@@ -455,6 +466,46 @@ public class Controller {
 		}
 		else {
 			view.printToDisplay(ViewStringConstants.ERR_NET_NOT_PRESENT);
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	//Versione 5
+	
+	public void exportNet() {
+		List<String> savedNetsName = model.getSavedNetsNames();
+		savedNetsName.addAll(model.getSavedPetriNetsNames());
+		savedNetsName.addAll(model.getSavedPriorityPetriNetsNames());
+
+		if (savedNetsName.isEmpty()) {
+			view.printToDisplay(ViewStringConstants.ERR_NO_NET_SAVED);
+		} else {
+			view.visualizeNets(savedNetsName);
+			String netName = view.readNotEmptyString(ViewStringConstants.INSERT_NET_TO_VIEW);
+			if(savedNetsName.contains(netName)) {
+				try {
+					NetImportExport.exportINet(model.getINet(netName));
+				} catch (IOException e) {
+					view.printToDisplay(ViewStringConstants.ERR_NET_EXPORT + e.getMessage());
+				}
+			}
+		}
+	}
+	
+	
+	public void importNet() {
+		view.printToDisplay(ViewStringConstants.MSG_DIR);
+		String fileName = view.readNotEmptyString(ViewStringConstants.INSERT_NET_NAME_IMPORT);
+		try {
+			INet importedNet = NetImportExport.importNet(fileName);
+			model.saveINet(importedNet);
+		} catch (IOException e) {
+			view.printToDisplay(ViewStringConstants.ERR_NET_IMPORT + e.getMessage());
 		}
 	}
 	

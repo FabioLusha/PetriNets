@@ -10,9 +10,12 @@ import java.io.IOException;
 public class XMLmanager<T> {
 
 	private String filename;
+	private File file;
 
-	public XMLmanager(String pfilename) {
+	public XMLmanager(String pfilename) throws IOException {
 		this.filename = pfilename;
+		file = new File(filename);
+		file.createNewFile();
 	}
 
 	public T deserializeFromXML() throws IOException {
@@ -34,9 +37,9 @@ public class XMLmanager<T> {
 		fos.close();
 	}
 
-	public boolean isEmpty() throws IOException {
-		File file = new File(filename);
-			if (!file.createNewFile()  && file.length() != 0) {
+	public boolean isEmpty() {
+		
+			if (file.length() != 0) {
 				return false;
 			} else 
 				return true;

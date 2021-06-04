@@ -6,7 +6,8 @@ public class ViewStringConstants {
     public static final String WELCOME_MESSAGE = "BENVENUTO";
     public static final String[] MAIN_OPTIONS = { "Aggiungi una nuova rete", "Visualizza le reti salvate",
             "Aggiungi una nuova rete di petri", "Visualizza le rete di petri salvate",
-            "Aggiungi una nuova rete di Petri con priorita'", "Visualizza le reti di Petri con priorit√† salvate", "Rimuovi una rete" };
+            "Aggiungi una nuova rete di Petri con priorita'", "Visualizza le reti di Petri con priorita'†salvate", "Rimuovi una rete" , 
+            "Esporta una singola rete", "Importa una singola rete"};
 
     public static final String NET_SAVING_MENU = "INSERIMENTO RETE COMPLETATO";
     public static final String[] NET_SAVING_MENU_OPTIONS = { "Salva e torna al menu principale",
@@ -42,14 +43,14 @@ public class ViewStringConstants {
     
     public static final String INSERT_NET_TO_VIEW = "Inserisci il nome della rete che vuoi visualizzare:\n > ";
     public static final String ERR_MSG_NOT_POINTED_TRANSITION = "Transizione non puntata da alcun posto";
-    public static final String ERR_MSG_NET_NAME_ALREADY_EXIST = "Nome della rete gi√† presente!";
+    public static final String ERR_MSG_NET_NAME_ALREADY_EXIST = "Nome della rete gia'† presente!";
     
 
     public static final String ERR_NET_ALREADY_PRESENT = "Esiste gia' una rete con la topologia che hai inserito!";
     public static final String ERR_NET_NOT_PRESENT = "Non ci sono reti salvate con questo nome";
     
     public static final String ERR_NO_NET_SAVED = "Non ci sono reti salvate";
-    public static final String ERR_MSG_DESERIALIZATION_FAILED = "Atenzione! Non √® stato posibile caricare le reti salvate. E' stato inizializzato un nuvo archivio.";
+    public static final String ERR_MSG_DESERIALIZATION_FAILED = "Atenzione! Non a'® stato posibile caricare le reti salvate. E' stato inizializzato un nuvo archivio.";
 
     
     public static final String AVAILABLE_NETS = "Reti disponibili: ";
@@ -76,13 +77,18 @@ public class ViewStringConstants {
 
     //VERSIONE 4
     public static final String PRIORITY_PETRI_NET_MENU_TITLE = "CONFIGURAZIONE RETI DI PETRI CON PRIORITA'";
-    public static final String[] CHANGE_PRIORITY_PETRI_NET_OPTIONS = { "Modifica valori delle priorit√†",
-            "Visualizza la rete di Petri con priorit√† che si sta modificando",
-            "Salva la rete di Petri con priorit√†",
-            "Non salvare e torna al men√π principale"};
-    public static final String INSERT_TRANSITION_NAME_TO_MODIFY = "Inserisci il nome della transizione di cui vuoi modificare la priorit√†: \n > ";
+    public static final String[] CHANGE_PRIORITY_PETRI_NET_OPTIONS = { "Modifica valori delle priorita'†",
+            "Visualizza la rete di Petri con priorita'† che si sta modificando",
+            "Salva la rete di Petri con priorita'†",
+            "Non salvare e torna al mena'π principale"};
+    public static final String INSERT_TRANSITION_NAME_TO_MODIFY = "Inserisci il nome della transizione di cui vuoi modificare la priorita'†: \n > ";
     public static final String ERR_TRANSITION_NOT_PRESENT = "Errore! Non esiste una transizione con questo nome!";
-    public static final String INSERT_NEW_PRIORITY = "Inserisci il nuovo valore della prioirt√†: \n > ";
+    public static final String INSERT_NEW_PRIORITY = "Inserisci il nuovo valore della prioirta'†: \n > ";
     public static final String PRIORITY_PETRI_NET_INITIALIZED_DEFAULT = "La rete di Petri con priorita' e' stata creata e inizializzata con i valori di default" +
-            " (priorit√† = 1)\n";
+            " (priorita'† = 1)\n";
+	public static final String ERR_NET_EXPORT = "Errore nell'esportazione della rete \n";
+	public static final String ERR_NET_IMPORT = "Errore nell'importazione della rete \n";
+
+	public static final String INSERT_NET_NAME_IMPORT = "Inserisci il nome del file che contiene la rete: ";
+	public static final String MSG_DIR = "ATTENZIONE: Il file deve trovarsi nella cartella in cui gira l'applicazione!";
 }
