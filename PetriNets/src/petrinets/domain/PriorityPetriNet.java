@@ -7,10 +7,11 @@ import petrinets.domain.net.Transition;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
-public class PriorityPetriNet extends PetriNet implements SimulatableNet {
-    private PetriNet basePatriNet;
+public class PriorityPetriNet implements SimulatableNet {
+    private PetriNet basedPetriNet;
     private Map<Transition, Integer> priorityMap;
     private String name;
 
@@ -21,19 +22,19 @@ public class PriorityPetriNet extends PetriNet implements SimulatableNet {
     public PriorityPetriNet(String pname, PetriNet pPetriNet){
 
         name = pname;
-        basePatriNet = pPetriNet;
+        basedPetriNet = pPetriNet;
 
         priorityMap = new LinkedHashMap<>();
-        basePatriNet.getBasedNet().getTransitions().forEach(e -> priorityMap.put(e,1));
+        basedPetriNet.getBasedNet().getTransitions().forEach(e -> priorityMap.put(e,1));
 
     }
 
     public PetriNet getBasePatriNet() {
-        return basePatriNet;
+        return basedPetriNet;
     }
 
     public void setBasePatriNet(PetriNet basePatriNet) {
-        this.basePatriNet = basePatriNet;
+        this.basedPetriNet = basePatriNet;
     }
 
     public Map<Transition, Integer> getPriorityMap() {
@@ -54,27 +55,27 @@ public class PriorityPetriNet extends PetriNet implements SimulatableNet {
 
     @Override
     public Set<Place> getPlaces() {
-        return basePatriNet.getPlaces();
+        return basedPetriNet.getPlaces();
     }
 
     @Override
     public Set<Transition> getTransitions() {
-        return basePatriNet.getTransitions();
+        return basedPetriNet.getTransitions();
     }
 
     @Override
     public Set<OrderedPair> getFluxRelation() {
-        return basePatriNet.getFluxRelation();
+        return basedPetriNet.getFluxRelation();
     }
 
     @Override
     public void fire(Transition toFire) {
         //il comportamento dello scatto della transizione è identico a quella di una rete di petri normale
-       basePatriNet.fire(toFire);
+       basedPetriNet.fire(toFire);
     }
     @Override
     public Set<Transition> getEnabledTransitions() {
-        Set<Transition> petriNetEnabled = basePatriNet.getEnabledTransitions();
+        Set<Transition> petriNetEnabled = basedPetriNet.getEnabledTransitions();
         int maxPriority = priorityMap.entrySet().stream()
                 .filter(e -> petriNetEnabled.contains(e.getKey()))
                 .map(Map.Entry::getValue)
@@ -86,11 +87,36 @@ public class PriorityPetriNet extends PetriNet implements SimulatableNet {
 
     @Override
     public Map<Place, Integer> getMarcmap() {
-        return basePatriNet.getMarcmap();
+        return basedPetriNet.getMarcmap();
     }
 
     @Override
     public Map<OrderedPair, Integer> getValuemap() {
-        return basePatriNet.getValuemap();
+        return basedPetriNet.getValuemap();
     }
+    
+    
+    public boolean equals(Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (obj.getClass() != this.getClass() || obj == null) {
+			return false;
+		}
+
+		final PriorityPetriNet other = (PriorityPetriNet) obj;
+		
+		
+		
+		if(!basedPetriNet.equals(other.basedPetriNet)
+				|| !priorityMap.equals(other.priorityMap))
+		   return false;
+
+		return true;
+		
+	}
+    
+	public int hashCode(){
+		return Objects.hash(name, basedPetriNet, priorityMap);
+	}
 }

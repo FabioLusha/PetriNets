@@ -12,13 +12,12 @@ public class Archive {
 	
 	private static Archive instance;
 
-	private static  Map<String, INet> inetMap;
+	private  Map<String, INet> inetMap;
     
     //per l'eccezione guarda il metodo open()
     public static Archive getInstance() throws IOException{
     	if(instance == null) {
-    		open();
-    		instance = new Archive(inetMap);
+    		instance = new Archive();
     	}
     	return instance;
     }
@@ -27,12 +26,8 @@ public class Archive {
         inetMap = pinetMap;
     }
     
-    private Archive() {
-        inetMap = new HashMap<>();
-    }
-    
  
-    public static void open() throws IOException{
+    private Archive() throws IOException{
     
         	if (!(mapXMLmanager.isEmpty())) {
         	    try {
@@ -54,7 +49,7 @@ public class Archive {
     }
 
     public void setInetMap(Map<String, INet> inetMap) {
-        Archive.inetMap = inetMap;
+        this.inetMap = inetMap;
     }
 
     public void add(String name, INet net){

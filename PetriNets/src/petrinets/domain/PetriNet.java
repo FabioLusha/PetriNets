@@ -88,7 +88,8 @@ public class PetriNet implements INet, SimulatableNet {
 		
 		if(!basedNet.equals(other.basedNet)
 				|| !marcmap.equals(other.marcmap)
-				|| !valuemap.equals(other.valuemap)) return false;
+				|| !valuemap.equals(other.valuemap)
+				) return false;
 
 		return true;
 		

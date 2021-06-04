@@ -221,7 +221,7 @@ public class Model {
             return false;
 
         netArchive.add(controlPriorityPetriNet.getName(), controlPriorityPetriNet);
-        controlPetriNet = null;
+        controlPriorityPetriNet = null;
         return true;
     }
 
