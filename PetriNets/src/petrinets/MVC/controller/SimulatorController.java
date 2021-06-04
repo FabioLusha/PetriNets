@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.SerializationUtils;
 
 import petrinets.MVC.*;
+import petrinets.domain.PetriNet;
 import petrinets.domain.SimulatableNet;
 import petrinets.domain.net.Transition;
 
@@ -34,6 +35,10 @@ public class SimulatorController {
 			simulatePetriNet();
 
 			break;
+		case 2:
+			simulatePriorityPetriNet();
+			
+			break;
 		default:
 			simView.mainMenu();
 			break;
@@ -46,6 +51,23 @@ public class SimulatorController {
 			String netname = simView.readNotEmpyString(ViewStringConstants.INSERT_PETRI_NET_NAME_MSG);
 			if (model.containsPetriNet(netname)) {
 				mainController.requestPrintPetriNet(netname);
+				SimulatableNet net = (SimulatableNet) model.getINet(netname);
+				netToSimulate = (SimulatableNet) SerializationUtils.clone(net);
+				simulate();
+			} else {
+				simView.print(ViewStringConstants.ERR_NET_NOT_PRESENT);
+				simView.mainMenu();
+
+			}
+		}
+	}
+	
+	private void simulatePriorityPetriNet() {
+		if (mainController.managePriorityPetriNetVis()) {
+			//richiedi il nome della rete da simulare;
+			String netname = simView.readNotEmpyString(ViewStringConstants.INSERT_PRIORITY_PETRI_NET_NAME_MSG);
+			if (model.containsPriorityPetriNet(netname)) {
+				mainController.requestPrintPriorityPetriNet(netname);
 				SimulatableNet net = (SimulatableNet) model.getINet(netname);
 				netToSimulate = (SimulatableNet) SerializationUtils.clone(net);
 				simulate();
@@ -101,5 +123,12 @@ public class SimulatorController {
 				simView.mainMenu();
 		}
 	}
+	
+	private void managePrintingOfActiveTransitions(PetriNet petriNet, List<String> listNames) {
+		simView.printActiveTransitions(listNames);
+		
+	}
+	
+
 
 }
