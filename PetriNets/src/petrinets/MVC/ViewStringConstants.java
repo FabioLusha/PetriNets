@@ -4,8 +4,7 @@ public class ViewStringConstants {
 
     //Messaggi di interazione
     public static final String WELCOME_MESSAGE = "BENVENUTO";
-    public static final String[] MAIN_OPTIONS = { "Aggiungi una nuova rete", "Visualizza reti salvate",
-            "Aggiungi una nuova rete di petri", "Visualizza rete di petri" };
+    public static final String[] MAIN_OPTIONS = { "Aggiungi una nuova rete", "Visualizza reti salvate"};
 
     public static final String NET_SAVING_MENU = "INSERIMENTO RETE COMPLETATO";
     public static final String[] NET_SAVING_MENU_OPTIONS = { "Salva e torna al menu principale",

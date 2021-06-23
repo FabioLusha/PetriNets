@@ -20,7 +20,7 @@ public class OrderedPair {
 	
 	}
 
-	private Direction dir;
+	private Direction direction;
 	private Place currentPlace;
 	private Transition currentTransition;
 	
@@ -30,28 +30,28 @@ public class OrderedPair {
 	public OrderedPair(Place pcurrentPlace, Transition pcurrentTransition) {
 		this.currentPlace=pcurrentPlace;
 		this.currentTransition=pcurrentTransition;
-		this.dir= Direction.pt;
+		this.direction= Direction.pt;
 	}
 	
 	public OrderedPair(Transition pcurrentTransition,Place pcurrentPlace) {
 		this.currentTransition=pcurrentTransition;
 		this.currentPlace=pcurrentPlace;
-		this.dir= Direction.tp;
+		this.direction= Direction.tp;
 	}
 
 	public OrderedPair(Place currentPlace, Transition currentTransition, Direction type) {
-		this.dir = type;
+		this.direction = type;
 		this.currentPlace = currentPlace;
 		this.currentTransition = currentTransition;
 	}
 
 
 	public Direction getDirection() {
-		return dir;
+		return direction;
 	}
 
 	public void setDirection(Direction type) {
-		this.dir = type;
+		this.direction = type;
 	}
 
 	public Place getCurrentPlace() {
@@ -80,7 +80,7 @@ public class OrderedPair {
 			}
 
 			final OrderedPair other = (OrderedPair) obj;
-			if (!Objects.equals(this.dir.ordinal(), other.dir.ordinal()) || !Objects.equals(this.currentPlace, other.currentPlace)
+			if (!Objects.equals(this.direction.ordinal(), other.direction.ordinal()) || !Objects.equals(this.currentPlace, other.currentPlace)
 					|| !Objects.equals(this.currentTransition, other.currentTransition)) {
 				return false;
 			}
@@ -89,14 +89,14 @@ public class OrderedPair {
 
 	@Override
 	public int hashCode(){
-		return Objects.hash(this.currentPlace, this.currentTransition, this.dir.ordinal());
+		return Objects.hash(this.currentPlace, this.currentTransition, this.direction.ordinal());
 	}
 
 	@Override
 	public String toString(){
 		String format = "( %s -> %s )";
 
-		if(dir == Direction.pt) return String.format(format, currentPlace, currentTransition);
+		if(direction == Direction.pt) return String.format(format, currentPlace, currentTransition);
 		else return String.format(format, currentTransition, currentPlace);
 	}
 
