@@ -1,8 +1,12 @@
-package petrinets.MVC;
+package petrinets.UI;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+
+import petrinets.net.Model;
+import petrinets.net.Net;
+import petrinets.net.PetriNet;
 
 
 public class Controller {
@@ -19,6 +23,9 @@ public class Controller {
 		}
     }
 
+    public void startView() {
+    	view.mainMenu();
+    }
 
     public void mainMenuChoice(int menuchoice) {
 		switch (menuchoice) {

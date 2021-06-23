@@ -1,4 +1,4 @@
-package petrinets.MVC;
+package petrinets.UI;
 
 import it.unibs.fp.mylib.*;
 

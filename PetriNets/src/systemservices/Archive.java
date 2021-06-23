@@ -1,9 +1,9 @@
-package petrinets.net;
+package systemservices;
 
 import java.io.IOException;
 import java.util.*;
 
-import systemservices.XMLmanager;
+import petrinets.net.INet;
 
 public class Archive {
 	
@@ -31,7 +31,7 @@ public class Archive {
     }
     
  
-    public static void open() throws IOException{
+    private static void open() throws IOException{
     
         	if (!(mapXMLmanager.isEmpty())) {
         	    try {

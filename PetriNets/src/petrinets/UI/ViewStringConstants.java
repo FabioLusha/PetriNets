@@ -1,4 +1,4 @@
-package petrinets.MVC;
+package petrinets.UI;
 
 public class ViewStringConstants {
 

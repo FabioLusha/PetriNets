@@ -29,6 +29,7 @@ public class PetriNet implements INet{
 
 	public void setMarcmap(Map<Place, Integer> marcmap) {
 		this.marcmap = marcmap;
+		assert markingIsCorrect();
 	}
 
 	public Map<OrderedPair, Integer> getValuemap() {
@@ -37,6 +38,7 @@ public class PetriNet implements INet{
 
 	public void setValuemap(Map<OrderedPair, Integer> valuemap) {
 		this.valuemap = valuemap;
+		assert valueMapIsCorrect();
 	}
 	
 	public Net getBasedNet() {
@@ -65,6 +67,20 @@ public class PetriNet implements INet{
 
 	public Set<OrderedPair> getFluxRelation(){
 		return basedNet.getFluxRelation();
+	}
+	
+	private boolean markingIsCorrect() {
+		return marcmap.values().stream()
+				.reduce(true,
+						(aBoolean, anInt) -> aBoolean && (anInt >= 1),
+						Boolean::logicalAnd);
+	}
+
+	private boolean valueMapIsCorrect() {
+		return valuemap.values().stream()
+				.reduce(true,
+						(aBoolean, anInt) -> aBoolean && (anInt >= 0),
+						Boolean::logicalAnd);
 	}
 
 	public String toString() {
