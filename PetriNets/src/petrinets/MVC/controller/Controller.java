@@ -14,6 +14,7 @@ import petrinets.domain.PetriNet;
 import petrinets.domain.PriorityPetriNet;
 import petrinets.domain.net.INet;
 import petrinets.domain.net.Net;
+import petrinets.domain.PetriNet;
 import systemservices.NetImportExport;
 
 
@@ -87,15 +88,11 @@ public class Controller {
 				view.mainMenu();
 				break;
 			case 7:
-				removeNet();
-				view.mainMenu();
-				break;
-			case 8:
 				exportNet();
 				view.mainMenu();
 				break;
 				
-			case 9:
+			case 8:
 				importNet();
 				view.mainMenu();
 				break;
@@ -214,15 +211,6 @@ public class Controller {
 		view.loginMenu();
 	}
     
-    public void removeNet(){
-    	String name = view.readNotEmptyString(ViewStringConstants.INSERT_NET_NAME_TO_REMOVE);
-    	if(model.containsINet(name)){
-    		model.remove(name);
-    	}else
-    		view.printToDisplay(ViewStringConstants.ERR_NET_NOT_PRESENT);
-    }
-
-
 
     public void petriNetMenuChoice(int choice) {
 		switch (choice){
@@ -486,14 +474,15 @@ public class Controller {
 			view.printToDisplay(ViewStringConstants.ERR_NO_NET_SAVED);
 		} else {
 			view.visualizeNets(savedNetsName);
-			String netName = view.readNotEmptyString(ViewStringConstants.INSERT_NET_TO_VIEW);
+			String netName = view.readNotEmptyString(ViewStringConstants.INSERT_NET_NAME_TO_EXPORT);
 			if(savedNetsName.contains(netName)) {
 				try {
 					NetImportExport.exportINet(model.getINet(netName));
 				} catch (IOException e) {
 					view.printToDisplay(ViewStringConstants.ERR_NET_EXPORT + e.getMessage());
 				}
-			}
+			}else
+				view.printToDisplay(ViewStringConstants.ERR_NET_NOT_PRESENT);
 		}
 	}
 	
@@ -503,10 +492,41 @@ public class Controller {
 		String fileName = view.readNotEmptyString(ViewStringConstants.INSERT_NET_NAME_IMPORT);
 		try {
 			INet importedNet = NetImportExport.importNet(fileName);
-			model.saveINet(importedNet);
+			if(importedNet instanceof PetriNet) {
+				PetriNet importedPetriNet = (PetriNet) importedNet;
+				if(controlBasedNetExist(importedPetriNet))
+					model.saveINet(importedPetriNet);
+				else
+					view.printToDisplay(ViewStringConstants.ERR_MSG_BSDNET_NOTPRESENT);
+			} else if(importedNet instanceof PriorityPetriNet) {
+				PriorityPetriNet importedPriorityPetriNet = (PriorityPetriNet) importedNet;
+				if(controlBasedPetriNetExist(importedPriorityPetriNet)) {
+					model.saveINet(importedPriorityPetriNet);
+				} else
+					view.printToDisplay(ViewStringConstants.ERR_MSG_BSDNET_NOTPRESENT);
+			} else if (importedNet instanceof Net) {
+				model.saveINet(importedNet);
+			}
+			
 		} catch (IOException e) {
 			view.printToDisplay(ViewStringConstants.ERR_NET_IMPORT + e.getMessage());
 		}
 	}
+	
+	public boolean controlBasedNetExist(PetriNet importedNet) {
+			if(model.containsNet(importedNet.getBasedNet().getName())) {
+				return true;
+			}
+				return false;
+			
+	}
+	
+	public boolean controlBasedPetriNetExist(PriorityPetriNet importedNet) {
+		if(model.containsPetriNet(importedNet.getBasedPetriNet().getName())) {
+			return true;
+		}
+			return false;
+		
+}
 	
 }

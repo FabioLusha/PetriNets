@@ -1,5 +1,6 @@
 package petrinets.domain;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
@@ -8,6 +9,8 @@ import systemservices.XMLmanager;
 
 public class Archive {
 	
+	private static final String SAVING_XML_FILE = "data" + File.separator +"nets.xml";
+
 	private  XMLmanager<Map<String, INet>> mapXMLmanager;
 	
 	private static Archive instance;
@@ -23,7 +26,7 @@ public class Archive {
     }
  
     private Archive() throws IOException{
-    		mapXMLmanager = new XMLmanager<>("nets.xml");
+    		mapXMLmanager = new XMLmanager<>(SAVING_XML_FILE);
         	if (!(mapXMLmanager.isEmpty())) {
         	    try {
                     inetMap = (Map<String, INet>) mapXMLmanager.deserializeFromXML();

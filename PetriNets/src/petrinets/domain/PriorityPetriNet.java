@@ -29,12 +29,12 @@ public class PriorityPetriNet implements SimulatableNet {
 
     }
 
-    public PetriNet getBasePatriNet() {
+    public PetriNet getBasedPetriNet() {
         return basedPetriNet;
     }
 
-    public void setBasePatriNet(PetriNet basePatriNet) {
-        this.basedPetriNet = basePatriNet;
+    public void setBasedPetriNet(PetriNet basedPetriNet) {
+        this.basedPetriNet = basedPetriNet;
     }
 
     public Map<Transition, Integer> getPriorityMap() {

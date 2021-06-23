@@ -4,30 +4,47 @@
   <void property="basedNet">
    <object class="petrinets.domain.net.Net">
     <void property="fluxRelation">
-     <object class="java.util.LinkedHashSet"/>
+     <object class="java.util.LinkedHashSet">
+      <void method="add">
+       <object class="petrinets.domain.net.OrderedPair" id="OrderedPair0">
+        <void property="currentPlace">
+         <object class="petrinets.domain.net.Place" id="Place0">
+          <void property="name">
+           <string>p1</string>
+          </void>
+         </object>
+        </void>
+        <void property="currentTransition">
+         <object class="petrinets.domain.net.Transition" id="Transition0">
+          <void property="name">
+           <string>t1</string>
+          </void>
+         </object>
+        </void>
+        <void property="direction">
+         <object class="java.lang.Enum" method="valueOf">
+          <class>petrinets.domain.net.OrderedPair$Direction</class>
+          <string>pt</string>
+         </object>
+        </void>
+       </object>
+      </void>
+     </object>
     </void>
     <void property="name">
-     <string>net1</string>
+     <string>r1</string>
     </void>
     <void property="places">
      <object class="java.util.LinkedHashSet">
       <void method="add">
-       <object class="petrinets.domain.net.Place" id="Place0">
-        <void property="name">
-         <string>n1</string>
-        </void>
-       </object>
+       <object idref="Place0"/>
       </void>
      </object>
     </void>
     <void property="transitions">
      <object class="java.util.LinkedHashSet">
       <void method="add">
-       <object class="petrinets.domain.net.Transition" id="Transition0">
-        <void property="name">
-         <string>t1</string>
-        </void>
-       </object>
+       <object idref="Transition0"/>
       </void>
      </object>
     </void>
@@ -37,31 +54,18 @@
    <object class="java.util.LinkedHashMap">
     <void method="put">
      <object idref="Place0"/>
-     <int>1</int>
+     <int>2</int>
     </void>
    </object>
   </void>
   <void property="name">
-   <string>PN1</string>
+   <string>pn1</string>
   </void>
   <void property="valuemap">
    <object class="java.util.LinkedHashMap">
     <void method="put">
-     <object class="petrinets.domain.net.OrderedPair">
-      <void property="currentPlace">
-       <object idref="Place0"/>
-      </void>
-      <void property="currentTransition">
-       <object idref="Transition0"/>
-      </void>
-      <void property="direction">
-       <object class="java.lang.Enum" method="valueOf">
-        <class>petrinets.domain.net.OrderedPair$Direction</class>
-        <string>pt</string>
-       </object>
-      </void>
-     </object>
-     <int>0</int>
+     <object idref="OrderedPair0"/>
+     <int>3</int>
     </void>
    </object>
   </void>

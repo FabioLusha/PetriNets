@@ -15,6 +15,9 @@ public class XMLmanager<T> {
 	public XMLmanager(String pfilename) throws IOException {
 		this.filename = pfilename;
 		file = new File(filename);
+		if(file.getParentFile() != null)
+			file.getParentFile().mkdirs();
+		
 		file.createNewFile();
 	}
 
