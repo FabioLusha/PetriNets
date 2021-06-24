@@ -20,8 +20,8 @@ public class PetriNet implements SimulatableNet {
 		marcmap = new LinkedHashMap<>();
 		valuemap = new LinkedHashMap<>();
 		
-		basedNet.getPlaces().forEach(e -> marcmap.put(e, 1));
-		basedNet.getFluxRelation().forEach(e -> valuemap.put(e, 0));
+		basedNet.getPlaces().forEach(e -> marcmap.put(e, 0));
+		basedNet.getFluxRelation().forEach(e -> valuemap.put(e, 1));
 
 	}
 	
@@ -88,7 +88,8 @@ public class PetriNet implements SimulatableNet {
 		
 		if(!basedNet.equals(other.basedNet)
 				|| !marcmap.equals(other.marcmap)
-				|| !valuemap.equals(other.valuemap)) return false;
+				|| !valuemap.equals(other.valuemap)
+				) return false;
 
 		return true;
 		
@@ -101,14 +102,14 @@ public class PetriNet implements SimulatableNet {
 	private boolean markingIsCorrect() {
 		return marcmap.values().stream()
 				.reduce(true,
-						(aBoolean, anInt) -> aBoolean && (anInt >= 1),
+						(aBoolean, anInt) -> aBoolean && (anInt >= 0),
 						Boolean::logicalAnd);
 	}
 
 	private boolean valueMapIsCorrect() {
 		return valuemap.values().stream()
 				.reduce(true,
-						(aBoolean, anInt) -> aBoolean && (anInt >= 0),
+						(aBoolean, anInt) -> aBoolean && (anInt >= 1),
 						Boolean::logicalAnd);
 	}
 
