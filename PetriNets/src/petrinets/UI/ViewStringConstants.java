@@ -51,7 +51,7 @@ public class ViewStringConstants {
     public static final String ERR_NET_NOT_PRESENT = "Non ci sono reti salvate con questo nome";
     
     public static final String ERR_NO_NET_SAVED = "Non ci sono reti salvate";
-    public static final String ERR_MSG_DESERIALIZATION_FAILED = "Atenzione! Non è stato posibile caricare le reti salvate. E' stato inizializzato un nuvo archivio.";
+    public static final String ERR_MSG_DESERIALIZATION_FAILED = "Atenzione! Non e' stato posibile caricare le reti salvate. E' stato inizializzato un nuvo archivio.";
 
     
     public static final String AVAILABLE_NETS = "Reti disponibili: ";
@@ -68,7 +68,7 @@ public class ViewStringConstants {
 	
 	//versione 3 (simulazione)
 	public static final String SIMULATOR_WELCOME_TITLE = "BENVENUTO";
-	public static final String[] SIMULATOR_WELCOME_OPTIONS = {"Scegli la rete di petri da simulare" , "Scegli la rete di petri con priorit� da simulare"};
+	public static final String[] SIMULATOR_WELCOME_OPTIONS = {"Scegli la rete di petri da simulare" , "Scegli la rete di petri con priorita' da simulare"};
 	public static final String[] LOGIN_MENU_OPTIONS = {"Accedi come configuratore", "Accedi come fruitore"};
 	public static final String ERR_CRITICAL_BLOCK = "La rete ha raggiunto un blocco critico!";
     public static final String ERR_ELEMENT_NAME_DOES_NOT_EXSIST = "Il nome che hai inserito non comabacia con nessuno degli elementi elencati!";
@@ -81,7 +81,7 @@ public class ViewStringConstants {
     public static final String[] CHANGE_PRIORITY_PETRI_NET_OPTIONS = { "Modifica valori delle priorità",
             "Visualizza la rete di Petri con priorità che si sta modificando",
             "Salva la rete di Petri con priorità",
-            "Non salvare e torna al menù principale"};
+            "Non salvare e torna al menu' principale"};
     public static final String INSERT_TRANSITION_NAME_TO_MODIFY = "Inserisci il nome della transizione di cui vuoi modificare la priorità: \n > ";
     public static final String ERR_TRANSITION_NOT_PRESENT = "Errore! Non esiste una transizione con questo nome!";
     public static final String INSERT_NEW_PRIORITY = "Inserisci il nuovo valore della prioirtà: \n > ";
