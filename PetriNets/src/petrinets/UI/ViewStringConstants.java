@@ -96,4 +96,6 @@ public class ViewStringConstants {
 	public static final String INSERT_NET_NAME_IMPORT = "Inserisci il nome del file che contiene la rete: ";
 	public static final String MSG_DIR = "ATTENZIONE: Il file deve trovarsi nella cartella in cui gira l'applicazione!";
 	public static final String ERR_MSG_BSDNET_NOTPRESENT = "La rete su cui si basa la rete che si sta cercando di importare non e' presente";
+
+	public static final String MSG_EXPORT_COMPLETED = "L'esportazione è andata a buon fine!\n";
 }

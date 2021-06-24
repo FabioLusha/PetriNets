@@ -103,7 +103,7 @@ public class Controller {
 	}
 
 	public void manageNetCreation(String netName){
-    	//Il metodo createNet della classe Model non crea la rete se vi e' gi� una rete con questo nome
+    	//Il metodo createNet della classe Model non crea la rete se vi e' gia' una rete con questo nome
         if(!model.createNet(netName)) {
             view.printToDisplay(ViewStringConstants.ERR_MSG_NET_NAME_ALREADY_EXIST);
             view.mainMenu();
@@ -478,6 +478,7 @@ public class Controller {
 			if(savedNetsName.contains(netName)) {
 				try {
 					NetImportExport.exportINet(model.getINet(netName));
+					view.printToDisplay(ViewStringConstants.MSG_EXPORT_COMPLETED);
 				} catch (IOException e) {
 					view.printToDisplay(ViewStringConstants.ERR_NET_EXPORT + e.getMessage());
 				}
@@ -494,13 +495,13 @@ public class Controller {
 			INet importedNet = NetImportExport.importINet(fileName);
 			if(importedNet instanceof PetriNet) {
 				PetriNet importedPetriNet = (PetriNet) importedNet;
-				if(controlBasedNetExist(importedPetriNet))
+				if(basedNetExsists(importedPetriNet))
 					model.saveINet(importedPetriNet);
 				else
 					view.printToDisplay(ViewStringConstants.ERR_MSG_BSDNET_NOTPRESENT);
 			} else if(importedNet instanceof PriorityPetriNet) {
 				PriorityPetriNet importedPriorityPetriNet = (PriorityPetriNet) importedNet;
-				if(controlBasedPetriNetExist(importedPriorityPetriNet)) {
+				if(basedPetriNetExsists(importedPriorityPetriNet)) {
 					model.saveINet(importedPriorityPetriNet);
 				} else
 					view.printToDisplay(ViewStringConstants.ERR_MSG_BSDNET_NOTPRESENT);
@@ -513,7 +514,7 @@ public class Controller {
 		}
 	}
 	
-	public boolean controlBasedNetExist(PetriNet importedNet) {
+	public boolean basedNetExsists(PetriNet importedNet) {
 			if(model.containsNet(importedNet.getBasedNet().getName())) {
 				return true;
 			}
@@ -521,7 +522,7 @@ public class Controller {
 			
 	}
 	
-	public boolean controlBasedPetriNetExist(PriorityPetriNet importedNet) {
+	public boolean basedPetriNetExsists(PriorityPetriNet importedNet) {
 		if(model.containsPetriNet(importedNet.getBasedPetriNet().getName())) {
 			return true;
 		}
