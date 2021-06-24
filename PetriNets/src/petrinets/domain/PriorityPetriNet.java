@@ -43,6 +43,8 @@ public class PriorityPetriNet implements SimulatableNet {
 
     public void setPriorityMap(Map<Transition, Integer> priorityMap) {
         this.priorityMap = priorityMap;
+        
+        assert priorityMapIsCorrect();
     }
 
     public String getName() {
@@ -118,5 +120,12 @@ public class PriorityPetriNet implements SimulatableNet {
     
 	public int hashCode(){
 		return Objects.hash(name, basedPetriNet, priorityMap);
+	}
+	
+	private boolean priorityMapIsCorrect() {
+		return priorityMap.values().stream()
+				.reduce(true,
+						(aBoolean, anInt) -> aBoolean && (anInt >= 1),
+						Boolean::logicalAnd);
 	}
 }
