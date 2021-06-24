@@ -15,7 +15,6 @@ public class SimulatorController {
 	private SimulatorView simView;
 	private Controller mainController;
 	private Model model;
-
 	private SimulatableNet netToSimulate;
 
 	public SimulatorController(View mainView, Controller pcontroller, Model pmodel) {
@@ -41,7 +40,7 @@ public class SimulatorController {
 		}
 	}
 
-	private void simulatePetriNet() {
+	public void simulatePetriNet() {
 		if (mainController.menagePetriNetVis()) {
 			//richiedi il nome della rete da simulare;
 			String netname = simView.readNotEmpyString(ViewStringConstants.INSERT_PETRI_NET_NAME_MSG);
@@ -58,12 +57,12 @@ public class SimulatorController {
 		}
 	}
 
-	private void exitWithoutSaving() {
+	public void exitWithoutSaving() {
 		mainController.startView();
 	}
 
 
-	private void simulate() {
+	public void simulate() {
 		Collection<Transition> activeTransitions = netToSimulate.getEnabledTransitions();
 		
 		if(activeTransitions.isEmpty()) {

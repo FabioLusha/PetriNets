@@ -6,7 +6,7 @@ import java.util.*;
 
 
 
-public class PetriNet implements INet, SimulatableNet {
+public class PetriNet implements SimulatableNet {
 	private Map<Place,Integer> marcmap;
 	private Map<OrderedPair, Integer>  valuemap;
 	private Net basedNet;

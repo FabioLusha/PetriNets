@@ -165,7 +165,7 @@ public class Controller {
 		view.mainMenu();
 	}
 
-	private void manageNetsVis() {
+	public void manageNetsVis() {
 		if (model.getSavedNetsNames().isEmpty()) {
 			view.printToDisplay(ViewStringConstants.ERR_NO_NET_SAVED);
 			view.mainMenu();
