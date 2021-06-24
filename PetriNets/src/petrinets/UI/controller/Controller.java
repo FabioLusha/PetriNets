@@ -491,7 +491,7 @@ public class Controller {
 		view.printToDisplay(ViewStringConstants.MSG_DIR);
 		String fileName = view.readNotEmptyString(ViewStringConstants.INSERT_NET_NAME_IMPORT);
 		try {
-			INet importedNet = NetImportExport.importNet(fileName);
+			INet importedNet = NetImportExport.importINet(fileName);
 			if(importedNet instanceof PetriNet) {
 				PetriNet importedPetriNet = (PetriNet) importedNet;
 				if(controlBasedNetExist(importedPetriNet))

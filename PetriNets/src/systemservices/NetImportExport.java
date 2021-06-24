@@ -3,7 +3,6 @@ package systemservices;
 
 import java.io.File;
 import java.io.IOException;
-
 import petrinets.domain.net.INet;
 
 public class NetImportExport {
@@ -22,7 +21,7 @@ public class NetImportExport {
 		
 	}
 	
-	public static INet importNet(String fileName) throws IOException {
+	public static INet importINet(String fileName) throws IOException {
 		XMLmanager<INet> xmlManager = new XMLmanager<>(fileName);
 		
 		return xmlManager.deserializeFromXML();
