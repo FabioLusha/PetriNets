@@ -6,8 +6,6 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.SerializationUtils;
 
-
-import petrinets.domain.PetriNet;
 import petrinets.UI.*;
 import petrinets.domain.Model;
 import petrinets.domain.SimulatableNet;
@@ -63,7 +61,7 @@ public class SimulatorController {
 		}
 	}
 	
-	private void simulatePriorityPetriNet() {
+	public void simulatePriorityPetriNet() {
 		if (mainController.managePriorityPetriNetVis()) {
 			//richiedi il nome della rete da simulare;
 			String netname = simView.readNotEmpyString(ViewStringConstants.INSERT_PRIORITY_PETRI_NET_NAME_MSG);
@@ -125,11 +123,5 @@ public class SimulatorController {
 		}
 	}
 	
-	private void managePrintingOfActiveTransitions(PetriNet petriNet, List<String> listNames) {
-		simView.printActiveTransitions(listNames);
-		
-	}
-	
-
 
 }
