@@ -3,7 +3,7 @@ package petrinets;
 import java.io.BufferedOutputStream;
 import java.io.PrintWriter;
 
-import petrinets.MVC.controller.Controller;
+import petrinets.UI.controller.Controller;
 
 
 public class Main {
