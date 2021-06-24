@@ -138,7 +138,7 @@ public class View {
 
     public void printPriorityPetriNet(String netname, List<String> placesNames, List<String> marc, Map<String, Integer> transAndPriorities, List<Pair<String, String>> fluxrelations, List<String> values) {
         StringBuilder output = new StringBuilder();
-        output.append(String.format("Nome rete con priorit√†: %s\n ",netname));
+        output.append(String.format("Nome rete con priorita'†: %s\n ",netname));
         output.append(marcFormatter(placesNames, marc));
         output.append(prioritiesFormatter(transAndPriorities));
         output.append(fluxrelFormatter(fluxrelations,values));
@@ -148,8 +148,8 @@ public class View {
 
     public String prioritiesFormatter(Map<String, Integer> transWithPriorities){
         StringBuilder strb = new StringBuilder();
-        strb.append("Transizioni con priorit√†:\n");
-        transWithPriorities.entrySet().forEach(e -> strb.append(String.format("\t%s\t - priorit√†: %2d\n", e.getKey(), e.getValue())));
+        strb.append("Transizioni con priorita'†:\n");
+        transWithPriorities.entrySet().forEach(e -> strb.append(String.format("\t%s\t - priorita'†: %2d\n", e.getKey(), e.getValue())));
 
         return strb.toString();
     }

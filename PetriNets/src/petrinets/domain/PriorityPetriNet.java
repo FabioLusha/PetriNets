@@ -70,7 +70,7 @@ public class PriorityPetriNet implements SimulatableNet {
 
     @Override
     public void fire(Transition toFire) {
-        //il comportamento dello scatto della transizione Ã¨ identico a quella di una rete di petri normale
+        //il comportamento dello scatto della transizione è identico a quella di una rete di petri normale
        basedPetriNet.fire(toFire);
     }
     @Override

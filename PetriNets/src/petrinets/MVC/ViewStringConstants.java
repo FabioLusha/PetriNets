@@ -84,7 +84,7 @@ public class ViewStringConstants {
             "Non salvare e torna al mena' principale"};
     public static final String INSERT_TRANSITION_NAME_TO_MODIFY = "Inserisci il nome della transizione di cui vuoi modificare la priorita': \n > ";
     public static final String ERR_TRANSITION_NOT_PRESENT = "Errore! Non esiste una transizione con questo nome!";
-    public static final String INSERT_NEW_PRIORITY = "Inserisci il nuovo valore della prioirta': \n > ";
+    public static final String INSERT_NEW_PRIORITY = "Inserisci il nuovo valore della priorita': \n > ";
     public static final String PRIORITY_PETRI_NET_INITIALIZED_DEFAULT = "La rete di Petri con priorita' e' stata creata e inizializzata con i valori di default" +
             " (priorita' = 1)\n";
 	public static final String ERR_NET_EXPORT = "Errore nell'esportazione della rete \n";
