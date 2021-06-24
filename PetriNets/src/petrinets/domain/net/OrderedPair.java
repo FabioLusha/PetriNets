@@ -14,25 +14,27 @@ public class OrderedPair implements Serializable {
 		
 		//Metodo che converte un intero corrispondente alla posizione dell'elemento nell' elemento stesso
 		public static Direction ordinalToType(int ordinal){
-			//assert ordinal <= 1 && ordinal >= 0;
+			
+			assert ordinal <= 1 && ordinal >= 0 : "Expected 0 or 1";
+			
 			if ( Direction.pt.ordinal() == ordinal ) return pt;
 			else return tp;
 		}
 	
 	}
 
-	private Direction direction
-			;
+	private Direction direction;
 	private Place currentPlace;
 	private Transition currentTransition;
 	
-	//Costruttuore vuoto poich� � richiesto dallo standard beans per utilizzare XMLSerializer
+	//Costruttuore vuoto poiche' e' richiesto dallo standard beans per utilizzare XMLSerializer
 	public OrderedPair(){};
 
 	public OrderedPair(Place pcurrentPlace, Transition pcurrentTransition) {
 		this.currentPlace=pcurrentPlace;
 		this.currentTransition=pcurrentTransition;
 		this.direction = Direction.pt;
+
 	}
 	
 	public OrderedPair(Transition pcurrentTransition,Place pcurrentPlace) {
