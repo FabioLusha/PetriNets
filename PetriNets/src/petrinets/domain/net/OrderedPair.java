@@ -14,7 +14,9 @@ public class OrderedPair implements Serializable {
 		
 		//Metodo che converte un intero corrispondente alla posizione dell'elemento nell' elemento stesso
 		public static Direction ordinalToType(int ordinal){
-			//assert ordinal <= 1 && ordinal >= 0;
+			
+			assert ordinal <= 1 && ordinal >= 0 : "Expected 0 or 1";
+			
 			if ( Direction.pt.ordinal() == ordinal ) return pt;
 			else return tp;
 		}
