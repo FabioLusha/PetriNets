@@ -7,6 +7,8 @@ import java.util.*;
 
 
 public class PetriNet implements SimulatableNet {
+	private static final int DEFAULT_MARC_VALUE = 0;
+	private static final int DEFAULT_FLUX_VALUE = 1;
 	private Map<Place,Integer> marcmap;
 	private Map<OrderedPair, Integer>  valuemap;
 	private Net basedNet;
@@ -20,8 +22,8 @@ public class PetriNet implements SimulatableNet {
 		marcmap = new LinkedHashMap<>();
 		valuemap = new LinkedHashMap<>();
 		
-		basedNet.getPlaces().forEach(e -> marcmap.put(e, 0));
-		basedNet.getFluxRelation().forEach(e -> valuemap.put(e, 1));
+		basedNet.getPlaces().forEach(e -> marcmap.put(e, DEFAULT_MARC_VALUE));
+		basedNet.getFluxRelation().forEach(e -> valuemap.put(e, DEFAULT_FLUX_VALUE));
 
 	}
 	
@@ -102,14 +104,14 @@ public class PetriNet implements SimulatableNet {
 	private boolean markingIsCorrect() {
 		return marcmap.values().stream()
 				.reduce(true,
-						(aBoolean, anInt) -> aBoolean && (anInt >= 0),
+						(aBoolean, anInt) -> aBoolean && (anInt >= DEFAULT_MARC_VALUE),
 						Boolean::logicalAnd);
 	}
 
 	private boolean valueMapIsCorrect() {
 		return valuemap.values().stream()
 				.reduce(true,
-						(aBoolean, anInt) -> aBoolean && (anInt >= 1),
+						(aBoolean, anInt) -> aBoolean && (anInt >= DEFAULT_FLUX_VALUE),
 						Boolean::logicalAnd);
 	}
 
@@ -157,5 +159,33 @@ public class PetriNet implements SimulatableNet {
 
 	public Set<OrderedPair> getFluxRelation(){
 		return basedNet.getFluxRelation();
+	}
+
+	public void changeMarc(Place n1, int newValue) {
+		assert newValue >= DEFAULT_MARC_VALUE;
+		assert marcmap.containsKey(n1);
+		
+		marcmap.replace(n1, newValue);
+		
+		assert markingIsCorrect();
+	}
+
+	public int getMarcValue(Place n1) {
+		assert marcmap.containsKey(n1);
+		
+		return marcmap.get(n1);
+	}
+
+	public void changeFluxRel(OrderedPair pair, int newFluxRelValue) {
+		assert valuemap.containsKey(pair);
+		assert newFluxRelValue >= DEFAULT_FLUX_VALUE;
+		
+		valuemap.replace(pair, newFluxRelValue);
+		
+	}
+
+	public int getFluxRelValue(OrderedPair pair) {
+		assert valuemap.containsKey(pair);
+		return valuemap.get(pair);
 	}
 }

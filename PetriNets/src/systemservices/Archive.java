@@ -24,7 +24,7 @@ public class Archive {
     }
  
     private Archive() throws IOException{
-    		mapXMLmanager = new XMLmanager<>(SAVING_XML_FILE);
+    		mapXMLmanager = new XMLmanager<Map<String, INet>>(SAVING_XML_FILE);
         	if (!(mapXMLmanager.isEmpty())) {
         	    try {
                     inetMap = (Map<String, INet>) mapXMLmanager.deserializeFromXML();

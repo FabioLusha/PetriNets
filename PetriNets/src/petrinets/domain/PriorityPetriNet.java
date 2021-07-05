@@ -128,4 +128,16 @@ public class PriorityPetriNet implements SimulatableNet {
 						(aBoolean, anInt) -> aBoolean && (anInt >= 1),
 						Boolean::logicalAnd);
 	}
+
+	public void changePriorityTransition(Transition t1, int newPriorityValue) {
+		assert priorityMap.containsKey(t1);
+		assert newPriorityValue >= 1;
+		
+		priorityMap.replace(t1, newPriorityValue);
+	}
+
+	public int getPriority(Transition t1) {
+		assert priorityMap.containsKey(t1);
+		return priorityMap.get(t1);
+	}
 }
