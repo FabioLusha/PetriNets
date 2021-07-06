@@ -6,38 +6,29 @@ import java.util.*;
 import petrinets.domain.net.INet;
 
 public class Archive {
-	
-	private static final String SAVING_XML_FILE = "data" + File.separator +"nets.xml";
 
-	private  XMLmanager<Map<String, INet>> mapXMLmanager;
-	
-	private static Archive instance;
+    private static final String SAVING_XML_FILE = "data" + File.separator + "nets.xml";
 
-	private  Map<String, INet> inetMap;
-    
+    private XMLmanager<Map<String, INet>> mapXMLmanager;
+
+    private static Archive instance;
+
+    private Map<String, INet> inetMap;
+
     //per l'eccezione guarda il metodo open()
-    public static Archive getInstance() throws IOException{
-    	if(instance == null) {
-    		instance = new Archive();
-    	}
-    	return instance;
+    public static Archive getInstance() throws IOException {
+        if (instance == null) {
+            instance = new Archive();
+        }
+        return instance;
     }
- 
-    private Archive() throws IOException{
-    		mapXMLmanager = new XMLmanager<Map<String, INet>>(SAVING_XML_FILE);
-        	if (!(mapXMLmanager.isEmpty())) {
-        	    try {
-                    inetMap = (Map<String, INet>) mapXMLmanager.deserializeFromXML();
-                }catch(IOException e){
-        	        inetMap = new HashMap<>();
-        	        throw e;
-                }
-        	}else
-                inetMap = new HashMap<>();
+
+    public Archive() {
+        inetMap = new HashMap<>();
     }
-    
+
     public void permanentSave() throws IOException {
-		mapXMLmanager.serializeToXML(inetMap);
+        mapXMLmanager.serializeToXML(inetMap);
     }
 
     public Map<String, INet> getInetMap() {
@@ -48,21 +39,30 @@ public class Archive {
         this.inetMap = inetMap;
     }
 
-    public void add(String name, INet net){
+    public void add(String name, INet net) {
         inetMap.put(name, net);
     }
 
-    public boolean contains(String name){
+    public boolean contains(String name) {
         return inetMap.containsKey(name);
     }
-    
-    public boolean containsValue(INet inet){
+
+    public boolean containsValue(INet inet) {
         return inetMap.containsValue(inet);
     }
 
-    public void removeFromArchive(String key){
+    public void removeFromArchive(String key) {
         inetMap.keySet().remove(key);
     }
-    
- 
+
+    public void readFromFile(String filePath) throws IOException {
+        mapXMLmanager = new XMLmanager<>(filePath);
+        if (!(mapXMLmanager.isEmpty())) {
+            inetMap = (Map<String, INet>) mapXMLmanager.deserializeFromXML();
+        }
+
+    }
+
+
+
 }

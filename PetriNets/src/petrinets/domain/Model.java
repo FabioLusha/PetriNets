@@ -203,7 +203,7 @@ public class Model {
     }
 
     public void changeFluxRelVal(String placeName, String transName, int direction, int newValue) {
-    	controlPetriNet.getValuemap().replace(new OrderedPair(new Place(placeName), new Transition(transName), OrderedPair.Direction.ordinalToType(direction)), newValue);
+    	controlPetriNet.changeFluxRel(new OrderedPair(new Place(placeName), new Transition(transName), OrderedPair.Direction.ordinalToType(direction)), newValue);
     }
 
 
