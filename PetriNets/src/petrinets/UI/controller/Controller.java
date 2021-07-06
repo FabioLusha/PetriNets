@@ -30,7 +30,8 @@ public class Controller {
     	try {
 			this.model = new Model();
 			System.out.println("Creato Model");
-		}catch(IOException e){
+			//TODO Implementare i casi per la creazione della repository
+		}catch(Exception e){
     		view.printToDisplay(ViewStringConstants.ERR_MSG_DESERIALIZATION_FAILED);
 		}
     }

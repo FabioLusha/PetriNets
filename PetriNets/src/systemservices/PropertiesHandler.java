@@ -9,7 +9,7 @@ import java.util.Properties;
 
 public class PropertiesHandler {
     public static final String PROPERTIES_DIR = "properties";
-    public static final Path REPO_PROPERTIES = FileSystems.getDefault().getPath(PROPERTIES_DIR, INetRepository.class.getName() + ".properties");
+    public static final Path REPO_PROPERTIES_PATH = FileSystems.getDefault().getPath(PROPERTIES_DIR, INetRepository.class.getName() + ".properties");
     public static final Path DEFAULT_SAVING_DIR = FileSystems.getDefault().getPath("data","nets.xml");
     public static final Path DEFAULT_TEST_SAVING_DIR = FileSystems.getDefault().getPath("data","test_nets.xml");
 
@@ -20,7 +20,7 @@ public class PropertiesHandler {
     public static void initializeProperties() {
         Path propDir = FileSystems.getDefault().getPath(PropertiesHandler.PROPERTIES_DIR);
         propDir.toFile().mkdir();
-        Path repoPropDir = propDir.resolve(Archive.class.getName() + ".properties");
+        Path repoPropDir = propDir.resolveSibling(REPO_PROPERTIES_PATH);
 
         try (OutputStream out = new FileOutputStream(repoPropDir.toFile())) {
 

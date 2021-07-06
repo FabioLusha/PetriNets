@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import petrinets.UI.Pair;
 import systemservices.INetRepository;
+import systemservices.RepositoryFactory;
 
 
 public class Model {
@@ -26,8 +27,8 @@ public class Model {
         this.netArchive = netArchive;
     }
 
-    public Model() throws IOException{
-    	netArchive = Archive.getInstance();
+    public Model() throws IOException, ClassNotFoundException, IllegalAccessException, InstantiationException{
+    	netArchive = RepositoryFactory.getInstance().getRepo();
     }
 
 
