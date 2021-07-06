@@ -199,8 +199,7 @@ public class Model {
     }
     
     public void changeMarc(String name, int newValue) {
-    	controlPetriNet.getMarcmap().replace(new Place(name), newValue);
-    	
+    	controlPetriNet.changeMarc(new Place(name), newValue);
     }
 
     public void changeFluxRelVal(String placeName, String transName, int direction, int newValue) {

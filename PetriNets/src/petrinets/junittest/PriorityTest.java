@@ -17,16 +17,41 @@ class PriorityTest {
 	void checkEnabledTransitions() {
 		
 		Net rete = new Net("net1");
-		rete.addFluxRelElement(new OrderedPair(new Place("n1"), new Transition("t1")));
+		Place n1 = new Place("n1");
+		Transition t1 = new Transition("t1");
+		rete.addFluxRelElement(new OrderedPair(n1, t1));
 		Transition t2 = new Transition("t2");
-		rete.addFluxRelElement(new OrderedPair(new Place("n2"), t2));
+		Place n2 = new Place("n2");
+		rete.addFluxRelElement(new OrderedPair(n2, t2));
+		
+		PetriNet reteDiPetri = new PetriNet("pn1", rete);
+		reteDiPetri.changeMarc(n2, 2);
+		
+		PriorityPetriNet reteDiPetriWP = new PriorityPetriNet("pnp1", reteDiPetri);
+		reteDiPetriWP.changePriorityTransition(t2, 10);
+
+		assert reteDiPetriWP.getEnabledTransitions().iterator().next().equals(t2);
+	}
+	
+	@Test
+	void testChangePriorityValue() {
+		Net rete = new Net("net1");
+		Place n1 = new Place("n1");
+		Transition t1 = new Transition("t1");
+		
+		rete.addFluxRelElement(new OrderedPair(n1 , t1));
+		Transition t2 = new Transition("t2");
+		Place n2 = new Place("n2");
+		rete.addFluxRelElement(new OrderedPair(n2, t2));
 		
 		PetriNet reteDiPetri = new PetriNet("pn1", rete);
 		
 		PriorityPetriNet reteDiPetriWP = new PriorityPetriNet("pnp1", reteDiPetri);
-		reteDiPetriWP.getPriorityMap().replace(t2, 10);
-
-		assert reteDiPetriWP.getEnabledTransitions().iterator().next().equals(t2);
+		reteDiPetriWP.changePriorityTransition(t1,5);
+		
+		
+		assert reteDiPetriWP.getPriority(t1) == 5;
+		
 	}
 
 }
