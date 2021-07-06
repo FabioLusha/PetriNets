@@ -139,7 +139,7 @@ public class Controller {
     }
     
     public boolean checkPlace(String name) {
-    	if(model.inetContainsTransition(name)) {
+    	if(model.containsTransition(name)) {
     		view.printToDisplay(String.format(ViewStringConstants.ERR_PLACE_AS_TRANSITION, name));
     		return false;
     	}

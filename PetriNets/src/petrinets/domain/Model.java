@@ -13,33 +13,23 @@ import systemservices.RepositoryFactory;
 
 
 public class Model {
-	
+	private NetLogic logicOfNet;
     //private static XMLmanager<NetArchive> netxmlmanager = new XMLmanager<NetArchive>("nets.xml");
 
-    private final INetRepository netArchive;
 
     private Net controlNet;
     private PetriNet controlPetriNet;
     private PriorityPetriNet controlPriorityPetriNet;
     
 
-    public Model(INetRepository netArchive){
-        this.netArchive = netArchive;
-    }
-
     public Model() throws IOException, ClassNotFoundException, IllegalAccessException, InstantiationException{
-    	netArchive = RepositoryFactory.getInstance().getRepo();
+    	logicOfNet = new NetLogic();
     }
 
 
     //Ritorna true se in Archive non e' presente alcun elemento con chiave name
     public boolean createNet(String name){
-        if(netArchive.contains(name))
-            return false;
-        else{
-            controlNet = new Net(name);
-        }
-        return true;
+       return logicOfNet.createNet(name);
     }
 
     //Trasizione non puntata da nessun posto
@@ -54,15 +44,9 @@ public class Model {
     	return controlNet.isPlace(new Place(name));
     }
 
-    public boolean inetContainsPlace(INet inet, String  name) {
-    	return inet.getPlaces().contains(new Place(name));
-    }
-
-    public boolean inetContainsTransition(INet inet, String name){
-        return inet.getTransitions().contains(new Transition(name));
-    }
+   
     
-    public boolean inetContainsTransition(String name) {
+    public boolean containsTransition(String name) {
     	return controlNet.isTransition(new Transition(name));
     }
 
@@ -73,7 +57,6 @@ public class Model {
     }
 
     public boolean saveCurrentNet() {
-
        if(netArchive.containsValue(controlNet)) {
            return false;
        }
@@ -84,14 +67,7 @@ public class Model {
         return true;
     }
 
-    public void permanentSave() throws IOException {
 
-            netArchive.permanentSave();
-        }
-
-    public boolean containsINet(String inetname) {
-       return netArchive.contains(inetname);
-    }
 
     public boolean containsNet(String netname) {
        if(netArchive.contains(netname))
@@ -103,49 +79,12 @@ public class Model {
     public boolean containsFluxRel(String placeName, String transName, int direction) {
        return controlPetriNet.getFluxRelation().contains(new OrderedPair(new Place(placeName), new Transition(transName), OrderedPair.Direction.ordinalToType(direction)));
     }
-
-    public List<String> getPlaces(INet net) {
-       return net.getPlaces().stream().map(Place::getName).collect(Collectors.toList());
-    }
-
-    public List<String> getTransitions(INet net) {
-       return net.getTransitions().stream().
-               map(Transition::getName).
-               collect(Collectors.toList());
-    }
-
-    public List<Pair<String,String>> getFluxRelation(INet net){
-       return net.getFluxRelation().
-               stream().
-               map(e -> e.getDirection() == OrderedPair.Direction.pt ?
-                       new Pair<>(e.getCurrentPlace().getName(), e.getCurrentTransition().getName()) :
-                       new Pair<>(e.getCurrentTransition().getName(), e.getCurrentPlace().getName())
-               ).
-               collect(Collectors.toList());
-
-    }
-
-    public List<String> getSavedNetsNames(){
-      return getSavedGenericNetsNames(Net.class.getName());
-    }
     
+    public List<String> getSavedNetsNames(){
+        return getSavedGenericNetsNames(Net.class.getName());
+      }
 
-    private List<String> getSavedGenericNetsNames(String className){
-        return netArchive.getAllElements().stream()
-                .filter(e -> e.getClass().getName().equals(className))
-                .map(e -> e.getName())
-                .collect(Collectors.toList());
-    }
 
-    public INet getINet(String netName) {
-	  assert netArchive.contains(netName);
-
-      return netArchive.get(netName);
-  }
-
-    public void saveINet(INet inet) {
-    	netArchive.add(inet.getName(), inet);
-    }
     //PARTE RETE PETRI
     public boolean saveCurrentPetriNet() {
     	
@@ -173,6 +112,8 @@ public class Model {
         }
         return true;
     }
+    
+
 
     public List<String> getSavedPetriNetsNames(){
         return getSavedGenericNetsNames(PetriNet.class.getName());
@@ -195,9 +136,6 @@ public class Model {
         return controlPetriNet;
     }
 
-    public void remove(String name){
-        netArchive.removeFromArchive(name);
-    }
     
     public void changeMarc(String name, int newValue) {
     	controlPetriNet.changeMarc(new Place(name), newValue);
