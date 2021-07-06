@@ -3,9 +3,11 @@ package systemservices;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
+
 import petrinets.domain.net.INet;
 
-public class Archive {
+public class Archive implements INetRepository{
 
     private static final String SAVING_XML_FILE = "data" + File.separator + "nets.xml";
 
@@ -23,8 +25,10 @@ public class Archive {
         return instance;
     }
 
-    public Archive() {
+    public Archive() throws IOException{
         inetMap = new HashMap<>();
+        //TODO eliminare le seguenti linee di codice
+        readFromFile(SAVING_XML_FILE);
     }
 
     public void permanentSave() throws IOException {
@@ -63,6 +67,12 @@ public class Archive {
 
     }
 
+    public INet get(String netName){
+        return inetMap.get(netName);
+    }
 
 
+    public Collection<INet> getAllElements() {
+        return inetMap.values();
+    }
 }

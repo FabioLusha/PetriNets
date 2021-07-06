@@ -8,21 +8,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import petrinets.UI.Pair;
-
+import systemservices.INetRepository;
 
 
 public class Model {
 	
     //private static XMLmanager<NetArchive> netxmlmanager = new XMLmanager<NetArchive>("nets.xml");
 
-    private final Archive netArchive;
+    private final INetRepository netArchive;
 
     private Net controlNet;
     private PetriNet controlPetriNet;
     private PriorityPetriNet controlPriorityPetriNet;
     
 
-    public Model(Archive netArchive){
+    public Model(INetRepository netArchive){
         this.netArchive = netArchive;
     }
 
@@ -94,7 +94,7 @@ public class Model {
 
     public boolean containsNet(String netname) {
        if(netArchive.contains(netname))
-           return netArchive.getInetMap().get(netname) instanceof Net;
+           return netArchive.get(netname) instanceof Net;
 
     return false;
     }
@@ -130,16 +130,16 @@ public class Model {
     
 
     private List<String> getSavedGenericNetsNames(String className){
-        return netArchive.getInetMap().entrySet().stream()
-                .filter(e -> e.getValue().getClass().getName().equals(className))
-                .map(e -> e.getKey())
+        return netArchive.getAllElements().stream()
+                .filter(e -> e.getClass().getName().equals(className))
+                .map(e -> e.getName())
                 .collect(Collectors.toList());
     }
 
     public INet getINet(String netName) {
 	  assert netArchive.contains(netName);
 
-      return netArchive.getInetMap().get(netName);
+      return netArchive.get(netName);
   }
 
     public void saveINet(INet inet) {
@@ -158,7 +158,7 @@ public class Model {
     
     public boolean containsPetriNet(String petriNetName) {
     	if(netArchive.contains(petriNetName))
-            return netArchive.getInetMap().get(petriNetName) instanceof PetriNet;
+            return netArchive.get(petriNetName) instanceof PetriNet;
     	
     	return false;
     }
@@ -247,7 +247,7 @@ public class Model {
 
     public boolean containsPriorityPetriNet(String netname) {
         if(netArchive.contains(netname))
-            return netArchive.getInetMap().get(netname) instanceof PriorityPetriNet;
+            return netArchive.get(netname) instanceof PriorityPetriNet;
 
         return false;
     }

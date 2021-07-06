@@ -29,6 +29,7 @@ public class Controller {
 		this.view = new View(this,out);
     	try {
 			this.model = new Model();
+			System.out.println("Creato Model");
 		}catch(IOException e){
     		view.printToDisplay(ViewStringConstants.ERR_MSG_DESERIALIZATION_FAILED);
 		}
