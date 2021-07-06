@@ -9,8 +9,6 @@ import petrinets.domain.net.INet;
 
 public class Archive implements INetRepository{
 
-    private static final String SAVING_XML_FILE = "data" + File.separator + "nets.xml";
-
     private XMLmanager<Map<String, INet>> mapXMLmanager;
 
     private static Archive instance;
@@ -25,10 +23,8 @@ public class Archive implements INetRepository{
         return instance;
     }
 
-    public Archive() throws IOException{
+    public Archive(){
         inetMap = new HashMap<>();
-        //TODO eliminare le seguenti linee di codice
-        readFromFile(SAVING_XML_FILE);
     }
 
     public void permanentSave() throws IOException {

@@ -4,6 +4,7 @@ import petrinets.domain.net.*;
 import systemservices.Archive;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -27,8 +28,8 @@ public class Model {
         this.netArchive = netArchive;
     }
 
-    public Model() throws IOException, ClassNotFoundException, IllegalAccessException, InstantiationException{
-    	netArchive = RepositoryFactory.getInstance().getRepo();
+    public Model() throws IOException, ClassNotFoundException, IllegalAccessException, InstantiationException, InvocationTargetException, NoSuchMethodException {
+    	netArchive = RepositoryFactory.getInstance().   getRepo();
     }
 
 
