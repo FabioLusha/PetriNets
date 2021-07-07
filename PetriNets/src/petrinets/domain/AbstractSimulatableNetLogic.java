@@ -23,4 +23,7 @@ public abstract class AbstractSimulatableNetLogic extends AbstractINetLogic{
                 collect(Collectors.toList());
     }
 
+    public List<String> getSavedPetriNetsNames(){
+        return getSavedGenericNetsNames(PetriNet.class.getName());
+    }
 }

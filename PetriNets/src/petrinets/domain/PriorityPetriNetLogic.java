@@ -4,13 +4,14 @@ import petrinets.domain.net.Transition;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 public class PriorityPetriNetLogic extends  AbstractSimulatableNetLogic{
     private PriorityPetriNet controlPriorityPetriNet;
 
-    public PriorityPetriNetLogic() throws IOException, ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
+    public PriorityPetriNetLogic() throws IOException, ReflectiveOperationException {
     }
 
     public boolean createPriorityPetriNet(String priorityPetriNetName, PetriNet petriNet) {
@@ -51,4 +52,10 @@ public class PriorityPetriNetLogic extends  AbstractSimulatableNetLogic{
 
         return false;
     }
+
+    public List<String> getSavedPriorityPetriNetsNames() {
+        return getSavedGenericNetsNames(PriorityPetriNet.class.getName());
+    }
+
+
 }

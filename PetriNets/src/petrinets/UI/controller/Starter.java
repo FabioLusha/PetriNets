@@ -3,7 +3,6 @@ package petrinets.UI.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
-import java.util.Map;
 
 import petrinets.UI.Pair;
 import petrinets.UI.View;
@@ -17,13 +16,15 @@ import petrinets.domain.net.Net;
 import systemservices.NetImportExport;
 
 
-public class Controller {
+public class Starter {
 
+	private PriorityPetriNetConfigurationController priorityPetriNetConfigurationController;
 	private Model model;
     private View view;
     private NetConfigurationController configNetContr;
+    private PetriNetConfigurationController configPetriNetContr;
 
-    public Controller(PrintWriter out){
+    public Starter(PrintWriter out){
 		this.view = new View(this,out);
     	try {
 			this.model = new Model();
@@ -32,7 +33,17 @@ public class Controller {
 		}catch(Exception e){
     		view.printToDisplay(ViewStringConstants.ERR_MSG_DESERIALIZATION_FAILED);
 		}
-    }
+    	configNetContr = new NetConfigurationController();
+    	configPetriNetContr = new PetriNetConfigurationController();
+		try {
+			priorityPetriNetConfigurationController = new PriorityPetriNetConfigurationController();
+		} catch (ReflectiveOperationException e) {
+			e.printStackTrace();
+			//TODO
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
     public void logMenuChoice(int scegli) {
 		switch(scegli) {
@@ -79,12 +90,12 @@ public class Controller {
 				view.mainMenu();
 				break;
 			case 5:
-				managePriorityPetriNetCreation();
+				priorityPetriNetConfigurationController.managePriorityPetriNetCreation();
 				view.priorityPetriNetMenu();
 				break;
 			case 6:
-				if(managePriorityPetriNetVis())
-					requestPrintPriorityPetriNet(view.readNotEmptyString(ViewStringConstants.INSERT_NET_TO_VIEW));
+				if(priorityPetriNetConfigurationController.managePriorityPetriNetVis())
+					priorityPetriNetConfigurationController.requestPrintPriorityPetriNet(view.readNotEmptyString(ViewStringConstants.INSERT_NET_TO_VIEW));
 				view.mainMenu();
 				break;
 			case 7:
@@ -102,6 +113,8 @@ public class Controller {
 		}
 	}
 
+
+
 	public void manageNetCreation(String netName){
    		configNetContr.manageNetCreation(netName);
     }
@@ -116,26 +129,11 @@ public class Controller {
     }
     
     public void requestPrintNet(String netname) {
-		if(model.containsNet(netname)) {
-			Net net = (Net) model.getINet(netname);
-			List<String> placesname = model.getPlaces(net);
-			List<String> transitionsname = model.getTransitions(net);
-			List<Pair<String,String>> fluxrelations = model.getFluxRelation(net);
-			view.printNet(netname, placesname, transitionsname, fluxrelations);
-		}
-		else {
-			view.printToDisplay(ViewStringConstants.ERR_NET_NOT_PRESENT);
-		}
-		view.mainMenu();
+		configNetContr.requestPrintNet(netname);
 	}
 
 	public void manageNetsVis() {
-		if (model.getSavedNetsNames().isEmpty()) {
-			view.printToDisplay(ViewStringConstants.ERR_NO_NET_SAVED);
-		} else {
-			view.visualizeNets(model.getSavedNetsNames());
-			requestPrintNet(view.readNotEmptyString(ViewStringConstants.INSERT_NET_TO_VIEW));
-		}
+		configNetContr.manageNetsVis();
 	}
 
 	public void closeApp(){
@@ -197,7 +195,7 @@ public class Controller {
     	
     	if(model.containsINet(netname)) {
     		petrinetname = view.readNotEmptyString(ViewStringConstants.INSERT_PETRI_NET_NAME_MSG);
-    		if(!model.createPetriNet(petrinetname, (Net) model.getINet(netname))) {
+    		if(!model.createPetriNet(petrinetname, netname)) {
 				view.printToDisplay(ViewStringConstants.ERR_MSG_NET_NAME_ALREADY_EXIST);
 				view.mainMenu();
 			}
@@ -270,131 +268,38 @@ public class Controller {
 	
 	public void changeFluxRelationVal() {
 
-		var currentPetriNet = model.getCurrentPetriNet();
-		var relFluxName = model.getFluxRelation(currentPetriNet);
-		var values = model.getValues(currentPetriNet);
-		view.printToDisplay(view.fluxRelFormatter(relFluxName, values));
-		
-		String placeName = view.readNotEmptyString(ViewStringConstants.INSERT_PLACE_MSG).trim();
-    	String transitionName = view.readNotEmptyString(ViewStringConstants.INSERT_TRANSITION_MSG).trim();
-
-    	int direction = view.getIntInput(ViewStringConstants.INSERT_DIRECTION_MSG
-				+ String.format(ViewStringConstants.FLUX_DIRECTION_MSG, 0, placeName, transitionName)
-				+ String.format(ViewStringConstants.FLUX_DIRECTION_MSG, 1, transitionName, placeName) + "\n > ",
-				0, 1);
-    	
-		if(!model.containsFluxRel(placeName, transitionName, direction))
-			view.printToDisplay(ViewStringConstants.ERR_FLUX_REL_NOT_PRESENT);	
-		else {
-			int newValue  = view.getNotNegativeInt(ViewStringConstants.INSERT_NEW_COST);
-			model.changeFluxRelVal(placeName, transitionName, direction, newValue);
-		}
 	}
 
 	//PARTE RETI DI PETRI CON PRIORITA'
 	public void priorityPetriNetMenuChoice(int choice) {
-		switch (choice){
-			case 0:
-				saveAndExit();
-				break;
-				//modifica vlaore priorità
-			case 1:
-				changePriority();
-				view.priorityPetriNetMenu();
-				break;
-			//visualizza la rete
-			case 2:
-				visualizeCurrentPriorityPetriNet();
-				view.priorityPetriNetMenu();
-				break;
-			case 3:
-				if(!model.saveCurrentPriorityPetriNet()) {
-					view.printToDisplay(ViewStringConstants.ERR_NET_ALREADY_PRESENT);
-				}
-
-				view.mainMenu();
-				break;
-			case 4:
-				view.mainMenu();
-				break;
-			default:
-				view.petriNetMenu();
-				break;
-		}
+		priorityPetriNetConfigurationController.priorityPetriNetMenuChoice(choice);
 	}
 
 	private void visualizeCurrentPriorityPetriNet() {
-    	printPriorityPetriNet(model.getCurrentPriorityPetriNet());
+		priorityPetriNetConfigurationController.visualizeCurrentPriorityPetriNet();
 	}
 
 	private void printPriorityPetriNet(PriorityPetriNet priorityPetriNet) {
-		String netname = priorityPetriNet.getName();
-		List<String> placesname = model.getPlaces(priorityPetriNet);
-		List<Pair<String,String>> fluxrelations = model.getFluxRelation(priorityPetriNet);
-		List<String> marc = model.getMarc(priorityPetriNet);
-		List<String> values = model.getValues(priorityPetriNet);
-		Map<String, Integer> transAndPriorities = model.getPriorityMapInString(priorityPetriNet);
 
-		view.printPriorityPetriNet(netname, placesname, marc, transAndPriorities, fluxrelations, values);
+		priorityPetriNetConfigurationController.printPriorityPetriNet(priorityPetriNet);
 	}
 
 	public void managePriorityPetriNetCreation(){
-		String pPetriNetName;
-		String petriNetName;
 
-		view.visualizeNets(model.getSavedPetriNetsNames());
-		petriNetName = view.readNotEmptyString(ViewStringConstants.INSERT_PETRI_NET_NAME_MSG);
-
-		if(model.containsINet(petriNetName)) {
-			pPetriNetName = view.readNotEmptyString(ViewStringConstants.INSERT_PRIORITY_PETRI_NET_NAME_MSG);
-			if(!model.createPriorityPetriNet(pPetriNetName, (PetriNet) model.getINet(petriNetName))) {
-				view.printToDisplay(ViewStringConstants.ERR_MSG_NET_NAME_ALREADY_EXIST);
-				view.mainMenu();
-			}
-
-		}else {
-			view.printToDisplay(ViewStringConstants.ERR_NET_NOT_PRESENT);
-			view.mainMenu();
-		}
-
-		view.printToDisplay(ViewStringConstants.PRIORITY_PETRI_NET_INITIALIZED_DEFAULT);
+		priorityPetriNetConfigurationController.managePriorityPetriNetCreation();
 	}
 
 	public void changePriority(){
-		PriorityPetriNet currentPriorityPetriNet = model.getCurrentPriorityPetriNet();
 
-		Map<String, Integer> transPriorities = model.getPriorityMapInString(currentPriorityPetriNet);
-
-		view.printToDisplay(view.prioritiesFormatter(transPriorities));
-
-		String transName = view.readNotEmptyString(ViewStringConstants.INSERT_TRANSITION_NAME_TO_MODIFY);
-
-		if(!model.inetContainsTransition(currentPriorityPetriNet,transName))
-			view.printToDisplay(ViewStringConstants.ERR_TRANSITION_NOT_PRESENT);
-		else {
-			int newValue  = view.getNotNegativeInt(ViewStringConstants.INSERT_NEW_PRIORITY);
-			model.changePriority(transName, newValue);
-		}
+		priorityPetriNetConfigurationController.changePriority();
 	}
 
 	public boolean managePriorityPetriNetVis() {
-    	List<String> priorityPetriNetNames = model.getSavedPriorityPetriNetsNames();
-		if (priorityPetriNetNames.isEmpty()) {
-			view.printToDisplay(ViewStringConstants.ERR_NO_NET_SAVED);
-			return false;
-		} else {
-			view.visualizeNets(priorityPetriNetNames);
-			return true;
-		}
+		return priorityPetriNetConfigurationController.managePriorityPetriNetVis();
 	}
 
 	public void requestPrintPriorityPetriNet(String netname) {
-		if(model.containsPriorityPetriNet(netname)) {
-			printPriorityPetriNet((PriorityPetriNet) model.getINet(netname));
-		}
-		else {
-			view.printToDisplay(ViewStringConstants.ERR_NET_NOT_PRESENT);
-		}
+		priorityPetriNetConfigurationController.requestPrintPriorityPetriNet(netname);
 	}
 	
 	

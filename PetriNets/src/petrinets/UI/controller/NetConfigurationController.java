@@ -1,14 +1,17 @@
 package petrinets.UI.controller;
 
+import petrinets.UI.Pair;
 import petrinets.UI.View;
 import petrinets.UI.ViewStringConstants;
 import petrinets.domain.NetLogic;
+import petrinets.domain.net.Net;
 
 import java.io.IOException;
+import java.util.List;
 
-public class NetConfigurationController {
+public class NetConfigurationController extends AbstractConfigurationController{
     private NetLogic netLogic;
-    private View view;
+
 
     public void manageNetCreation(String netName){
         //Il metodo createNet della classe Model non crea la rete se vi e' gia' una rete con questo nome
@@ -64,8 +67,7 @@ public class NetConfigurationController {
     public void userSavingChoice(int userchoice) {
         switch (userchoice) {
             case 0:
-                netLogic.permanentSave();
-                Controller.saveAndExit();
+                saveAndExit();
                 break;
             //salva la rete
             case 1: {
@@ -82,6 +84,34 @@ public class NetConfigurationController {
                 view.mainMenu();
             }
         }
+    }
+
+    public void requestPrintNet(String netname) {
+        if(netLogic.containsNet(netname)) {
+            Net net = (Net) netLogic.getINet(netname);
+            List<String> placesname = netLogic.getPlaces(net);
+            List<String> transitionsname = netLogic.getTransitions(net);
+            List<Pair<String,String>> fluxrelations = netLogic.getFluxRelation(net);
+            view.printNet(netname, placesname, transitionsname, fluxrelations);
+        }
+        else {
+            view.printToDisplay(ViewStringConstants.ERR_NET_NOT_PRESENT);
+        }
+        view.mainMenu();
+    }
+
+    public void manageNetsVis() {
+        if (netLogic.getSavedNetsNames().isEmpty()) {
+            view.printToDisplay(ViewStringConstants.ERR_NO_NET_SAVED);
+        } else {
+            view.visualizeNets(netLogic.getSavedNetsNames());
+            requestPrintNet(view.readNotEmptyString(ViewStringConstants.INSERT_NET_TO_VIEW));
+        }
+    }
+
+    @Override
+    public void permanentSave() throws IOException {
+        netLogic.permanentSave();
     }
 
 

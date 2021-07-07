@@ -9,15 +9,17 @@ import java.util.stream.Collectors;
 
 
 public class Model extends  AbstractINetLogic{
-	public NetLogic logicOfNet;
-	public PetriNetLogic logicOfPetriNet;
-	public PriorityPetriNetLogic logicOfPriorityPetriNet;
+	private NetLogic logicOfNet;
+	private PetriNetLogic logicOfPetriNet;
+	private PriorityPetriNetLogic logicOfPriorityPetriNet;
 
     //private static XMLmanager<NetArchive> netxmlmanager = new XMLmanager<NetArchive>("nets.xml");
 
 
     public Model() throws IOException,ReflectiveOperationException{
         logicOfNet = new NetLogic();
+        logicOfPetriNet = new PetriNetLogic();
+        logicOfPriorityPetriNet = new PriorityPetriNetLogic();
     }
 
 
@@ -52,10 +54,7 @@ public class Model extends  AbstractINetLogic{
 
 
     public boolean containsNet(String netname) {
-       if(netArchive.contains(netname))
-           return netArchive.get(netname) instanceof Net;
-
-    return false;
+        return logicOfNet.containsNet(netname);
     }
 
     public boolean containsFluxRel(String placeName, String transName, int direction) {
@@ -77,7 +76,7 @@ public class Model extends  AbstractINetLogic{
     }
     
 
-    public boolean createPetriNet(String name, Net net){
+    public boolean createPetriNet(String name, String net){
        return logicOfPetriNet.createPetriNet(name,net);
     }
     
@@ -132,7 +131,7 @@ public class Model extends  AbstractINetLogic{
     }
 
     public List<String> getSavedPriorityPetriNetsNames() {
-        return getSavedGenericNetsNames(PriorityPetriNet.class.getName());
+        return logicOfPriorityPetriNet.getSavedPriorityPetriNetsNames();
     }
 
     public boolean containsPriorityPetriNet(String netname) {

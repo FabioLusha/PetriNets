@@ -13,13 +13,13 @@ import petrinets.domain.net.Transition;
 
 public class SimulatorController {
 	private SimulatorView simView;
-	private Controller mainController;
+	private Starter mainStarter;
 	private Model model;
 	private SimulatableNet netToSimulate;
 
-	public SimulatorController(View mainView, Controller pcontroller, Model pmodel) {
+	public SimulatorController(View mainView, Starter pcontroller, Model pmodel) {
 		simView = new SimulatorView(this, mainView);
-		mainController = pcontroller;
+		mainStarter = pcontroller;
 		model = pmodel;
 		simView.mainMenu();
 	}
@@ -45,11 +45,11 @@ public class SimulatorController {
 	}
 
 	public void simulatePetriNet() {
-		if (mainController.managePetriNetVis()) {
+		if (mainStarter.managePetriNetVis()) {
 			//richiedi il nome della rete da simulare;
 			String netname = simView.readNotEmpyString(ViewStringConstants.INSERT_PETRI_NET_NAME_MSG);
 			if (model.containsPetriNet(netname)) {
-				mainController.requestPrintPetriNet(netname);
+				mainStarter.requestPrintPetriNet(netname);
 				SimulatableNet net = (SimulatableNet) model.getINet(netname);
 				netToSimulate = (SimulatableNet) SerializationUtils.clone(net);
 				simulate();
@@ -62,11 +62,11 @@ public class SimulatorController {
 	}
 	
 	public void simulatePriorityPetriNet() {
-		if (mainController.managePriorityPetriNetVis()) {
+		if (mainStarter.managePriorityPetriNetVis()) {
 			//richiedi il nome della rete da simulare;
 			String netname = simView.readNotEmpyString(ViewStringConstants.INSERT_PRIORITY_PETRI_NET_NAME_MSG);
 			if (model.containsPriorityPetriNet(netname)) {
-				mainController.requestPrintPriorityPetriNet(netname);
+				mainStarter.requestPrintPriorityPetriNet(netname);
 				SimulatableNet net = (SimulatableNet) model.getINet(netname);
 				netToSimulate = (SimulatableNet) SerializationUtils.clone(net);
 				simulate();
@@ -79,7 +79,7 @@ public class SimulatorController {
 	}
 
 	public void exitWithoutSaving() {
-		mainController.startView();
+		mainStarter.startView();
 	}
 
 
@@ -96,6 +96,7 @@ public class SimulatorController {
 					collect(Collectors.toList());
 
 			if(activeTransitions.size() != 1){
+				//TODO Utilizzare il metodo readFromList della classe view
 				while(true) {
 					simView.printActiveTransitions(listNames);
 					String name = simView.readNotEmpyString(ViewStringConstants.INSERT_TRANSITION_MSG);
@@ -104,6 +105,7 @@ public class SimulatorController {
 						netToSimulate.fire(new Transition(name));
 						break;
 					} else {
+
 						simView.print(ViewStringConstants.ERR_ELEMENT_NAME_DOES_NOT_EXSIST);
 						continue;
 					}

@@ -1,7 +1,7 @@
 package petrinets.UI;
 
 import it.unibs.fp.mylib.*;
-import petrinets.UI.controller.Controller;
+import petrinets.UI.controller.Starter;
 
 import java.io.PrintWriter;
 import java.util.List;
@@ -9,27 +9,27 @@ import java.util.Map;
 
 public class View {
     private PrintWriter outputStream;
-    private Controller controller;
+    private Starter starter;
     
-    public View(Controller controller, PrintWriter out){
-        this.controller = controller;
+    public View(Starter starter, PrintWriter out){
+        this.starter = starter;
         this.outputStream = out;
     }
     
     public void loginMenu() {
     	MyMenu logMenu = new MyMenu(ViewStringConstants.WELCOME_MESSAGE, ViewStringConstants.LOGIN_MENU_OPTIONS);
-    	controller.logMenuChoice(logMenu.scegli());
+    	starter.logMenuChoice(logMenu.scegli());
     }
 
     public void mainMenu() {
         MyMenu mainMenu = new MyMenu(ViewStringConstants.WELCOME_MESSAGE, ViewStringConstants.MAIN_OPTIONS);
-        controller.mainMenuChoice(mainMenu.scegli());
+        starter.mainMenuChoice(mainMenu.scegli());
     }
 
 
     public void initializeNet() {
         String netName = InputDati.leggiStringaNonVuota(ViewStringConstants.INSERT_NET_NAME_MSG).trim();
-        controller.manageNetCreation(netName);
+        starter.manageNetCreation(netName);
     }
     
     public void visualizeNets(List<String> names) {
@@ -62,7 +62,7 @@ public class View {
 				+ String.format(ViewStringConstants.FLUX_DIRECTION_MSG, 0, placename, transitionname)
 				+ String.format(ViewStringConstants.FLUX_DIRECTION_MSG, 1, transitionname, placename) + "\n > ",
 				0, 1);
-    	controller.addFluxRel(placename, transitionname, direction);
+    	starter.addFluxRel(placename, transitionname, direction);
     }
     
     public boolean userInputContinueAdding(String message) {
@@ -71,12 +71,12 @@ public class View {
     
     public void saveMenu() {
     	MyMenu netSaving = new MyMenu(ViewStringConstants.NET_SAVING_MENU, ViewStringConstants.NET_SAVING_MENU_OPTIONS);
-    	controller.userSavingChoice(netSaving.scegli());
+    	starter.userSavingChoice(netSaving.scegli());
 	}
 
     public void petriNetMenu(){
         MyMenu mymenu = new MyMenu(ViewStringConstants.PETRI_NET_MENU_TITLE, ViewStringConstants.CHANGE_PETRI_NET_OPTIONS);
-        controller.petriNetMenuChoice(mymenu.scegli());
+        starter.petriNetMenuChoice(mymenu.scegli());
     }
 
     public void printPetriNet(String name, List<String> places, List<String> marc, List<String> transitions,
@@ -133,7 +133,7 @@ public class View {
     //RETI DI PETRI CON PRIORITA'
     public void priorityPetriNetMenu() {
         MyMenu mymenu = new MyMenu(ViewStringConstants.PRIORITY_PETRI_NET_MENU_TITLE, ViewStringConstants.CHANGE_PRIORITY_PETRI_NET_OPTIONS);
-        controller.priorityPetriNetMenuChoice(mymenu.scegli());
+        starter.priorityPetriNetMenuChoice(mymenu.scegli());
     }
 
     public void printPriorityPetriNet(String netname, List<String> placesNames, List<String> marc, Map<String, Integer> transAndPriorities, List<Pair<String, String>> fluxrelations, List<String> values) {
@@ -153,5 +153,18 @@ public class View {
 
         return strb.toString();
     }
+
+    public String readFromList(List<String> listOfOptions, String message){
+        String element;
+        do {
+            element = readNotEmptyString(message);
+            if(!listOfOptions.contains(element)){
+                printToDisplay(ViewStringConstants.ERR_ELEMENT_NAME_DOES_NOT_EXSIST);
+            }
+        }while(listOfOptions.contains(element));
+        return element;
+    }
+
+
 }
 

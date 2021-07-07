@@ -83,6 +83,9 @@ public abstract class AbstractINetLogic {
      public void remove(String name){
          netArchive.removeFromArchive(name);
      }
-     
+
+    public List<String> getSavedNetsNames(){
+        return getSavedGenericNetsNames(Net.class.getName());
+    }
 
 }

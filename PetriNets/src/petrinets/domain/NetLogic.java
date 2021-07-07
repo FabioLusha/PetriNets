@@ -60,7 +60,12 @@ public class NetLogic extends AbstractINetLogic{
 		return controlNet.isPlace(new Place(name));
 	}
 
+	public boolean containsNet(String netname) {
+		if(netArchive.contains(netname))
+			return netArchive.get(netname) instanceof Net;
 
+		return false;
+	}
 
 
 }

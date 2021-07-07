@@ -6,6 +6,7 @@ import petrinets.domain.net.Place;
 import petrinets.domain.net.Transition;
 
 import java.io.IOException;
+import java.util.List;
 
 public class PetriNetLogic extends AbstractSimulatableNetLogic{
     private PetriNet controlPetriNet;
@@ -37,11 +38,12 @@ public class PetriNetLogic extends AbstractSimulatableNetLogic{
         return false;
     }
 
-    public boolean createPetriNet(String name, Net net){
-        if(netArchive.contains(name))
+    public boolean createPetriNet(String petriNetName, String netName){
+        Net net = (Net) getINet(netName);
+        if(netArchive.contains(petriNetName))
             return false;
         else{
-            controlPetriNet = new PetriNet(name,net);
+            controlPetriNet = new PetriNet(petriNetName,net);
         }
         return true;
     }
@@ -57,7 +59,6 @@ public class PetriNetLogic extends AbstractSimulatableNetLogic{
     public void changeFluxRelVal(String placeName, String transName, int direction, int newValue) {
         controlPetriNet.changeFluxRel(new OrderedPair(new Place(placeName), new Transition(transName), OrderedPair.Direction.ordinalToType(direction)), newValue);
     }
-
 
 
 }
