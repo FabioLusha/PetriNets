@@ -14,7 +14,6 @@ import petrinets.domain.PetriNet;
 import petrinets.domain.PriorityPetriNet;
 import petrinets.domain.net.INet;
 import petrinets.domain.net.Net;
-import petrinets.domain.PetriNet;
 import systemservices.NetImportExport;
 
 
@@ -116,7 +115,7 @@ public class Controller {
 
     public void addFluxRel(String place, String transitions, int direction){
 
-        if (model.transitionIsNotPointed(place,transitions,direction)) {
+        if (model.logicOfNet.transitionIsNotPointed(place,transitions,direction)) {
         	view.printToDisplay(ViewStringConstants.ERR_MSG_NOT_POINTED_TRANSITION);
         	view.addFluxElement();
         }else {

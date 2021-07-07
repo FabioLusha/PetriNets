@@ -1,20 +1,15 @@
 package petrinets.domain;
 
 import petrinets.domain.net.*;
-import systemservices.Archive;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import petrinets.UI.Pair;
-import systemservices.INetRepository;
-import systemservices.RepositoryFactory;
 
 
-public class Model {
-	private NetLogic logicOfNet;
+public class Model extends  AbstractINetLogic{
+	public NetLogic logicOfNet;
     //private static XMLmanager<NetArchive> netxmlmanager = new XMLmanager<NetArchive>("nets.xml");
 
 
@@ -23,8 +18,8 @@ public class Model {
     private PriorityPetriNet controlPriorityPetriNet;
     
 
-    public Model() throws IOException, ClassNotFoundException, IllegalAccessException, InstantiationException{
-    	logicOfNet = new NetLogic();
+    public Model() throws IOException,ReflectiveOperationException{
+        logicOfNet = new NetLogic();
     }
 
 
@@ -33,39 +28,27 @@ public class Model {
        return logicOfNet.createNet(name);
     }
 
-    //Trasizione non puntata da nessun posto
-    public boolean transitionIsNotPointed(String placeName, String transitionName, int direction){
-    	
-        return (OrderedPair.Direction.ordinalToType(direction) == OrderedPair.Direction.tp
-                && !controlNet.isTransition(new Transition(transitionName)));
-       
-    }
-
     public boolean containsPlace(String name) {
     	return controlNet.isPlace(new Place(name));
     }
 
-   
-    
+    public boolean transitionIsNotPointed(String placeName, String transitionName, int direction){
+
+        return logicOfNet.transitionIsNotPointed(placeName,transitionName,direction);
+
+    }
+
+
     public boolean containsTransition(String name) {
-    	return controlNet.isTransition(new Transition(name));
+    	return logicOfNet.containsTransition(name);
     }
 
     public boolean addFluxElem(String placename,String transitionname, int direction) {
-        OrderedPair.Direction type = OrderedPair.Direction.ordinalToType(direction);
-
-        return controlNet.addFluxRelElement(new OrderedPair(new Place(placename) , new Transition(transitionname) , type));
+        return logicOfNet.addFluxElem(placename ,transitionname,direction);
     }
 
     public boolean saveCurrentNet() {
-       if(netArchive.containsValue(controlNet)) {
-           return false;
-       }
-        netArchive.add(controlNet.getName(), controlNet);
-        //pulisco la variabile di comodo per evidenziare eventuali errori
-        controlNet = null;
-
-        return true;
+      return logicOfNet.saveCurrentNet();
     }
 
 

@@ -1,6 +1,7 @@
 package petrinets.domain;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,7 +18,7 @@ public abstract class AbstractINetLogic {
 	protected final INetRepository netArchive;
 
 	public AbstractINetLogic()
-			throws IOException, ClassNotFoundException, IllegalAccessException, InstantiationException {
+            throws IOException, ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
 		netArchive = RepositoryFactory.getInstance().getRepo();
 	}
 
