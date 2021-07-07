@@ -88,7 +88,7 @@ public class View {
         for (String t : transitions) {
             output.append("\t" + t.toString() + "\n");
         }
-        output.append(fluxrelFormatter(fluxRelations, cost));
+        output.append(fluxRelFormatter(fluxRelations, cost));
         printToDisplay(output.toString());
     }
 
@@ -102,7 +102,7 @@ public class View {
         return output.toString();
     }
     
-    public String fluxrelFormatter(List<Pair<String,String>> fluxRelations, List<String> cost) {
+    public String fluxRelFormatter(List<Pair<String,String>> fluxRelations, List<String> cost) {
     	  StringBuilder output =  new StringBuilder();
     	  output.append("Relazioni di flusso: \n");
           for(int i = 0; i < fluxRelations.size(); i++) {
@@ -141,7 +141,7 @@ public class View {
         output.append(String.format("Nome rete con priorità: %s\n ",netname));
         output.append(marcFormatter(placesNames, marc));
         output.append(prioritiesFormatter(transAndPriorities));
-        output.append(fluxrelFormatter(fluxrelations,values));
+        output.append(fluxRelFormatter(fluxrelations,values));
 
         printToDisplay(output.toString());
     }

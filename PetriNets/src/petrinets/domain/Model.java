@@ -10,13 +10,11 @@ import java.util.stream.Collectors;
 
 public class Model extends  AbstractINetLogic{
 	public NetLogic logicOfNet;
+	public PetriNetLogic logicOfPetriNet;
+	public PriorityPetriNetLogic logicOfPriorityPetriNet;
+
     //private static XMLmanager<NetArchive> netxmlmanager = new XMLmanager<NetArchive>("nets.xml");
 
-
-    private Net controlNet;
-    private PetriNet controlPetriNet;
-    private PriorityPetriNet controlPriorityPetriNet;
-    
 
     public Model() throws IOException,ReflectiveOperationException{
         logicOfNet = new NetLogic();
@@ -29,7 +27,7 @@ public class Model extends  AbstractINetLogic{
     }
 
     public boolean containsPlace(String name) {
-    	return controlNet.isPlace(new Place(name));
+    	return logicOfNet.containsPlace(name);
     }
 
     public boolean transitionIsNotPointed(String placeName, String transitionName, int direction){
@@ -61,7 +59,7 @@ public class Model extends  AbstractINetLogic{
     }
 
     public boolean containsFluxRel(String placeName, String transName, int direction) {
-       return controlPetriNet.getFluxRelation().contains(new OrderedPair(new Place(placeName), new Transition(transName), OrderedPair.Direction.ordinalToType(direction)));
+       return logicOfPetriNet.containsFluxRel(placeName,transName,direction);
     }
     
     public List<String> getSavedNetsNames(){
@@ -71,30 +69,16 @@ public class Model extends  AbstractINetLogic{
 
     //PARTE RETE PETRI
     public boolean saveCurrentPetriNet() {
-    	
-    	if(netArchive.containsValue(controlPetriNet))
-    		return false;
-  
-        netArchive.add(controlPetriNet.getName(), controlPetriNet);
-        controlPetriNet = null;
-        return true;
+    	return logicOfPetriNet.saveCurrentNet();
     }
     
     public boolean containsPetriNet(String petriNetName) {
-    	if(netArchive.contains(petriNetName))
-            return netArchive.get(petriNetName) instanceof PetriNet;
-    	
-    	return false;
+    return logicOfPetriNet.containsPetriNet(petriNetName);
     }
     
 
     public boolean createPetriNet(String name, Net net){
-        if(netArchive.contains(name))
-            return false;
-        else{
-            controlPetriNet = new PetriNet(name,net);
-        }
-        return true;
+       return logicOfPetriNet.createPetriNet(name,net);
     }
     
 
@@ -104,64 +88,47 @@ public class Model extends  AbstractINetLogic{
     }
 
     public List<String> getMarc(SimulatableNet petrinet){
-      
-        return petrinet.getMarcmap().values().stream().
-                map(e -> Integer.toString(e)).
-                collect(Collectors.toList());
+        return logicOfPetriNet.getMarc(petrinet);
     }
 
     public List<String> getValues(SimulatableNet petrinet){
-        return petrinet.getValuemap().values().stream().
-                map(e -> Integer.toString(e)).
-                collect(Collectors.toList());
+        return logicOfPetriNet.getValues(petrinet);
     }
 
     public PetriNet getCurrentPetriNet(){
-        return controlPetriNet;
+        return logicOfPetriNet.getCurrentPetriNet();
     }
 
     
     public void changeMarc(String name, int newValue) {
-    	controlPetriNet.changeMarc(new Place(name), newValue);
+    	logicOfPetriNet.changeMarc(name, newValue);
     }
 
     public void changeFluxRelVal(String placeName, String transName, int direction, int newValue) {
-    	controlPetriNet.changeFluxRel(new OrderedPair(new Place(placeName), new Transition(transName), OrderedPair.Direction.ordinalToType(direction)), newValue);
+        logicOfPetriNet.changeFluxRelVal(placeName,transName,direction,newValue);
     }
 
 
     //PRIORITY PETRI NET
     public boolean createPriorityPetriNet(String priorityPetriNetName, PetriNet petriNet) {
-           if(netArchive.contains(priorityPetriNetName))
-               return false;
-           else
-               controlPriorityPetriNet = new PriorityPetriNet(priorityPetriNetName,petriNet);
-
-           return true;
+           return logicOfPriorityPetriNet.createPriorityPetriNet(priorityPetriNetName,petriNet);
     }
 
     public boolean saveCurrentPriorityPetriNet() {
-
-        if(netArchive.containsValue(controlPriorityPetriNet))
-            return false;
-
-        netArchive.add(controlPriorityPetriNet.getName(), controlPriorityPetriNet);
-        controlPriorityPetriNet = null;
-        return true;
+            return  logicOfPriorityPetriNet.saveCurrentNet();
     }
 
 
     public PriorityPetriNet getCurrentPriorityPetriNet() {
-        return controlPriorityPetriNet;
+        return logicOfPriorityPetriNet.getCurrentPriorityPetriNet();
     }
 
     public Map<String, Integer> getPriorityMapInString(PriorityPetriNet priorityPetriNet){
-        return priorityPetriNet.getPriorityMap().entrySet().stream()
-                .collect(Collectors.toMap(e -> e.getKey().getName(), e ->  e.getValue()));
+        return logicOfPriorityPetriNet.getPriorityMapInString(priorityPetriNet);
     }
 
     public void changePriority(String transName, int newValue) {
-        controlPriorityPetriNet.getPriorityMap().replace(new Transition(transName),newValue);
+        logicOfPriorityPetriNet.changePriority(transName,newValue);
     }
 
     public List<String> getSavedPriorityPetriNetsNames() {
@@ -169,9 +136,6 @@ public class Model extends  AbstractINetLogic{
     }
 
     public boolean containsPriorityPetriNet(String netname) {
-        if(netArchive.contains(netname))
-            return netArchive.get(netname) instanceof PriorityPetriNet;
-
-        return false;
+        return logicOfPriorityPetriNet.containsPriorityPetriNet(netname);
     }
 }

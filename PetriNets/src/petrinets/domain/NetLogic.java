@@ -56,6 +56,10 @@ public class NetLogic extends AbstractINetLogic{
 		return controlNet.addFluxRelElement(new OrderedPair(new Place(placename) , new Transition(transitionname) , type));
 	}
 
+	public boolean containsPlace(String name) {
+		return controlNet.isPlace(new Place(name));
+	}
+
 
 
 

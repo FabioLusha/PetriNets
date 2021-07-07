@@ -19,10 +19,9 @@ import systemservices.NetImportExport;
 
 public class Controller {
 
-
-	
 	private Model model;
     private View view;
+    private NetConfigurationController configNetContr;
 
     public Controller(PrintWriter out){
 		this.view = new View(this,out);
@@ -75,7 +74,7 @@ public class Controller {
 				view.petriNetMenu();
 				break;
 			case 4:
-				if(menagePetriNetVis())
+				if(managePetriNetVis())
 					requestPrintPetriNet(view.readNotEmptyString(ViewStringConstants.INSERT_NET_TO_VIEW));
 				view.mainMenu();
 				break;
@@ -104,76 +103,16 @@ public class Controller {
 	}
 
 	public void manageNetCreation(String netName){
-    	//Il metodo createNet della classe Model non crea la rete se vi e' gia' una rete con questo nome
-        if(!model.createNet(netName)) {
-            view.printToDisplay(ViewStringConstants.ERR_MSG_NET_NAME_ALREADY_EXIST);
-            view.mainMenu();
-        }else {
-        	view.addFluxElement();
-        }
+   		configNetContr.manageNetCreation(netName);
     }
 
     public void addFluxRel(String place, String transitions, int direction){
+ 		configNetContr.addFluxRel(place,transitions,direction);
+    }
 
-        if (model.logicOfNet.transitionIsNotPointed(place,transitions,direction)) {
-        	view.printToDisplay(ViewStringConstants.ERR_MSG_NOT_POINTED_TRANSITION);
-        	view.addFluxElement();
-        }else {
-        	if(checkPlace(place) && checkTransition(transitions)) {
-        		if(!model.addFluxElem(place, transitions, direction)) {
-        			view.printToDisplay(ViewStringConstants.ERR_MSG_FLUX_ELEM_ALREADY_EXSISTS);
-        		}
-        		continueAddingElement();
-        	}
-        }
 
-    }
-    
-    public void continueAddingElement() {
-    	boolean userchoice = view.userInputContinueAdding(ViewStringConstants.CONTINUE_ADDING_QUESTION);
-    	if(userchoice) {
-    		view.addFluxElement();
-    	}else
-    		view.saveMenu();
-    }
-    
-    public boolean checkPlace(String name) {
-    	if(model.containsTransition(name)) {
-    		view.printToDisplay(String.format(ViewStringConstants.ERR_PLACE_AS_TRANSITION, name));
-    		return false;
-    	}
-    	return true;
-    }
-    
-    
-    public boolean checkTransition(String name) {
-    	if(model.containsPlace(name)) {
-    		view.printToDisplay(String.format(ViewStringConstants.ERR_TRANSITION_AS_PLACE, name));
-    		return false;
-    	}
-    	return true;
-    }
-    
     public void userSavingChoice(int userchoice) {
-		switch (userchoice) {
-		case 0:
-			saveAndExit();
-			break;
-			//salva la rete
-		case 1: {
-			//addNet: salva la rete nella Lista
-			if(!model.saveCurrentNet()) {
-				view.printToDisplay(ViewStringConstants.ERR_NET_ALREADY_PRESENT);
-			}
-			
-			view.mainMenu();
-			break;
-		}
-		// case 2: //Ritorna al menu senza salvare
-		default: {
-			view.mainMenu();
-		}
-		}
+		configNetContr.userSavingChoice(userchoice);
     }
     
     public void requestPrintNet(String netname) {
@@ -275,7 +214,7 @@ public class Controller {
     	printPetriNet(model.getCurrentPetriNet());
 	}
 
-	public boolean menagePetriNetVis() {
+	public boolean managePetriNetVis() {
 		if (model.getSavedPetriNetsNames().isEmpty()) {
 			view.printToDisplay(ViewStringConstants.ERR_NO_NET_SAVED);
 			return false;
@@ -334,7 +273,7 @@ public class Controller {
 		var currentPetriNet = model.getCurrentPetriNet();
 		var relFluxName = model.getFluxRelation(currentPetriNet);
 		var values = model.getValues(currentPetriNet);
-		view.printToDisplay(view.fluxrelFormatter(relFluxName, values));
+		view.printToDisplay(view.fluxRelFormatter(relFluxName, values));
 		
 		String placeName = view.readNotEmptyString(ViewStringConstants.INSERT_PLACE_MSG).trim();
     	String transitionName = view.readNotEmptyString(ViewStringConstants.INSERT_TRANSITION_MSG).trim();

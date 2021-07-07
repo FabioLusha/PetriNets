@@ -19,7 +19,7 @@ public abstract class AbstractINetLogic {
 
 	public AbstractINetLogic()
             throws IOException, ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
-		netArchive = RepositoryFactory.getInstance().getRepo();
+		    netArchive = RepositoryFactory.getInstance().getRepo();
 	}
 
 	public boolean inetContainsPlace(INet inet, String name) {

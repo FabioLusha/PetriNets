@@ -45,7 +45,7 @@ public class SimulatorController {
 	}
 
 	public void simulatePetriNet() {
-		if (mainController.menagePetriNetVis()) {
+		if (mainController.managePetriNetVis()) {
 			//richiedi il nome della rete da simulare;
 			String netname = simView.readNotEmpyString(ViewStringConstants.INSERT_PETRI_NET_NAME_MSG);
 			if (model.containsPetriNet(netname)) {
