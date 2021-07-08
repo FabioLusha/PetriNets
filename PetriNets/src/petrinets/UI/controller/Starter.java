@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-import petrinets.UI.View;
-import petrinets.UI.ViewStringConstants;
+import petrinets.UI.view.View;
+import petrinets.UI.view.ViewStringConstants;
 import petrinets.domain.Model;
 import petrinets.domain.net.INet;
 import petrinets.domain.petrinet.PetriNet;
@@ -27,8 +27,7 @@ public class Starter {
 		this.view = new View(this,out);
     	try {
 			this.model = new Model();
-			System.out.println("Creato Model");
-			//TODO Implementare i casi per la creazione della repository
+			//TODO Implementare i catch per la creazione della repository
 		}catch(Exception e){
     		view.printToDisplay(ViewStringConstants.ERR_MSG_DESERIALIZATION_FAILED);
 		}
@@ -114,7 +113,6 @@ public class Starter {
 	}
 
 
-
 	public void manageNetCreation(String netName){
    		configNetContr.manageNetCreation(netName);
     }
@@ -122,7 +120,6 @@ public class Starter {
     public void addFluxRel(String place, String transitions, int direction){
  		configNetContr.addFluxRel(place,transitions,direction);
     }
-
 
     public void userSavingChoice(int userchoice) {
 		configNetContr.userSavingChoice(userchoice);
@@ -157,8 +154,6 @@ public class Starter {
 	public boolean managePetriNetVis() {
 		return configPetriNetContr.managePetriNetVis();
 	}
-	
-	
 
 	public void requestPrintPetriNet(String netname) {
 		configPetriNetContr.requestPrintPetriNet(netname);
@@ -203,33 +198,14 @@ public class Starter {
 		configPriorityPNContr.requestPrintPriorityPetriNet(netname);
 	}
 	
-	
-	
-	
-	
-	
-	
+
 	//Versione 5
 	
 	public void exportNet() {
-		List<String> savedNetsName = model.getSavedNetsNames();
-		savedNetsName.addAll(model.getSavedPetriNetsNames());
-		savedNetsName.addAll(model.getSavedPriorityPetriNetsNames());
-
-		if (savedNetsName.isEmpty()) {
-			view.printToDisplay(ViewStringConstants.ERR_NO_NET_SAVED);
-		} else {
-			view.visualizeNets(savedNetsName);
-			String netName = view.readNotEmptyString(ViewStringConstants.INSERT_NET_NAME_TO_EXPORT);
-			if(savedNetsName.contains(netName)) {
-				try {
-					NetImportExport.exportINet(model.getINet(netName));
-					view.printToDisplay(ViewStringConstants.MSG_EXPORT_COMPLETED);
-				} catch (IOException e) {
-					view.printToDisplay(ViewStringConstants.ERR_NET_EXPORT + e.getMessage());
-				}
-			}else
-				view.printToDisplay(ViewStringConstants.ERR_NET_NOT_PRESENT);
+		try {
+			configNetContr.exportNet();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
 		}
 	}
 	
@@ -237,6 +213,7 @@ public class Starter {
 	public void importNet() {
 		view.printToDisplay(ViewStringConstants.MSG_DIR);
 		String fileName = view.readNotEmptyString(ViewStringConstants.INSERT_NET_NAME_IMPORT);
+
 		try {
 			INet importedNet = NetImportExport.importINet(fileName);
 
@@ -244,11 +221,13 @@ public class Starter {
 			for(AbstractConfigurationController controller: controllers){
 				try{
 					controller.importNet(importedNet);
-					//TODO Se il cast è giusto ma la rete base non è presente l'import non ha successo
 					view.printToDisplay(ViewStringConstants.SUCCESSFUL_IMPORT);
 					return;
 				}catch(ClassCastException e){
 					continue;
+				}catch(BaseNetNotPresentException e){
+					view.printToDisplay(ViewStringConstants.ERR_MSG_BSDNET_NOTPRESENT);
+					return;
 				}
 			}
 
@@ -256,21 +235,4 @@ public class Starter {
 			view.printToDisplay(ViewStringConstants.ERR_NET_IMPORT + e.getMessage());
 		}
 	}
-	
-	public boolean basedNetExsists(PetriNet importedNet) {
-			if(model.containsNet(importedNet.getBasedNet().getName())) {
-				return true;
-			}
-				return false;
-			
-	}
-	
-	public boolean basedPetriNetExsists(PriorityPetriNet importedNet) {
-		if(model.containsPetriNet(importedNet.getBasedPetriNet().getName())) {
-			return true;
-		}
-			return false;
-		
-}
-	
 }

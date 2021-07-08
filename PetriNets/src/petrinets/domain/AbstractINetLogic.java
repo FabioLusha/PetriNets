@@ -2,7 +2,6 @@ package petrinets.domain;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -67,10 +66,10 @@ public abstract class AbstractINetLogic {
 
     public List<String> getSavedGenericNetsNames(String className)  {
         try {
-            Class myClass = Class.forName(className);
+            Class<?> myClass = Class.forName(className);
             return netArchive.getAllElements().stream()
-                    .filter(e -> myClass.isInstance(e))
-                    .map(e -> e.getName())
+                    .filter(myClass::isInstance)
+                    .map(INet::getName)
                     .collect(Collectors.toList());
         }catch(ClassNotFoundException e){
             //TODO throw the exception to the controller

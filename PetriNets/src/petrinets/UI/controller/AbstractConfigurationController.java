@@ -1,7 +1,7 @@
 package petrinets.UI.controller;
 
-import petrinets.UI.View;
-import petrinets.UI.ViewStringConstants;
+import petrinets.UI.view.View;
+import petrinets.UI.view.ViewStringConstants;
 import petrinets.domain.AbstractINetLogic;
 import petrinets.domain.net.INet;
 import petrinets.domain.net.Net;
@@ -33,6 +33,7 @@ public abstract class AbstractConfigurationController {
     public void exportNet() throws ClassNotFoundException {
 
         List<String> savedNetsName = iNetLogic.getSavedGenericNetsNames(INet.class.getName());
+
         if (savedNetsName.isEmpty()) {
             view.printToDisplay(ViewStringConstants.ERR_NO_NET_SAVED);
         } else {
@@ -50,17 +51,6 @@ public abstract class AbstractConfigurationController {
         }
     }
 
-    public void importNetInteraction(){
-        view.printToDisplay(ViewStringConstants.MSG_DIR);
-        String fileName = view.readNotEmptyString(ViewStringConstants.INSERT_NET_NAME_IMPORT);
-        try {
-            INet importedNet = NetImportExport.importINet(fileName);
-            importNet(importedNet);
-        } catch (IOException e) {
-            view.printToDisplay(ViewStringConstants.ERR_NET_IMPORT + e.getMessage());
-        }
-
-    }
-    public abstract void importNet(INet importedNet);
+    public abstract void importNet(INet importedNet) throws BaseNetNotPresentException;
 
 }

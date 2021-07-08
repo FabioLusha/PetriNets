@@ -1,8 +1,8 @@
 package petrinets.UI.controller;
 
 import petrinets.UI.Pair;
-import petrinets.UI.View;
-import petrinets.UI.ViewStringConstants;
+import petrinets.UI.view.View;
+import petrinets.UI.view.ViewStringConstants;
 import petrinets.domain.net.INet;
 import petrinets.domain.petrinet.PetriNet;
 import petrinets.domain.petrinet.PriorityPetriNet;
@@ -127,13 +127,14 @@ public class PriorityPetriNetConfigurationController extends AbstractConfigurati
     }
 
     @Override
-    public void importNet(INet importedNet) throws ClassCastException{
+    public void importNet(INet importedNet) throws ClassCastException, BaseNetNotPresentException {
         if(! (importedNet instanceof PetriNet)) throw new ClassCastException();
         PriorityPetriNet pnpToImport = (PriorityPetriNet) importedNet;
         if(priorityPetriNetLogic.containsINet(pnpToImport.getBasedPetriNet().getName()))
             priorityPetriNetLogic.saveINet(pnpToImport);
         else
-            view.printToDisplay(ViewStringConstants.ERR_MSG_BSDNET_NOTPRESENT);
+            throw new BaseNetNotPresentException();
+
     }
 
 }

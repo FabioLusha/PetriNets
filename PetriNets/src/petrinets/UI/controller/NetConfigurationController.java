@@ -1,8 +1,8 @@
 package petrinets.UI.controller;
 
 import petrinets.UI.Pair;
-import petrinets.UI.View;
-import petrinets.UI.ViewStringConstants;
+import petrinets.UI.view.View;
+import petrinets.UI.view.ViewStringConstants;
 import petrinets.domain.NetLogic;
 import petrinets.domain.net.INet;
 import petrinets.domain.net.Net;
@@ -120,5 +120,9 @@ public class NetConfigurationController extends AbstractConfigurationController{
     public void importNet(INet importedNet) throws ClassCastException{
         if(! (importedNet instanceof Net)) throw new ClassCastException();
         netLogic.saveINet(importedNet);
+    }
+
+    public List<String> getNets(){
+        return netLogic.getSavedNetsNames();
     }
 }

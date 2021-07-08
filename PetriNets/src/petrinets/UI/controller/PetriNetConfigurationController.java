@@ -1,10 +1,9 @@
 package petrinets.UI.controller;
 
 import petrinets.UI.Pair;
-import petrinets.UI.View;
-import petrinets.UI.ViewStringConstants;
+import petrinets.UI.view.View;
+import petrinets.UI.view.ViewStringConstants;
 import petrinets.domain.net.INet;
-import petrinets.domain.net.Net;
 import petrinets.domain.petrinet.PetriNet;
 import petrinets.domain.PetriNetLogic;
 
@@ -157,13 +156,15 @@ public class PetriNetConfigurationController extends AbstractConfigurationContro
     }
 
     @Override
-    public void importNet(INet importedNet) throws ClassCastException{
+    public void importNet(INet importedNet) throws ClassCastException, BaseNetNotPresentException {
         if(! (importedNet instanceof PetriNet)) throw new ClassCastException();
+
         PetriNet pnToImport = (PetriNet) importedNet;
         if(petriNetLogic.containsINet(pnToImport.getBasedNet().getName()))
             petriNetLogic.saveINet(pnToImport);
         else
-            view.printToDisplay(ViewStringConstants.ERR_MSG_BSDNET_NOTPRESENT);
+            throw new BaseNetNotPresentException();
+
     }
 
 }

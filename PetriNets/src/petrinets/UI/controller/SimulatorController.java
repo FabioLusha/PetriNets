@@ -5,8 +5,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.SerializationUtils;
-
-import petrinets.UI.*;
+import petrinets.UI.view.SimulatorView;
+import petrinets.UI.view.View;
+import petrinets.UI.view.ViewStringConstants;
 import petrinets.domain.Model;
 import petrinets.domain.petrinet.SimulatableNet;
 import petrinets.domain.net.Transition;

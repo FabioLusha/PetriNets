@@ -1,8 +1,8 @@
-package petrinets.UI;
+package petrinets.UI.view;
 
 import it.unibs.fp.mylib.*;
 import petrinets.UI.controller.Starter;
-
+import petrinets.UI.Pair;
 import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;

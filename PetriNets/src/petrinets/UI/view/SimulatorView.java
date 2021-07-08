@@ -1,4 +1,4 @@
-package petrinets.UI;
+package petrinets.UI.view;
 
 import java.util.List;
 
