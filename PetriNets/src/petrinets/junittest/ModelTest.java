@@ -7,7 +7,10 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import petrinets.domain.Model;
+import petrinets.domain.PetriNet;
+import petrinets.domain.net.Net;
 import petrinets.domain.net.OrderedPair;
+import petrinets.domain.net.Place;
 import systemservices.PropertiesHandler;
 
 import java.io.*;
@@ -85,4 +88,86 @@ public class ModelTest {
 
         testModel.remove(testNet);
     }
+
+    @Test
+    public void testPetriNetCreationAndSaving(){
+        String testNet = "net";
+        String placeName = "p1";
+        String transitionName = "t1";
+        OrderedPair.Direction direction = OrderedPair.Direction.tp;
+
+        testModel.createNet(testNet);
+        testModel.addFluxElem(placeName, transitionName, direction.ordinal());
+        testModel.saveCurrentNet();
+
+
+        String testPetriNetName = "PetriNet";
+        Net baseNet = (Net) testModel.getINet(testNet);
+        testModel.createPetriNet(testPetriNetName, testNet);
+
+        PetriNet pn = new PetriNet(testPetriNetName,baseNet);
+
+        assertThat(pn, is(equalTo(testModel.getCurrentPetriNet())));
+
+        testModel.saveCurrentPetriNet();
+
+        assertThat(true,equalTo(testModel.containsINet(testPetriNetName)));
+
+        testModel.remove(testNet);
+        testModel.remove(testPetriNetName);
+    }
+
+    @Test
+    public void testAddingSamePetriNet(){
+        String testNet = "net";
+        String placeName = "p1";
+        String transitionName = "t1";
+        OrderedPair.Direction direction = OrderedPair.Direction.tp;
+
+        testModel.createNet(testNet);
+        testModel.addFluxElem(placeName, transitionName, direction.ordinal());
+        testModel.saveCurrentNet();
+
+
+        String testPetriNetName = "PetriNet";
+        Net baseNet = (Net) testModel.getINet(testNet);
+        testModel.createPetriNet(testPetriNetName, testNet);
+
+        testModel.saveCurrentPetriNet();
+
+        assertThat(false, equalTo(testModel.createPetriNet(testPetriNetName, testNet)));
+
+        String differentPetriNetName = "pn2";
+        assertThat(true,equalTo(testModel.createPetriNet(differentPetriNetName,testNet)));
+        assertThat(false,equalTo(testModel.saveCurrentPetriNet()));
+        testModel.remove(testNet);
+        testModel.remove(testPetriNetName);
+
+    }
+
+    @Test
+    public void testPetriNetChangeMarc(){
+        String testNet = "net";
+        String placeName = "p1";
+        String transitionName = "t1";
+        OrderedPair.Direction direction = OrderedPair.Direction.tp;
+
+        testModel.createNet(testNet);
+        testModel.addFluxElem(placeName, transitionName, direction.ordinal());
+        testModel.saveCurrentNet();
+
+        String testPetriNetName = "PetriNet";
+        Net baseNet = (Net) testModel.getINet(testNet);
+        testModel.createPetriNet(testPetriNetName, testNet);
+
+        assertThat(0, equalTo(testModel.getCurrentPetriNet().getMarcValue(new Place(placeName))));
+
+        int newMarcVal = 4;
+        testModel.changeMarc(placeName, newMarcVal);
+
+        assertThat(newMarcVal, equalTo(testModel.getCurrentPetriNet().getMarcValue(new Place(placeName))));
+
+        testModel.saveCurrentPetriNet();
+    }
+
 }
