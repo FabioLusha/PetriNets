@@ -16,9 +16,9 @@ public class View {
         this.outputStream = out;
     }
     
-    public int loginMenu() {
+    public void loginMenu() {
     	MyMenu logMenu = new MyMenu(ViewStringConstants.WELCOME_MESSAGE, ViewStringConstants.LOGIN_MENU_OPTIONS);
-    	return logMenu.scegli();
+    	starter.logMenuChoice(logMenu.scegli());
     }
 
     public void mainMenu() {

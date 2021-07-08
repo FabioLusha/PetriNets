@@ -16,7 +16,6 @@ import systemservices.NetImportExport;
 
 public class Starter {
 
-
 	private Model model;
     private View view;
     private NetConfigurationController configNetContr;
@@ -55,7 +54,7 @@ public class Starter {
 				break;
 			//scelto fruitore
 			case 2:
-				//new SimulatorController(view, this, model);
+				new SimulatorController(view, this, model);
 				break;
 			default:
 				view.loginMenu();
@@ -65,7 +64,7 @@ public class Starter {
 	}
 
 	public void startView(){
-        logMenuChoice(view.loginMenu());
+       view.loginMenu();
     }
 
     public void mainMenuChoice(int choice) {
@@ -107,7 +106,8 @@ public class Starter {
 				view.mainMenu();
 				break;
 			default:
-				saveAndExit();
+				configNetContr.saveAndExit();
+				break;
 	
 		}
 	}
@@ -146,7 +146,7 @@ public class Starter {
 	public void priorityPetriNetMenuChoice() {
 		configPriorityPNContr.priorityPetriNetMenuChoice();
 	}
-	
+
 	public boolean managePriorityPetriNetVis() {
 		return configPriorityPNContr.managePriorityPetriNetVis();
 	}

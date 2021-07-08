@@ -8,6 +8,7 @@ import org.apache.commons.lang3.SerializationUtils;
 import petrinets.UI.view.SimulatorView;
 import petrinets.UI.view.View;
 import petrinets.UI.view.ViewStringConstants;
+import petrinets.domain.AbstractSimulatableNetLogic;
 import petrinets.domain.Model;
 import petrinets.domain.petrinet.SimulatableNet;
 import petrinets.domain.net.Transition;
@@ -16,6 +17,7 @@ public class SimulatorController {
 	private SimulatorView simView;
 	private Starter mainStarter;
 	private Model model;
+	private AbstractSimulatableNetLogic abstractSimulatableNetLogic;
 	private SimulatableNet netToSimulate;
 
 	public SimulatorController(View mainView, Starter pcontroller, Model pmodel) {
@@ -23,6 +25,7 @@ public class SimulatorController {
 		mainStarter = pcontroller;
 		model = pmodel;
 		simView.mainMenu();
+
 	}
 	
 	public void mainMenuChoice(int choice) {

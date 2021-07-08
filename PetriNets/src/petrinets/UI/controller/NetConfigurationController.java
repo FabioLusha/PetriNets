@@ -76,7 +76,7 @@ public class NetConfigurationController extends AbstractConfigurationController{
         if(userchoice) {
             addFluxRel();
         }else
-            view.saveMenu();
+            userSavingChoice();
     }
 
     public void userSavingChoice() {
