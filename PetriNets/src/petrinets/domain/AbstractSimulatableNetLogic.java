@@ -1,5 +1,8 @@
 package petrinets.domain;
 
+import petrinets.domain.petrinet.PetriNet;
+import petrinets.domain.petrinet.SimulatableNet;
+
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;

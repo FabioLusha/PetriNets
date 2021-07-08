@@ -1,11 +1,13 @@
 package petrinets.domain;
 
 import petrinets.domain.net.*;
+import petrinets.domain.petrinet.PetriNet;
+import petrinets.domain.petrinet.PriorityPetriNet;
+import petrinets.domain.petrinet.SimulatableNet;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 
 public class Model extends  AbstractINetLogic{

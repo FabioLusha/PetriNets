@@ -4,6 +4,7 @@ import petrinets.UI.Pair;
 import petrinets.UI.View;
 import petrinets.UI.ViewStringConstants;
 import petrinets.domain.NetLogic;
+import petrinets.domain.net.INet;
 import petrinets.domain.net.Net;
 
 import java.io.IOException;
@@ -11,6 +12,12 @@ import java.util.List;
 
 public class NetConfigurationController extends AbstractConfigurationController{
     private NetLogic netLogic;
+
+    public NetConfigurationController(View view) throws ReflectiveOperationException, IOException {
+        super(view);
+        netLogic = new NetLogic();
+        iNetLogic = netLogic;
+    }
 
 
     public void manageNetCreation(String netName){
@@ -110,9 +117,8 @@ public class NetConfigurationController extends AbstractConfigurationController{
     }
 
     @Override
-    public void permanentSave() throws IOException {
-        netLogic.permanentSave();
+    public void importNet(INet importedNet) throws ClassCastException{
+        if(! (importedNet instanceof Net)) throw new ClassCastException();
+        netLogic.saveINet(importedNet);
     }
-
-
 }

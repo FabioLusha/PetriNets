@@ -1,9 +1,10 @@
 package petrinets.domain;
 
 import petrinets.domain.net.Transition;
+import petrinets.domain.petrinet.PetriNet;
+import petrinets.domain.petrinet.PriorityPetriNet;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<java version="15.0.2" class="java.beans.XMLDecoder">
- <object class="petrinets.domain.PetriNet">
+<java version="11.0.11" class="java.beans.XMLDecoder">
+ <object class="petrinets.domain.petrinet.PetriNet">
   <void property="basedNet">
    <object class="petrinets.domain.net.Net">
     <void property="fluxRelation">
@@ -54,7 +54,7 @@
    <object class="java.util.LinkedHashMap">
     <void method="put">
      <object idref="Place0"/>
-     <int>2</int>
+     <int>0</int>
     </void>
    </object>
   </void>
@@ -65,7 +65,7 @@
    <object class="java.util.LinkedHashMap">
     <void method="put">
      <object idref="OrderedPair0"/>
-     <int>3</int>
+     <int>1</int>
     </void>
    </object>
   </void>

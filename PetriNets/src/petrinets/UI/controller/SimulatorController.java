@@ -8,7 +8,7 @@ import org.apache.commons.lang3.SerializationUtils;
 
 import petrinets.UI.*;
 import petrinets.domain.Model;
-import petrinets.domain.SimulatableNet;
+import petrinets.domain.petrinet.SimulatableNet;
 import petrinets.domain.net.Transition;
 
 public class SimulatorController {

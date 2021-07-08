@@ -1,9 +1,11 @@
 package petrinets.UI.controller;
 
 import petrinets.UI.Pair;
+import petrinets.UI.View;
 import petrinets.UI.ViewStringConstants;
-import petrinets.domain.PetriNet;
-import petrinets.domain.PriorityPetriNet;
+import petrinets.domain.net.INet;
+import petrinets.domain.petrinet.PetriNet;
+import petrinets.domain.petrinet.PriorityPetriNet;
 import petrinets.domain.PriorityPetriNetLogic;
 
 import java.io.IOException;
@@ -13,8 +15,10 @@ import java.util.Map;
 public class PriorityPetriNetConfigurationController extends AbstractConfigurationController{
     private PriorityPetriNetLogic priorityPetriNetLogic;
 
-    public PriorityPetriNetConfigurationController() throws ReflectiveOperationException,IOException{
+    public PriorityPetriNetConfigurationController(View view) throws ReflectiveOperationException,IOException{
+        super(view);
         priorityPetriNetLogic = new PriorityPetriNetLogic();
+        iNetLogic = priorityPetriNetLogic;
     }
 
 
@@ -123,7 +127,13 @@ public class PriorityPetriNetConfigurationController extends AbstractConfigurati
     }
 
     @Override
-    public void permanentSave() throws IOException {
-        priorityPetriNetLogic.permanentSave();
+    public void importNet(INet importedNet) throws ClassCastException{
+        if(! (importedNet instanceof PetriNet)) throw new ClassCastException();
+        PriorityPetriNet pnpToImport = (PriorityPetriNet) importedNet;
+        if(priorityPetriNetLogic.containsINet(pnpToImport.getBasedPetriNet().getName()))
+            priorityPetriNetLogic.saveINet(pnpToImport);
+        else
+            view.printToDisplay(ViewStringConstants.ERR_MSG_BSDNET_NOTPRESENT);
     }
+
 }

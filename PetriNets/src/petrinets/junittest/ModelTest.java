@@ -1,20 +1,18 @@
 package petrinets.junittest;
 
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import petrinets.domain.Model;
-import petrinets.domain.PetriNet;
+import petrinets.domain.net.INet;
+import petrinets.domain.petrinet.PetriNet;
 import petrinets.domain.net.Net;
 import petrinets.domain.net.OrderedPair;
 import petrinets.domain.net.Place;
 import systemservices.PropertiesHandler;
 
+import java.util.*;
 import java.io.*;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Properties;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -58,7 +56,7 @@ public class ModelTest {
     @Test
     public void testNetCreationAndSavig() throws IOException, ReflectiveOperationException {
             String net1 = "net1";
-            testModel.createNet(net1);
+            assertThat(true,equalTo(testModel.createNet(net1)));
             testModel.addFluxElem("p1","t1", 0);
             testModel.saveCurrentNet();
 
@@ -168,6 +166,59 @@ public class ModelTest {
         assertThat(newMarcVal, equalTo(testModel.getCurrentPetriNet().getMarcValue(new Place(placeName))));
 
         testModel.saveCurrentPetriNet();
+    }
+
+    @Test
+    public void testReturnListOfCorrectTypeNet(){
+        String netName = "net1";
+        Net net1 = new Net(netName);
+        String pnName = "pn1";
+        PetriNet pn1 = new PetriNet(pnName,net1);
+
+        testModel.saveINet(net1);
+        testModel.saveINet(pn1);
+
+        List<String> list = testModel.getSavedGenericNetsNames(Net.class.getName());
+        assertThat(netName,is(equalTo(list.get(0))));
+
+
+        testModel.remove(netName);
+        testModel.remove(pnName);
+    }
+
+    @Test
+    public void testReturnListDoNotContainOtherTypes(){
+        String netName = "net1";
+        Net net1 = new Net(netName);
+        String pnName = "pn1";
+        PetriNet pn1 = new PetriNet(pnName,net1);
+
+        testModel.saveINet(net1);
+        testModel.saveINet(pn1);
+
+
+            List<String> list = testModel.getSavedGenericNetsNames(PetriNet.class.getName());
+            assertThat(false,is(equalTo(list.contains(netName))));
+
+        testModel.remove(netName);
+        testModel.remove(pnName);
+    }
+
+    @Test
+    public void testReturnListOfCorrectTypeNetWorksWithInterface(){
+        String netName = "net1";
+        Net net1 = new Net(netName);
+        String pnName = "pn1";
+        PetriNet pn1 = new PetriNet(pnName,net1);
+
+        testModel.saveINet(net1);
+        testModel.saveINet(pn1);
+
+            List<String> list = testModel.getSavedGenericNetsNames(INet.class.getName());
+            assertThat(true,is(equalTo(list.containsAll(Arrays.asList(new String[]{netName, pnName})))));
+
+        testModel.remove(netName);
+        testModel.remove(pnName);
     }
 
 }

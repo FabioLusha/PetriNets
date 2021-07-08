@@ -1,4 +1,4 @@
-package petrinets.domain;
+package petrinets.domain.petrinet;
 
 import petrinets.domain.net.*;
 

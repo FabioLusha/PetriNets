@@ -138,7 +138,7 @@ public class View {
 
     public void printPriorityPetriNet(String netname, List<String> placesNames, List<String> marc, Map<String, Integer> transAndPriorities, List<Pair<String, String>> fluxrelations, List<String> values) {
         StringBuilder output = new StringBuilder();
-        output.append(String.format("Nome rete con priorit√†: %s\n ",netname));
+        output.append(String.format("Nome rete con priorit‡: %s\n ",netname));
         output.append(marcFormatter(placesNames, marc));
         output.append(prioritiesFormatter(transAndPriorities));
         output.append(fluxRelFormatter(fluxrelations,values));
@@ -148,21 +148,22 @@ public class View {
 
     public String prioritiesFormatter(Map<String, Integer> transWithPriorities){
         StringBuilder strb = new StringBuilder();
-        strb.append("Transizioni con priorit√†:\n");
-        transWithPriorities.entrySet().forEach(e -> strb.append(String.format("\t%s\t - priorit√†: %2d\n", e.getKey(), e.getValue())));
+        strb.append("Transizioni con priorit‡:\n");
+        transWithPriorities.entrySet().forEach(e -> strb.append(String.format("\t%s\t - priorit‡: %2d\n", e.getKey(), e.getValue())));
 
         return strb.toString();
     }
 
     public String readFromList(List<String> listOfOptions, String message){
         String element;
-        do {
+        while(true) {
             element = readNotEmptyString(message);
-            if(!listOfOptions.contains(element)){
-                printToDisplay(ViewStringConstants.ERR_ELEMENT_NAME_DOES_NOT_EXSIST);
-            }
-        }while(listOfOptions.contains(element));
-        return element;
+
+            if (listOfOptions.contains(element))
+                return element;
+
+            printToDisplay(ViewStringConstants.ERR_ELEMENT_NAME_DOES_NOT_EXSIST);
+        }
     }
 
 

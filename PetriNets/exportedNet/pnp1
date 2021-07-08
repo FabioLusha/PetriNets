@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<java version="15.0.2" class="java.beans.XMLDecoder">
+<java version="11.0.11" class="java.beans.XMLDecoder">
  <object class="petrinets.domain.petrinet.PriorityPetriNet">
   <void property="basedPetriNet">
    <object class="petrinets.domain.petrinet.PetriNet">
@@ -56,7 +56,7 @@
      <object class="java.util.LinkedHashMap">
       <void method="put">
        <object idref="Place0"/>
-       <int>2</int>
+       <int>0</int>
       </void>
      </object>
     </void>
@@ -67,14 +67,14 @@
      <object class="java.util.LinkedHashMap">
       <void method="put">
        <object idref="OrderedPair0"/>
-       <int>3</int>
+       <int>1</int>
       </void>
      </object>
     </void>
    </object>
   </void>
   <void property="name">
-   <string>pr1</string>
+   <string>pnp1</string>
   </void>
   <void property="priorityMap">
    <object class="java.util.LinkedHashMap">

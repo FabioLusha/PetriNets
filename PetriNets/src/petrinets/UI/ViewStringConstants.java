@@ -92,10 +92,11 @@ public class ViewStringConstants {
             " (priorita' = 1)\n";
 	public static final String ERR_NET_EXPORT = "Errore nell'esportazione della rete \n";
 	public static final String ERR_NET_IMPORT = "Errore nell'importazione della rete \n";
+    public static final String SUCCESSFUL_IMPORT = "l'importazione della rete è andata a buon fine!\n";
 
 	public static final String INSERT_NET_NAME_IMPORT = "Inserisci il nome del file che contiene la rete: ";
 	public static final String MSG_DIR = "ATTENZIONE: Il file deve trovarsi nella cartella in cui gira l'applicazione!";
-	public static final String ERR_MSG_BSDNET_NOTPRESENT = "La rete su cui si basa la rete che si sta cercando di importare non e' presente";
+	public static final String ERR_MSG_BSDNET_NOTPRESENT = "La rete su cui si basa la rete che si sta cercando di importare non e' presente: " ;
 
-	public static final String MSG_EXPORT_COMPLETED = "L'esportazione Ã¨ andata a buon fine!\n";
+	public static final String MSG_EXPORT_COMPLETED = "L'esportazione è andata a buon fine!\n";
 }

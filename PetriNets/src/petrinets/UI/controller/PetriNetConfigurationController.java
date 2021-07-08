@@ -1,16 +1,24 @@
 package petrinets.UI.controller;
 
 import petrinets.UI.Pair;
+import petrinets.UI.View;
 import petrinets.UI.ViewStringConstants;
-import petrinets.domain.PetriNet;
-import petrinets.domain.PetriNetLogic;
+import petrinets.domain.net.INet;
 import petrinets.domain.net.Net;
+import petrinets.domain.petrinet.PetriNet;
+import petrinets.domain.PetriNetLogic;
 
 import java.io.IOException;
 import java.util.List;
 
 public class PetriNetConfigurationController extends AbstractConfigurationController{
     private PetriNetLogic petriNetLogic;
+
+    public PetriNetConfigurationController(View view) throws ReflectiveOperationException, IOException {
+        super(view);
+        petriNetLogic = new PetriNetLogic();
+        iNetLogic = petriNetLogic;
+    }
 
     public void petriNetMenuChoice(int choice) {
         switch (choice){
@@ -149,7 +157,13 @@ public class PetriNetConfigurationController extends AbstractConfigurationContro
     }
 
     @Override
-    public void permanentSave() throws IOException {
-        petriNetLogic.permanentSave();
+    public void importNet(INet importedNet) throws ClassCastException{
+        if(! (importedNet instanceof PetriNet)) throw new ClassCastException();
+        PetriNet pnToImport = (PetriNet) importedNet;
+        if(petriNetLogic.containsINet(pnToImport.getBasedNet().getName()))
+            petriNetLogic.saveINet(pnToImport);
+        else
+            view.printToDisplay(ViewStringConstants.ERR_MSG_BSDNET_NOTPRESENT);
     }
+
 }

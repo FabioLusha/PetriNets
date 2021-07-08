@@ -1,10 +1,9 @@
-package petrinets.domain;
+package petrinets.domain.petrinet;
 
 import petrinets.domain.net.OrderedPair;
 import petrinets.domain.net.Place;
 import petrinets.domain.net.Transition;
 
-import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;

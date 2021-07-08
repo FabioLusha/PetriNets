@@ -1,11 +1,9 @@
 package petrinets.junittest;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import org.junit.jupiter.api.Test;
 
-import petrinets.domain.PetriNet;
-import petrinets.domain.PriorityPetriNet;
+import petrinets.domain.petrinet.PetriNet;
+import petrinets.domain.petrinet.PriorityPetriNet;
 import petrinets.domain.net.Net;
 import petrinets.domain.net.OrderedPair;
 import petrinets.domain.net.Place;

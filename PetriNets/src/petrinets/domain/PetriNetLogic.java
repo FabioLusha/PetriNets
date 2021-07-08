@@ -4,9 +4,9 @@ import petrinets.domain.net.Net;
 import petrinets.domain.net.OrderedPair;
 import petrinets.domain.net.Place;
 import petrinets.domain.net.Transition;
+import petrinets.domain.petrinet.PetriNet;
 
 import java.io.IOException;
-import java.util.List;
 
 public class PetriNetLogic extends AbstractSimulatableNetLogic{
     private PetriNet controlPetriNet;
