@@ -65,13 +65,13 @@ public class Starter {
 	}
 
 	public void startView(){
-        view.loginMenu();
+        logMenuChoice(view.loginMenu());
     }
 
-    public void mainMenuChoice(int menuchoice) {
-		switch (menuchoice) {
+    public void mainMenuChoice(int choice) {
+		switch (choice) {
 			case 1:
-				view.initializeNet();
+				configNetContr.manageNetCreation();
 				break;
 			case 2:
 			{
@@ -81,7 +81,7 @@ public class Starter {
 			}
 			case 3:
 				managePetriNetCreation();
-				view.petriNetMenu();
+				petriNetMenuChoice();
 				break;
 			case 4:
 				if(managePetriNetVis())
@@ -90,7 +90,7 @@ public class Starter {
 				break;
 			case 5:
 				configPriorityPNContr.managePriorityPetriNetCreation();
-				view.priorityPetriNetMenu();
+				priorityPetriNetMenuChoice();
 				break;
 			case 6:
 				if(configPriorityPNContr.managePriorityPetriNetVis())
@@ -112,19 +112,6 @@ public class Starter {
 		}
 	}
 
-
-	public void manageNetCreation(String netName){
-   		configNetContr.manageNetCreation(netName);
-    }
-
-    public void addFluxRel(String place, String transitions, int direction){
- 		configNetContr.addFluxRel(place,transitions,direction);
-    }
-
-    public void userSavingChoice(int userchoice) {
-		configNetContr.userSavingChoice(userchoice);
-    }
-
 	public void manageNetsVis() {
 		configNetContr.manageNetsVis();
 	}
@@ -138,18 +125,14 @@ public class Starter {
 	}
     
 
-    public void petriNetMenuChoice(int choice) {
-		configPetriNetContr.petriNetMenuChoice(choice);
+    public void petriNetMenuChoice() {
+		configPetriNetContr.petriNetMenuChoice();
 	}
 
 	//PARTE RETRI NET
     public void managePetriNetCreation() {
     	configPetriNetContr.managePetriNetCreation();
     }
-
-	public void visualizeCurrentPetriNet() {
-    	configPetriNetContr.visualizeCurrentPetriNet();
-	}
 
 	public boolean managePetriNetVis() {
 		return configPetriNetContr.managePetriNetVis();
@@ -158,38 +141,12 @@ public class Starter {
 	public void requestPrintPetriNet(String netname) {
 		configPetriNetContr.requestPrintPetriNet(netname);
 	}
-	
-	public void changeMarc() {
-		configPetriNetContr.changeMarc();
-	}
-	
-	public void changeFluxRelationVal() {
-		configPetriNetContr.changeFluxRelationVal();
-	}
 
 	//PARTE RETI DI PETRI CON PRIORITA'
-	public void priorityPetriNetMenuChoice(int choice) {
-		configPriorityPNContr.priorityPetriNetMenuChoice(choice);
+	public void priorityPetriNetMenuChoice() {
+		configPriorityPNContr.priorityPetriNetMenuChoice();
 	}
-
-	private void visualizeCurrentPriorityPetriNet() {
-		configPriorityPNContr.visualizeCurrentPriorityPetriNet();
-	}
-
-	private void printPriorityPetriNet(PriorityPetriNet priorityPetriNet) {
-
-		configPriorityPNContr.printPriorityPetriNet(priorityPetriNet);
-	}
-
-	public void managePriorityPetriNetCreation(){
-
-		configPriorityPNContr.managePriorityPetriNetCreation();
-	}
-
-	public void changePriority(){
-		configPriorityPNContr.changePriority();
-	}
-
+	
 	public boolean managePriorityPetriNetVis() {
 		return configPriorityPNContr.managePriorityPetriNetVis();
 	}

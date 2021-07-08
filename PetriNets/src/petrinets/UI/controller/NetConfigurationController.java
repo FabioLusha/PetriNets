@@ -20,24 +20,32 @@ public class NetConfigurationController extends AbstractConfigurationController{
     }
 
 
-    public void manageNetCreation(String netName){
+    public void manageNetCreation(){
         //Il metodo createNet della classe Model non crea la rete se vi e' gia' una rete con questo nome
+        String netName = view.readNotEmptyString(ViewStringConstants.INSERT_NET_NAME_MSG);
         if(!netLogic.createNet(netName)) {
             view.printToDisplay(ViewStringConstants.ERR_MSG_NET_NAME_ALREADY_EXIST);
             view.mainMenu();
         }else {
-            view.addFluxElement();
+            addFluxRel();
         }
     }
 
-    public void addFluxRel(String place, String transitions, int direction){
+    public void addFluxRel(){
+        String placeName = view.readNotEmptyString(ViewStringConstants.INSERT_PLACE_MSG).trim();
+        String transitionName = view.readNotEmptyString(ViewStringConstants.INSERT_TRANSITION_MSG).trim();
 
-        if (netLogic.transitionIsNotPointed(place,transitions,direction)) {
+        int direction = view.getIntInput(ViewStringConstants.INSERT_DIRECTION_MSG
+                        + String.format(ViewStringConstants.FLUX_DIRECTION_MSG, 0, placeName, transitionName)
+                        + String.format(ViewStringConstants.FLUX_DIRECTION_MSG, 1, transitionName, placeName) + "\n > ",
+                0, 1);
+
+        if (netLogic.transitionIsNotPointed(placeName,transitionName,direction)) {
             view.printToDisplay(ViewStringConstants.ERR_MSG_NOT_POINTED_TRANSITION);
-            view.addFluxElement();
+            addFluxRel();
         }else {
-            if(checkPlace(place) && checkTransition(transitions)) {
-                if(!netLogic.addFluxElem(place, transitions, direction)) {
+            if(checkPlace(placeName) && checkTransition(transitionName)) {
+                if(!netLogic.addFluxElem(placeName, transitionName, direction)) {
                     view.printToDisplay(ViewStringConstants.ERR_MSG_FLUX_ELEM_ALREADY_EXSISTS);
                 }
                 continueAddingElement();
@@ -66,13 +74,13 @@ public class NetConfigurationController extends AbstractConfigurationController{
     public void continueAddingElement() {
         boolean userchoice = view.userInputContinueAdding(ViewStringConstants.CONTINUE_ADDING_QUESTION);
         if(userchoice) {
-            view.addFluxElement();
+            addFluxRel();
         }else
             view.saveMenu();
     }
 
-    public void userSavingChoice(int userchoice) {
-        switch (userchoice) {
+    public void userSavingChoice() {
+        switch (view.saveMenu()) {
             case 0:
                 saveAndExit();
                 break;

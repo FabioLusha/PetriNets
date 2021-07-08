@@ -22,8 +22,8 @@ public class PriorityPetriNetConfigurationController extends AbstractConfigurati
     }
 
 
-    public void priorityPetriNetMenuChoice(int choice) {
-        switch (choice) {
+    public void priorityPetriNetMenuChoice() {
+        switch (view.priorityPetriNetMenu()) {
             case 0:
                 saveAndExit();
                 break;

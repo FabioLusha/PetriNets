@@ -19,8 +19,8 @@ public class PetriNetConfigurationController extends AbstractConfigurationContro
         iNetLogic = petriNetLogic;
     }
 
-    public void petriNetMenuChoice(int choice) {
-        switch (choice){
+    public void petriNetMenuChoice() {
+        switch (view.petriNetMenu()){
             case 0:
                 saveAndExit();
                 break;
