@@ -3,26 +3,36 @@ package petrinets.UI.view;
 import it.unibs.fp.mylib.*;
 import petrinets.UI.controller.Starter;
 import petrinets.UI.Pair;
+
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
 
 public class View {
     private PrintWriter outputStream;
+    private BufferedInputDati bufferedInputDati;
     private Starter starter;
     
     public View(Starter starter, PrintWriter out){
         this.starter = starter;
         this.outputStream = out;
     }
+
+    public View(Starter starter, InputStream in, OutputStream out){
+        this.starter = starter;
+        this.bufferedInputDati = new BufferedInputDati(in,out);
+    }
+
     
     public void loginMenu() {
-    	MyMenu logMenu = new MyMenu(ViewStringConstants.WELCOME_MESSAGE, ViewStringConstants.LOGIN_MENU_OPTIONS);
+    	MyMenu2 logMenu = new MyMenu2(bufferedInputDati, ViewStringConstants.WELCOME_MESSAGE, ViewStringConstants.LOGIN_MENU_OPTIONS);
     	starter.logMenuChoice(logMenu.scegli());
     }
 
     public void mainMenu() {
-        MyMenu mainMenu = new MyMenu(ViewStringConstants.WELCOME_MESSAGE, ViewStringConstants.MAIN_OPTIONS);
+        MyMenu2 mainMenu = new MyMenu2(bufferedInputDati, ViewStringConstants.WELCOME_MESSAGE, ViewStringConstants.MAIN_OPTIONS);
         starter.mainMenuChoice(mainMenu.scegli());
     }
 
@@ -51,16 +61,16 @@ public class View {
     }
 
     public boolean userInputContinueAdding(String message) {
-    	return InputDati.yesOrNo(message);
+    	return bufferedInputDati.yesOrNo(message);
     }
     
     public int saveMenu() {
-    	MyMenu netSaving = new MyMenu(ViewStringConstants.NET_SAVING_MENU, ViewStringConstants.NET_SAVING_MENU_OPTIONS);
+    	MyMenu2 netSaving = new MyMenu2(bufferedInputDati, ViewStringConstants.NET_SAVING_MENU, ViewStringConstants.NET_SAVING_MENU_OPTIONS);
     	return netSaving.scegli();
 	}
 
     public int petriNetMenu(){
-        MyMenu mymenu = new MyMenu(ViewStringConstants.PETRI_NET_MENU_TITLE, ViewStringConstants.CHANGE_PETRI_NET_OPTIONS);
+        MyMenu2 mymenu = new MyMenu2(bufferedInputDati, ViewStringConstants.PETRI_NET_MENU_TITLE, ViewStringConstants.CHANGE_PETRI_NET_OPTIONS);
         return mymenu.scegli();
     }
 
@@ -98,26 +108,25 @@ public class View {
     }
 
     public void printToDisplay(String ErrMsg){
-        outputStream.println(ErrMsg);
-        outputStream.flush();
+        bufferedInputDati.println(ErrMsg);
     }
 
     public String readNotEmptyString(String message) {
-        return InputDati.leggiStringaNonVuota(message).trim();
+        return bufferedInputDati.leggiStringaNonVuota(message).trim();
     }
 
     public int getIntInput(String message,int min ,int max) {
-        return InputDati.leggiIntero(message, min, max);
+        return bufferedInputDati.leggiIntero(message, min, max);
     }
 
     public int getNotNegativeInt(String message) {
-        return InputDati.leggiInteroNonNegativo(message);
+        return bufferedInputDati.leggiInteroNonNegativo(message);
     }
 
 
     //RETI DI PETRI CON PRIORITA'
     public int priorityPetriNetMenu() {
-        MyMenu mymenu = new MyMenu(ViewStringConstants.PRIORITY_PETRI_NET_MENU_TITLE, ViewStringConstants.CHANGE_PRIORITY_PETRI_NET_OPTIONS);
+        MyMenu2 mymenu = new MyMenu2(bufferedInputDati, ViewStringConstants.PRIORITY_PETRI_NET_MENU_TITLE, ViewStringConstants.CHANGE_PRIORITY_PETRI_NET_OPTIONS);
         return mymenu.scegli();
     }
 
@@ -151,6 +160,8 @@ public class View {
         }
     }
 
-
+    public BufferedInputDati getBufferedInputDati() {
+        return bufferedInputDati;
+    }
 }
 

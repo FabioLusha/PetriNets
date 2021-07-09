@@ -1,6 +1,8 @@
 package petrinets.UI.controller;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 
 
@@ -23,6 +25,21 @@ public class Starter {
 
     public Starter(PrintWriter out){
 		this.view = new View(this,out);
+
+		try {
+			configNetContr = new NetConfigurationController(view);
+			configPetriNetContr = new PetriNetConfigurationController(view);
+			configPriorityPNContr = new PriorityPetriNetConfigurationController(view);
+		} catch (ReflectiveOperationException e) {
+			view.printToDisplay(ViewStringConstants.ERR_INTERNAL);
+			//TODO
+		} catch (IOException e) {
+			view.printToDisplay(ViewStringConstants.ERR_MSG_DESERIALIZATION_FAILED);
+		}
+	}
+
+	public Starter(InputStream in, OutputStream out){
+		this.view = new View(this,in, out);
 
 		try {
 			configNetContr = new NetConfigurationController(view);
@@ -163,18 +180,19 @@ public class Starter {
 				try{
 					controller.importNet(importedNet);
 					view.printToDisplay(ViewStringConstants.SUCCESSFUL_IMPORT);
-					return;
+					break;
 				}catch(ClassCastException e){
 					continue;
 				}catch(BaseNetNotPresentException e){
 					view.printToDisplay(ViewStringConstants.ERR_MSG_BSDNET_NOTPRESENT);
-					return;
+					break;
 				}
 			}
 
 		} catch (IOException e) {
 			view.printToDisplay(ViewStringConstants.ERR_NET_IMPORT + e.getMessage());
 		}
+
 		view.mainMenu();
 	}
 }

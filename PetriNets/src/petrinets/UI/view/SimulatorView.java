@@ -3,8 +3,7 @@ package petrinets.UI.view;
 import java.io.IOException;
 import java.util.List;
 
-import it.unibs.fp.mylib.InputDati;
-import it.unibs.fp.mylib.MyMenu;
+import it.unibs.fp.mylib.MyMenu2;
 import petrinets.UI.controller.SimulatorController;
 
 public class SimulatorView {
@@ -17,7 +16,7 @@ public class SimulatorView {
 	}
 	
 	public void mainMenu() throws IOException, ReflectiveOperationException {
-		MyMenu mainMenu = new MyMenu(ViewStringConstants.SIMULATOR_WELCOME_TITLE, ViewStringConstants.SIMULATOR_WELCOME_OPTIONS);
+		MyMenu2 mainMenu = new MyMenu2(mainView.getBufferedInputDati(), ViewStringConstants.SIMULATOR_WELCOME_TITLE, ViewStringConstants.SIMULATOR_WELCOME_OPTIONS);
 		simController.mainMenuChoice(mainMenu.scegli());
 	}
 
