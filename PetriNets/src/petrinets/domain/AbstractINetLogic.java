@@ -60,8 +60,6 @@ public abstract class AbstractINetLogic {
                 collect(Collectors.toList());
 
      }
-
-
      
 
     public List<String> getSavedGenericNetsNames(String className)  {
