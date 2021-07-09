@@ -91,15 +91,13 @@ public class PetriNetConfigurationController extends AbstractConfigurationContro
         }
     }
 
-    public void requestPrintPetriNet(String netname) {
-        if(petriNetLogic.containsPetriNet(netname)) {
-            PetriNet petriNet = (PetriNet) petriNetLogic.getINet(netname);
-            printPetriNet(petriNet);
-        }
-        else {
-            view.printToDisplay(ViewStringConstants.ERR_NET_NOT_PRESENT);
-        }
+    public void requestPetriNetToPrint(){
+        String petriNetName = view.readFromList(petriNetLogic.getSavedPetriNetsNames(), ViewStringConstants.INSERT_PETRI_NET_NAME_MSG);
+        PetriNet petriNet = (PetriNet) petriNetLogic.getINet(petriNetName);
+        printPetriNet(petriNet);
+
     }
+
 
     public void printPetriNet(PetriNet petriNet){
 

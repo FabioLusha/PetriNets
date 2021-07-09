@@ -99,4 +99,5 @@ public class ViewStringConstants {
 	public static final String ERR_MSG_BSDNET_NOTPRESENT = "La rete su cui si basa la rete che si sta cercando di importare non e' presente: " ;
 
 	public static final String MSG_EXPORT_COMPLETED = "L'esportazione è andata a buon fine!\n";
+    public static final String ERR_INTERNAL = "Si e' verificato un errore interno";
 }

@@ -10,20 +10,21 @@ import petrinets.UI.view.View;
 import petrinets.UI.view.ViewStringConstants;
 import petrinets.domain.AbstractSimulatableNetLogic;
 import petrinets.domain.Model;
+import petrinets.domain.petrinet.PetriNet;
+import petrinets.domain.petrinet.PriorityPetriNet;
 import petrinets.domain.petrinet.SimulatableNet;
 import petrinets.domain.net.Transition;
 
 public class SimulatorController {
 	private SimulatorView simView;
 	private Starter mainStarter;
-	private Model model;
 	private AbstractSimulatableNetLogic abstractSimulatableNetLogic;
 	private SimulatableNet netToSimulate;
 
-	public SimulatorController(View mainView, Starter pcontroller, Model pmodel) {
+	public SimulatorController(View mainView, Starter pcontroller, AbstractSimulatableNetLogic pabstractSimulatableNetLogic) {
 		simView = new SimulatorView(this, mainView);
 		mainStarter = pcontroller;
-		model = pmodel;
+		abstractSimulatableNetLogic = pabstractSimulatableNetLogic;
 		simView.mainMenu();
 
 	}
@@ -51,35 +52,30 @@ public class SimulatorController {
 	public void simulatePetriNet() {
 		if (mainStarter.managePetriNetVis()) {
 			//richiedi il nome della rete da simulare;
-			String netname = simView.readNotEmpyString(ViewStringConstants.INSERT_PETRI_NET_NAME_MSG);
-			if (model.containsPetriNet(netname)) {
-				mainStarter.requestPrintPetriNet(netname);
-				SimulatableNet net = (SimulatableNet) model.getINet(netname);
-				netToSimulate = (SimulatableNet) SerializationUtils.clone(net);
-				simulate();
-			} else {
-				simView.print(ViewStringConstants.ERR_NET_NOT_PRESENT);
-				simView.mainMenu();
+			String netname = simView.readFromList(abstractSimulatableNetLogic.getSavedGenericNetsNames(PetriNet.class.getName()),ViewStringConstants.INSERT_PETRI_NET_NAME_MSG);
 
-			}
+			mainStarter.requestPrintPetriNet(netname);
+			SimulatableNet net = (SimulatableNet) abstractSimulatableNetLogic.getINet(netname);
+			netToSimulate = (SimulatableNet) SerializationUtils.clone(net);
+			simulate();
+		} else {
+			simView.mainMenu();
+
 		}
 	}
 	
 	public void simulatePriorityPetriNet() {
 		if (mainStarter.managePriorityPetriNetVis()) {
 			//richiedi il nome della rete da simulare;
-			String netname = simView.readNotEmpyString(ViewStringConstants.INSERT_PRIORITY_PETRI_NET_NAME_MSG);
-			if (model.containsPriorityPetriNet(netname)) {
+			String netname = simView.readFromList(abstractSimulatableNetLogic.getSavedGenericNetsNames(PriorityPetriNet.class.getName()),ViewStringConstants.INSERT_PRIORITY_PETRI_NET_NAME_MSG);
+
 				mainStarter.requestPrintPriorityPetriNet(netname);
-				SimulatableNet net = (SimulatableNet) model.getINet(netname);
+				SimulatableNet net = (SimulatableNet) abstractSimulatableNetLogic.getINet(netname);
 				netToSimulate = (SimulatableNet) SerializationUtils.clone(net);
 				simulate();
-			} else {
-				simView.print(ViewStringConstants.ERR_NET_NOT_PRESENT);
-				simView.mainMenu();
 
-			}
-		}
+		} else
+			simView.mainMenu();
 	}
 
 	public void exitWithoutSaving() {
@@ -121,7 +117,7 @@ public class SimulatorController {
 			}
 
 			simView.print(ViewStringConstants.MSG_NEW_MARC);
-			simView.printMarking(model.getPlaces(netToSimulate), model.getMarc(netToSimulate));
+			simView.printMarking(abstractSimulatableNetLogic.getPlaces(netToSimulate), abstractSimulatableNetLogic.getMarc(netToSimulate));
 			if(simView.userInputContinueAdding(ViewStringConstants.ASK_CONTINUE_SIMULATION))
 				simulate();
 			else

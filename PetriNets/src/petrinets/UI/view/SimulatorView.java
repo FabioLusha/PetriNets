@@ -54,4 +54,9 @@ public class SimulatorView {
 		String mark = mainView.marcFormatter(places, marc);
 		print(mark);
 	}
+
+	public String readFromList(List<String> listOfOptions, String message){
+		return mainView.readFromList(listOfOptions,message);
+	}
+
 }
