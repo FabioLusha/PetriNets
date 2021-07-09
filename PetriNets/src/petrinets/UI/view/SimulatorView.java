@@ -1,5 +1,6 @@
 package petrinets.UI.view;
 
+import java.io.IOException;
 import java.util.List;
 
 import it.unibs.fp.mylib.InputDati;
@@ -15,7 +16,7 @@ public class SimulatorView {
 		mainView = pmainView;
 	}
 	
-	public void mainMenu() {
+	public void mainMenu() throws IOException, ReflectiveOperationException {
 		MyMenu mainMenu = new MyMenu(ViewStringConstants.SIMULATOR_WELCOME_TITLE, ViewStringConstants.SIMULATOR_WELCOME_OPTIONS);
 		simController.mainMenuChoice(mainMenu.scegli());
 	}
@@ -29,14 +30,6 @@ public class SimulatorView {
     
     public String readNotEmpyString(String message) {
     	return mainView.readNotEmptyString(message);
-    }
-    
-    public int getIntInput(String message,int min ,int max) {
-    	return mainView.getIntInput(message, min, max);
-    }
-
-    public int getNotNegativeInt(String message) {
-    	return mainView.getNotNegativeInt(message);
     }
 
 	public void printActiveTransitions(List<String> listNames) {
@@ -57,6 +50,10 @@ public class SimulatorView {
 
 	public String readFromList(List<String> listOfOptions, String message){
 		return mainView.readFromList(listOfOptions,message);
+	}
+
+	public View getMainView(){
+		return mainView;
 	}
 
 }

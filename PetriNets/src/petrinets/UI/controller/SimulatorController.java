@@ -1,5 +1,6 @@
 package petrinets.UI.controller;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,7 +22,7 @@ public class SimulatorController {
 	private AbstractSimulatableNetLogic abstractSimulatableNetLogic;
 	private SimulatableNet netToSimulate;
 
-	public SimulatorController(View mainView, Starter pcontroller, AbstractSimulatableNetLogic pabstractSimulatableNetLogic) {
+	public SimulatorController(View mainView, Starter pcontroller, AbstractSimulatableNetLogic pabstractSimulatableNetLogic) throws IOException, ReflectiveOperationException {
 		simView = new SimulatorView(this, mainView);
 		mainStarter = pcontroller;
 		abstractSimulatableNetLogic = pabstractSimulatableNetLogic;
@@ -29,7 +30,7 @@ public class SimulatorController {
 
 	}
 	
-	public void mainMenuChoice(int choice) {
+	public void mainMenuChoice(int choice) throws IOException, ReflectiveOperationException {
 		switch(choice) {
 		case 0:
 			exitWithoutSaving();
@@ -37,11 +38,9 @@ public class SimulatorController {
 		case 1:
 			//Simula rete di Petri
 			simulatePetriNet();
-
 			break;
 		case 2:
 			simulatePriorityPetriNet();
-			
 			break;
 		default:
 			simView.mainMenu();
@@ -49,12 +48,11 @@ public class SimulatorController {
 		}
 	}
 
-	public void simulatePetriNet() {
-		if (mainStarter.managePetriNetVis()) {
+	public void simulatePetriNet() throws IOException, ReflectiveOperationException {
+		PetriNetConfigurationController petriNetConfigurationController = new PetriNetConfigurationController(simView.getMainView());
+		if (petriNetConfigurationController.managePetriNetVis()) {
 			//richiedi il nome della rete da simulare;
 			String netname = simView.readFromList(abstractSimulatableNetLogic.getSavedGenericNetsNames(PetriNet.class.getName()),ViewStringConstants.INSERT_PETRI_NET_NAME_MSG);
-
-			mainStarter.requestPrintPetriNet(netname);
 			SimulatableNet net = (SimulatableNet) abstractSimulatableNetLogic.getINet(netname);
 			netToSimulate = (SimulatableNet) SerializationUtils.clone(net);
 			simulate();
@@ -64,12 +62,11 @@ public class SimulatorController {
 		}
 	}
 	
-	public void simulatePriorityPetriNet() {
-		if (mainStarter.managePriorityPetriNetVis()) {
+	public void simulatePriorityPetriNet() throws IOException, ReflectiveOperationException {
+		PriorityPetriNetConfigurationController priorityPetriNetConfigurationController = new PriorityPetriNetConfigurationController(simView.getMainView());
+		if (priorityPetriNetConfigurationController.managePriorityPetriNetVis()) {
 			//richiedi il nome della rete da simulare;
-			String netname = simView.readFromList(abstractSimulatableNetLogic.getSavedGenericNetsNames(PriorityPetriNet.class.getName()),ViewStringConstants.INSERT_PRIORITY_PETRI_NET_NAME_MSG);
-
-				mainStarter.requestPrintPriorityPetriNet(netname);
+			    String netname = simView.readFromList(abstractSimulatableNetLogic.getSavedGenericNetsNames(PriorityPetriNet.class.getName()),ViewStringConstants.INSERT_PRIORITY_PETRI_NET_NAME_MSG);
 				SimulatableNet net = (SimulatableNet) abstractSimulatableNetLogic.getINet(netname);
 				netToSimulate = (SimulatableNet) SerializationUtils.clone(net);
 				simulate();
@@ -83,7 +80,7 @@ public class SimulatorController {
 	}
 
 
-	public void simulate() {
+	public void simulate() throws IOException, ReflectiveOperationException {
 		Collection<Transition> activeTransitions = netToSimulate.getEnabledTransitions();
 		
 		if(activeTransitions.isEmpty()) {

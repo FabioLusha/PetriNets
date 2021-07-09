@@ -2,16 +2,15 @@ package petrinets.UI.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
+
 
 import petrinets.UI.view.View;
 import petrinets.UI.view.ViewStringConstants;
-import petrinets.domain.Model;
+
 import petrinets.domain.PetriNetLogic;
 import petrinets.domain.net.INet;
-import petrinets.domain.petrinet.PetriNet;
 
-import petrinets.domain.petrinet.PriorityPetriNet;
+
 import systemservices.NetImportExport;
 
 
@@ -73,10 +72,8 @@ public class Starter {
 				configNetContr.manageNetCreation();
 				break;
 			case 2:
-			{
 				manageNetsVis();
 				break;
-			}
 			case 3:
 				managePetriNetCreation();
 				break;
@@ -84,22 +81,16 @@ public class Starter {
 				requestPrintPetriNet();
 				break;
 			case 5:
-				configPriorityPNContr.managePriorityPetriNetCreation();
-				priorityPetriNetMenuChoice();
+				priorityPetriNetCreation();
 				break;
 			case 6:
-				if(configPriorityPNContr.managePriorityPetriNetVis())
-					configPriorityPNContr.requestPrintPriorityPetriNet(view.readNotEmptyString(ViewStringConstants.INSERT_NET_TO_VIEW));
-				view.mainMenu();
+				priorityPetriNetVis();
 				break;
 			case 7:
 				exportNet();
-				view.mainMenu();
 				break;
-				
 			case 8:
 				importNet();
-				view.mainMenu();
 				break;
 			default:
 				configNetContr.saveAndExit();
@@ -107,6 +98,7 @@ public class Starter {
 	
 		}
 	}
+
 
 	public void manageNetsVis() {
 		configNetContr.manageNetsVis();
@@ -134,19 +126,19 @@ public class Starter {
 	}
 
 	//PARTE RETI DI PETRI CON PRIORITA'
-	public void priorityPetriNetMenuChoice() {
+
+
+	public void priorityPetriNetCreation() {
+		configPriorityPNContr.managePriorityPetriNetCreation();
 		configPriorityPNContr.priorityPetriNetMenuChoice();
 	}
 
-	public boolean managePriorityPetriNetVis() {
-		return configPriorityPNContr.managePriorityPetriNetVis();
-	}
 
-	public void requestPrintPriorityPetriNet(String netname) {
-		configPriorityPNContr.requestPrintPriorityPetriNet(netname);
+	private void priorityPetriNetVis() {
+		if(configPriorityPNContr.managePriorityPetriNetVis())
+			configPriorityPNContr.requestPrintPriorityPetriNet();
+		view.mainMenu();
 	}
-	
-
 	//Versione 5
 	
 	public void exportNet() {
@@ -155,6 +147,7 @@ public class Starter {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
+		view.mainMenu();
 	}
 	
 	
@@ -182,5 +175,6 @@ public class Starter {
 		} catch (IOException e) {
 			view.printToDisplay(ViewStringConstants.ERR_NET_IMPORT + e.getMessage());
 		}
+		view.mainMenu();
 	}
 }

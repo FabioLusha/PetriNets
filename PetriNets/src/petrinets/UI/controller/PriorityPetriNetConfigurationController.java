@@ -41,7 +41,6 @@ public class PriorityPetriNetConfigurationController extends AbstractConfigurati
                 if (!priorityPetriNetLogic.saveCurrentNet()) {
                     view.printToDisplay(ViewStringConstants.ERR_NET_ALREADY_PRESENT);
                 }
-
                 view.mainMenu();
                 break;
             case 4:
@@ -118,12 +117,9 @@ public class PriorityPetriNetConfigurationController extends AbstractConfigurati
         }
     }
 
-    public void requestPrintPriorityPetriNet(String netname) {
-        if (priorityPetriNetLogic.containsPriorityPetriNet(netname)) {
-            printPriorityPetriNet((PriorityPetriNet) priorityPetriNetLogic.getINet(netname));
-        } else {
-            view.printToDisplay(ViewStringConstants.ERR_NET_NOT_PRESENT);
-        }
+    public void requestPrintPriorityPetriNet() {
+        String netname = view.readFromList(priorityPetriNetLogic.getSavedPriorityPetriNetsNames(),ViewStringConstants.INSERT_PRIORITY_PETRI_NET_NAME_MSG);
+        printPriorityPetriNet((PriorityPetriNet) priorityPetriNetLogic.getINet(netname));
     }
 
     @Override
