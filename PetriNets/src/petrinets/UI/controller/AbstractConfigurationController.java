@@ -4,10 +4,8 @@ import petrinets.UI.view.View;
 import petrinets.UI.view.ViewStringConstants;
 import petrinets.domain.AbstractINetLogic;
 import petrinets.domain.net.INet;
-import petrinets.domain.net.Net;
-import petrinets.domain.petrinet.PetriNet;
-import petrinets.domain.petrinet.PriorityPetriNet;
-import systemservices.NetImportExport;
+import systemservices.INetExporter;
+import systemservices.INetImporter;
 
 import java.util.*;
 import java.io.IOException;
@@ -41,7 +39,7 @@ public abstract class AbstractConfigurationController {
             String netName = view.readNotEmptyString(ViewStringConstants.INSERT_NET_NAME_TO_EXPORT);
             if(savedNetsName.contains(netName)) {
                 try {
-                    NetImportExport.exportINet(iNetLogic.getINet(netName));
+                    INetExporter.exportINet(iNetLogic.getINet(netName));
                     view.printToDisplay(ViewStringConstants.MSG_EXPORT_COMPLETED);
                 } catch (IOException e) {
                     view.printToDisplay(ViewStringConstants.ERR_NET_EXPORT + e.getMessage());

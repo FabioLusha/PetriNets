@@ -13,7 +13,7 @@ import petrinets.domain.PetriNetLogic;
 import petrinets.domain.net.INet;
 
 
-import systemservices.NetImportExport;
+import systemservices.INetImporter;
 
 
 public class Starter {
@@ -173,7 +173,7 @@ public class Starter {
 		String fileName = view.readNotEmptyString(ViewStringConstants.INSERT_NET_NAME_IMPORT);
 
 		try {
-			INet importedNet = NetImportExport.importINet(fileName);
+			INet importedNet = INetImporter.importINet(fileName);
 
 			AbstractConfigurationController controllers[] = {configNetContr,configPetriNetContr,configPriorityPNContr};
 			for(AbstractConfigurationController controller: controllers){
