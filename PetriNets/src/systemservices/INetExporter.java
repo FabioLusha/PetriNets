@@ -32,8 +32,8 @@ public class INetExporter {
 		    theDir.mkdirs();
 		}
 		
-		XMLmanager<INet> xmlManager = new XMLmanager<>(fileName.toString());
-		xmlManager.serializeToXML(inet);
+		Serializer<INet> xmlManager = new XMLmanager<>(fileName.toString());
+		xmlManager.serialize(inet);
 		
 	}
 

@@ -1,15 +1,13 @@
 package systemservices;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import petrinets.domain.net.INet;
 
 public class Archive implements INetRepository{
 
-    private XMLmanager<Map<String, INet>> mapXMLmanager;
+    private Serializer<Map<String, INet>> mapSerializer;
 
     private static Archive instance;
 
@@ -28,7 +26,7 @@ public class Archive implements INetRepository{
     }
 
     public void permanentSave() throws IOException {
-        mapXMLmanager.serializeToXML(inetMap);
+        mapSerializer.serialize(inetMap);
     }
 
     public Map<String, INet> getInetMap() {
@@ -56,9 +54,9 @@ public class Archive implements INetRepository{
     }
 
     public void readFromFile(String filePath) throws IOException {
-        mapXMLmanager = new XMLmanager<>(filePath);
-        if (!(mapXMLmanager.isEmpty())) {
-            inetMap = (Map<String, INet>) mapXMLmanager.deserializeFromXML();
+        mapSerializer = new XMLmanager<>(filePath);
+        if (!(mapSerializer.isEmpty())) {
+            inetMap = (Map<String, INet>) mapSerializer.deserialize();
         }
 
     }

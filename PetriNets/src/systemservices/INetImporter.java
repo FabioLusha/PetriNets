@@ -12,11 +12,11 @@ public class INetImporter {
 
 	public static INet importINet(String fileName) throws IOException {
 		if(new File(fileName).exists()) {
-			XMLmanager<INet> xmlManager = new XMLmanager<>(fileName);
+			Serializer<INet> xmlManager = new XMLmanager<>(fileName);
 			if (xmlManager.isEmpty()) {
 				throw new IOException(FILE_EMPTY_MSG);
 			}
-			return xmlManager.deserializeFromXML();
+			return xmlManager.deserialize();
 		} else
 			throw new IOException(FILE_NOT_PRESENT_MSG);
 	}

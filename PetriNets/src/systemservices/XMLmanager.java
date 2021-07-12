@@ -7,7 +7,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class XMLmanager<T> {
+public class XMLmanager<T> implements Serializer<T>{
 
 	private String filename;
 	private File file;
@@ -21,7 +21,7 @@ public class XMLmanager<T> {
 		file.createNewFile();
 	}
 
-	public T deserializeFromXML() throws IOException {
+	public T deserialize() throws IOException {
 		FileInputStream fis = new FileInputStream(filename);
 		XMLDecoder decoder = new XMLDecoder(fis);
 		T savednets = (T) decoder.readObject();
@@ -30,7 +30,7 @@ public class XMLmanager<T> {
 		return savednets;
 	}
 
-	public void serializeToXML(T netlist) throws IOException {
+	public void serialize(T netlist) throws IOException {
 		FileOutputStream fos = new FileOutputStream(filename);
 		XMLEncoder encoder = new XMLEncoder(fos);
 		encoder.setExceptionListener(e -> System.out.println("Exception! :" + e.toString()));
