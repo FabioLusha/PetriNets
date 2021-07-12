@@ -13,6 +13,23 @@ import java.util.Properties;
 public class INetExporter {
 
 	public static void exportINet(INet inet) throws IOException {
+		INetExportFormat iNetExportFormat = new INetExportFormat(inet);
+		var type = iNetExportFormat.format();
+		Class<?> typeClass = type.getClass();
+		Serializer<typeClass>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 		String exportDirectory;
 		try (FileInputStream inputStream = new FileInputStream(PropertiesHandler.NET_EXPORT_PROPERTIES_PATH.toFile())) {
@@ -31,7 +48,8 @@ public class INetExporter {
 		if (!theDir.exists()){
 		    theDir.mkdirs();
 		}
-		
+
+
 		Serializer<INet> xmlManager = new XMLmanager<>(fileName.toString());
 		xmlManager.serialize(inet);
 		
