@@ -6,6 +6,7 @@ import petrinets.UI.view.ViewStringConstants;
 import petrinets.domain.net.INet;
 import petrinets.domain.petrinet.PetriNet;
 import petrinets.domain.PetriNetLogic;
+import systemservices.PropertiesInitializationException;
 
 import java.io.IOException;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
 public class PetriNetConfigurationController extends AbstractConfigurationController{
     private PetriNetLogic petriNetLogic;
 
-    public PetriNetConfigurationController(View view) throws ReflectiveOperationException, IOException {
+    public PetriNetConfigurationController(View view) throws ReflectiveOperationException, IOException, PropertiesInitializationException {
         super(view);
         petriNetLogic = new PetriNetLogic();
         iNetLogic = petriNetLogic;

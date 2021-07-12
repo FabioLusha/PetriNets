@@ -15,6 +15,7 @@ import petrinets.domain.petrinet.PetriNet;
 import petrinets.domain.petrinet.PriorityPetriNet;
 import petrinets.domain.petrinet.SimulatableNet;
 import petrinets.domain.net.Transition;
+import systemservices.PropertiesInitializationException;
 
 public class SimulatorController {
 	private SimulatorView simView;
@@ -30,25 +31,33 @@ public class SimulatorController {
 
 	}
 	
-	public void mainMenuChoice(int choice) throws IOException, ReflectiveOperationException {
-		switch(choice) {
-		case 0:
-			exitWithoutSaving();
-			break;
-		case 1:
-			//Simula rete di Petri
-			simulatePetriNet();
-			break;
-		case 2:
-			simulatePriorityPetriNet();
-			break;
-		default:
-			simView.mainMenu();
-			break;
+	public void mainMenuChoice(int choice) {
+		try {
+			switch (choice) {
+				case 0:
+					exitWithoutSaving();
+					break;
+				case 1:
+					//Simula rete di Petri
+					simulatePetriNet();
+					break;
+				case 2:
+					simulatePriorityPetriNet();
+					break;
+				default:
+					simView.mainMenu();
+					break;
+			}
+		} catch (ReflectiveOperationException e) {
+			simView.print(ViewStringConstants.ERR_INTERNAL);
+		} catch (IOException e) {
+			simView.print(ViewStringConstants.ERR_MSG_DESERIALIZATION_FAILED);
+		}catch (PropertiesInitializationException e) {
+			simView.print(e.getMessage());
 		}
 	}
 
-	public void simulatePetriNet() throws IOException, ReflectiveOperationException {
+	public void simulatePetriNet() throws IOException, ReflectiveOperationException, PropertiesInitializationException {
 		PetriNetConfigurationController petriNetConfigurationController = new PetriNetConfigurationController(simView.getMainView());
 		if (petriNetConfigurationController.managePetriNetVis()) {
 			//richiedi il nome della rete da simulare;
@@ -62,7 +71,7 @@ public class SimulatorController {
 		}
 	}
 	
-	public void simulatePriorityPetriNet() throws IOException, ReflectiveOperationException {
+	public void simulatePriorityPetriNet() throws IOException, ReflectiveOperationException, PropertiesInitializationException {
 		PriorityPetriNetConfigurationController priorityPetriNetConfigurationController = new PriorityPetriNetConfigurationController(simView.getMainView());
 		if (priorityPetriNetConfigurationController.managePriorityPetriNetVis()) {
 			//richiedi il nome della rete da simulare;

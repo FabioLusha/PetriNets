@@ -9,17 +9,16 @@ public class RepositoryFactory {
     private INetRepository repo;
     private static RepositoryFactory instance;
 
-    public static RepositoryFactory getInstance(){
+    public static RepositoryFactory getInstance() throws PropertiesInitializationException{
         if(instance == null)
             instance = new RepositoryFactory();
         return instance;
     }
 
-    private RepositoryFactory(){
-    		//TODO Fare controllo se il file esiste già non sovrascriverlo
+    private RepositoryFactory() throws PropertiesInitializationException {
     		//Durante il testing modificare la proprietà e dopo il testing riportarla sempre a quella originale
-        if(! new File(PropertiesHandler.PROPERTIES_DIR).exists())
-            PropertiesHandler.initializeProperties();
+        if(! PropertiesHandler.REPO_PROPERTIES_PATH.toFile().exists())
+            PropertiesHandler.initializeRepositoryProperties();
     }
 
     public INetRepository getRepo() throws IOException, ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
@@ -29,7 +28,7 @@ public class RepositoryFactory {
                 Properties repoProp = new Properties();
                 repoProp.load(inputStream);
 
-                String className = repoProp.getProperty(PropertiesHandler.NET_REPOSITORY_CLASS_NAME);
+                String className = repoProp.getProperty(PropertiesHandler.NET_REPOSITORY_CLASS_NAME_PROPERTY);
                 repo = (INetRepository) Class.forName(className).getDeclaredConstructor().newInstance();
 
                 repo.readFromFile(repoProp.getProperty(PropertiesHandler.DIRECTORY_PROPERTY));

@@ -6,6 +6,7 @@ import petrinets.UI.view.ViewStringConstants;
 import petrinets.domain.NetLogic;
 import petrinets.domain.net.INet;
 import petrinets.domain.net.Net;
+import systemservices.PropertiesInitializationException;
 
 import java.io.IOException;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
 public class NetConfigurationController extends AbstractConfigurationController{
     private NetLogic netLogic;
 
-    public NetConfigurationController(View view) throws ReflectiveOperationException, IOException {
+    public NetConfigurationController(View view) throws ReflectiveOperationException, IOException, PropertiesInitializationException {
         super(view);
         netLogic = new NetLogic();
         iNetLogic = netLogic;

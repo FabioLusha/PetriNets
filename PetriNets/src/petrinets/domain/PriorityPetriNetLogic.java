@@ -3,6 +3,7 @@ package petrinets.domain;
 import petrinets.domain.net.Transition;
 import petrinets.domain.petrinet.PetriNet;
 import petrinets.domain.petrinet.PriorityPetriNet;
+import systemservices.PropertiesInitializationException;
 
 import java.io.IOException;
 import java.util.List;
@@ -12,7 +13,8 @@ import java.util.stream.Collectors;
 public class PriorityPetriNetLogic extends  AbstractSimulatableNetLogic{
     private PriorityPetriNet controlPriorityPetriNet;
 
-    public PriorityPetriNetLogic() throws IOException, ReflectiveOperationException {
+    public PriorityPetriNetLogic() throws IOException, ReflectiveOperationException, PropertiesInitializationException {
+        super();
     }
 
     public boolean createPriorityPetriNet(String priorityPetriNetName, PetriNet petriNet) {

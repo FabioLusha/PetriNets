@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<java version="15.0.2" class="java.beans.XMLDecoder">
+<java version="11.0.11" class="java.beans.XMLDecoder">
  <object class="petrinets.domain.net.Net">
   <void property="fluxRelation">
    <object class="java.util.LinkedHashSet">

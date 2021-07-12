@@ -6,6 +6,7 @@ import petrinets.domain.AbstractINetLogic;
 import petrinets.domain.net.INet;
 import systemservices.INetExporter;
 import systemservices.INetImporter;
+import systemservices.PropertiesInitializationException;
 
 import java.util.*;
 import java.io.IOException;
@@ -28,7 +29,7 @@ public abstract class AbstractConfigurationController {
     }
 
     //TODO handle the exception
-    public void exportNet() throws ClassNotFoundException {
+    public void exportNet() {
 
         List<String> savedNetsName = iNetLogic.getSavedGenericNetsNames(INet.class.getName());
 
@@ -41,7 +42,7 @@ public abstract class AbstractConfigurationController {
                 try {
                     INetExporter.exportINet(iNetLogic.getINet(netName));
                     view.printToDisplay(ViewStringConstants.MSG_EXPORT_COMPLETED);
-                } catch (IOException e) {
+                } catch (IOException | PropertiesInitializationException e) {
                     view.printToDisplay(ViewStringConstants.ERR_NET_EXPORT + e.getMessage());
                 }
             }else

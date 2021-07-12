@@ -15,7 +15,7 @@ public class SimulatorView {
 		mainView = pmainView;
 	}
 	
-	public void mainMenu() throws IOException, ReflectiveOperationException {
+	public void mainMenu() {
 		MyMenu2 mainMenu = new MyMenu2(mainView.getBufferedInputDati(), ViewStringConstants.SIMULATOR_WELCOME_TITLE, ViewStringConstants.SIMULATOR_WELCOME_OPTIONS);
 		simController.mainMenuChoice(mainMenu.scegli());
 	}

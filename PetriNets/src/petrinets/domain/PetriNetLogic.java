@@ -5,6 +5,7 @@ import petrinets.domain.net.OrderedPair;
 import petrinets.domain.net.Place;
 import petrinets.domain.net.Transition;
 import petrinets.domain.petrinet.PetriNet;
+import systemservices.PropertiesInitializationException;
 
 import java.io.IOException;
 
@@ -12,7 +13,7 @@ public class PetriNetLogic extends AbstractSimulatableNetLogic{
     private PetriNet controlPetriNet;
 
 
-    public PetriNetLogic() throws IOException,ReflectiveOperationException {
+    public PetriNetLogic() throws IOException,ReflectiveOperationException, PropertiesInitializationException {
         super();
         // TODO Auto-generated constructor stub
     }

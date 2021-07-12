@@ -12,24 +12,10 @@ import java.util.Properties;
 
 public class INetExporter {
 
-	public static void exportINet(INet inet) throws IOException {
-		INetExportFormat iNetExportFormat = new INetExportFormat(inet);
-		var type = iNetExportFormat.format();
-		Class<?> typeClass = type.getClass();
-		Serializer<typeClass>
+	public static void exportINet(INet inet) throws IOException, PropertiesInitializationException {
 
-
-
-
-
-
-
-
-
-
-
-
-
+		if (!PropertiesHandler.NET_EXPORT_PROPERTIES_PATH.toFile().exists())
+			PropertiesHandler.initializeExportProperties();
 
 		String exportDirectory;
 		try (FileInputStream inputStream = new FileInputStream(PropertiesHandler.NET_EXPORT_PROPERTIES_PATH.toFile())) {
@@ -38,7 +24,6 @@ public class INetExporter {
 
 			exportDirectory = exportNetProp.getProperty(PropertiesHandler.EXPORT_DIR_PROPERTY);
 		} catch (IOException  e){
-			e.printStackTrace();
 			throw e;
 		}
 

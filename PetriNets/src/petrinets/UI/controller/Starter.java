@@ -14,6 +14,8 @@ import petrinets.domain.net.INet;
 
 
 import systemservices.INetImporter;
+import systemservices.PropertiesHandler;
+import systemservices.PropertiesInitializationException;
 
 
 public class Starter {
@@ -23,34 +25,22 @@ public class Starter {
     private PetriNetConfigurationController configPetriNetContr;
 	private PriorityPetriNetConfigurationController configPriorityPNContr;
 
-    public Starter(PrintWriter out){
-		this.view = new View(this,out);
-
-		try {
-			configNetContr = new NetConfigurationController(view);
-			configPetriNetContr = new PetriNetConfigurationController(view);
-			configPriorityPNContr = new PriorityPetriNetConfigurationController(view);
-		} catch (ReflectiveOperationException e) {
-			view.printToDisplay(ViewStringConstants.ERR_INTERNAL);
-			//TODO
-		} catch (IOException e) {
-			view.printToDisplay(ViewStringConstants.ERR_MSG_DESERIALIZATION_FAILED);
-		}
-	}
-
 	public Starter(InputStream in, OutputStream out){
 		this.view = new View(this,in, out);
 
 		try {
+
 			configNetContr = new NetConfigurationController(view);
 			configPetriNetContr = new PetriNetConfigurationController(view);
 			configPriorityPNContr = new PriorityPetriNetConfigurationController(view);
+
 		} catch (ReflectiveOperationException e) {
 			view.printToDisplay(ViewStringConstants.ERR_INTERNAL);
-			//TODO
 		} catch (IOException e) {
 			view.printToDisplay(ViewStringConstants.ERR_MSG_DESERIALIZATION_FAILED);
-		}
+		}catch (PropertiesInitializationException e) {
+			view.printToDisplay(e.getMessage());
+	}
 	}
 
     public void logMenuChoice(int scegli) {
@@ -70,6 +60,8 @@ public class Starter {
 					view.printToDisplay(ViewStringConstants.ERR_MSG_DESERIALIZATION_FAILED);
 				} catch (ReflectiveOperationException e) {
 					view.printToDisplay(ViewStringConstants.ERR_INTERNAL);
+				}catch (PropertiesInitializationException e) {
+					view.printToDisplay(e.getMessage());
 				}
 				break;
 			default:
@@ -159,11 +151,7 @@ public class Starter {
 	//Versione 5
 	
 	public void exportNet() {
-		try {
-			configNetContr.exportNet();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
+		configNetContr.exportNet();
 		view.mainMenu();
 	}
 	
@@ -175,7 +163,7 @@ public class Starter {
 		try {
 			INet importedNet = INetImporter.importINet(fileName);
 
-			AbstractConfigurationController controllers[] = {configNetContr,configPetriNetContr,configPriorityPNContr};
+			AbstractConfigurationController[] controllers = {configNetContr,configPetriNetContr,configPriorityPNContr};
 			for(AbstractConfigurationController controller: controllers){
 				try{
 					controller.importNet(importedNet);

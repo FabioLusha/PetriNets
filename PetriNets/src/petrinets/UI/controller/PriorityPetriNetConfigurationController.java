@@ -7,6 +7,7 @@ import petrinets.domain.net.INet;
 import petrinets.domain.petrinet.PetriNet;
 import petrinets.domain.petrinet.PriorityPetriNet;
 import petrinets.domain.PriorityPetriNetLogic;
+import systemservices.PropertiesInitializationException;
 
 import java.io.IOException;
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.Map;
 public class PriorityPetriNetConfigurationController extends AbstractConfigurationController{
     private PriorityPetriNetLogic priorityPetriNetLogic;
 
-    public PriorityPetriNetConfigurationController(View view) throws ReflectiveOperationException,IOException{
+    public PriorityPetriNetConfigurationController(View view) throws ReflectiveOperationException,IOException, PropertiesInitializationException {
         super(view);
         priorityPetriNetLogic = new PriorityPetriNetLogic();
         iNetLogic = priorityPetriNetLogic;

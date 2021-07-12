@@ -4,6 +4,7 @@ import petrinets.domain.net.*;
 import petrinets.domain.petrinet.PetriNet;
 import petrinets.domain.petrinet.PriorityPetriNet;
 import petrinets.domain.petrinet.SimulatableNet;
+import systemservices.PropertiesInitializationException;
 
 import java.io.IOException;
 import java.util.List;
@@ -18,7 +19,7 @@ public class Model extends  AbstractINetLogic{
     //private static XMLmanager<NetArchive> netxmlmanager = new XMLmanager<NetArchive>("nets.xml");
 
 
-    public Model() throws IOException,ReflectiveOperationException{
+    public Model() throws IOException,ReflectiveOperationException, PropertiesInitializationException {
         logicOfNet = new NetLogic();
         logicOfPetriNet = new PetriNetLogic();
         logicOfPriorityPetriNet = new PriorityPetriNetLogic();

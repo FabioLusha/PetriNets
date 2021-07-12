@@ -12,13 +12,14 @@ import petrinets.domain.net.OrderedPair;
 import petrinets.domain.net.Place;
 import petrinets.domain.net.Transition;
 import systemservices.INetRepository;
+import systemservices.PropertiesInitializationException;
 import systemservices.RepositoryFactory;
 
 public abstract class AbstractINetLogic {
 	protected final INetRepository netArchive;
 
 	public AbstractINetLogic()
-            throws IOException, ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
+            throws IOException, ReflectiveOperationException, PropertiesInitializationException {
 		    netArchive = RepositoryFactory.getInstance().getRepo();
 	}
 

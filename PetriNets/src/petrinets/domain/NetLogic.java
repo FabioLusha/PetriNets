@@ -6,14 +6,14 @@ import petrinets.domain.net.Net;
 import petrinets.domain.net.OrderedPair;
 import petrinets.domain.net.Place;
 import petrinets.domain.net.Transition;
+import systemservices.PropertiesInitializationException;
 
 public class NetLogic extends AbstractINetLogic{
 	private Net controlNet;
 	
 	
-	public NetLogic() throws IOException,ReflectiveOperationException {
+	public NetLogic() throws IOException,ReflectiveOperationException, PropertiesInitializationException {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override

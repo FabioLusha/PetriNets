@@ -1,15 +1,14 @@
 package petrinets.junittest;
 
+import org.apache.commons.lang3.SerializationUtils;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import petrinets.domain.Model;
-import petrinets.domain.net.INet;
 import petrinets.domain.petrinet.PetriNet;
-import petrinets.domain.net.Net;
-import petrinets.domain.net.OrderedPair;
-import petrinets.domain.net.Place;
+import petrinets.domain.net.*;
 import systemservices.PropertiesHandler;
+import systemservices.PropertiesInitializationException;
 
 import java.util.*;
 import java.io.*;
@@ -27,28 +26,38 @@ public class ModelTest {
 
     @BeforeAll
     public void setTestEnvironment(){
-        PropertiesHandler.initializeProperties();
 
-        try(InputStream in = new FileInputStream(PropertiesHandler.REPO_PROPERTIES_PATH.toFile())) {
+        try{
+            if(! PropertiesHandler.REPO_PROPERTIES_PATH.toFile().exists())
+                PropertiesHandler.initializeRepositoryProperties();
 
-            Properties repoProp = new Properties();
-            repoProp.load(in);
-            in.close();
+            try(InputStream in = new FileInputStream(PropertiesHandler.REPO_PROPERTIES_PATH.toFile())) {
 
-            OutputStream out = new FileOutputStream(PropertiesHandler.REPO_PROPERTIES_PATH.toFile());
-            repoProp.setProperty(PropertiesHandler.DIRECTORY_PROPERTY, PropertiesHandler.DEFAULT_TEST_SAVING_DIR.toString());
-            repoProp.store(out, null);
-            out.close();
+                Properties oldRepoProp = new Properties();
+                Properties testRepoProp;
+                oldRepoProp.load(in);
+                testRepoProp =  SerializationUtils.clone(oldRepoProp);
+                in.close();
 
-            testModel = new Model();
-            //genera le proprietà originali
-            PropertiesHandler.initializeProperties();
+                OutputStream out = new FileOutputStream(PropertiesHandler.REPO_PROPERTIES_PATH.toFile());
+                testRepoProp.setProperty(PropertiesHandler.DIRECTORY_PROPERTY, PropertiesHandler.DEFAULT_TEST_SAVING_DIR.toString());
+                testRepoProp.store(out, null);
+                out.close();
+
+                testModel = new Model();
+                //genera le proprietà originali
+                out = new FileOutputStream(PropertiesHandler.REPO_PROPERTIES_PATH.toFile());
+                oldRepoProp.store(out, null);
+                out.close();
+        }
         }catch(IOException e){
             e.printStackTrace();
             fail("Errore nella lettura del file delle proprietà");
         } catch (ReflectiveOperationException e){
             e.printStackTrace();
             fail("Errore nell'inizializzazione della Repository");
+        }catch (PropertiesInitializationException e){
+            fail("Errore nell'inizializzaizone del file delle proprietà");
         }
 
         }
