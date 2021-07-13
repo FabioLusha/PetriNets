@@ -9,17 +9,7 @@ public class Archive implements INetRepository{
 
     private Serializer<Map<String, INet>> mapSerializer;
 
-    private static Archive instance;
-
     private Map<String, INet> inetMap;
-
-    //per l'eccezione guarda il metodo open()
-    public static Archive getInstance() throws IOException {
-        if (instance == null) {
-            instance = new Archive();
-        }
-        return instance;
-    }
 
     public Archive(){
         inetMap = new HashMap<>();
