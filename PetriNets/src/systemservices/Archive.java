@@ -8,7 +8,6 @@ import petrinets.domain.net.INet;
 public class Archive implements INetRepository{
 
     private Serializer<Map<String, INet>> mapSerializer;
-
     private Map<String, INet> inetMap;
 
     public Archive(){

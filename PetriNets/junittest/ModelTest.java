@@ -38,7 +38,7 @@ public class ModelTest {
                 in.close();
 
                 OutputStream out = new FileOutputStream(PropertiesHandler.REPO_PROPERTIES_PATH.toFile());
-                testRepoProp.setProperty(PropertiesHandler.FILE_NAME_PATH, PropertiesHandler.DEFAULT_TEST_SAVING_PATH.toString());
+                testRepoProp.setProperty(PropertiesHandler.FILE_NAME_PROPERTY, PropertiesHandler.DEFAULT_TEST_SAVING_PATH.toString());
                 testRepoProp.store(out, null);
                 out.close();
 

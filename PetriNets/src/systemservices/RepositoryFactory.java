@@ -30,7 +30,7 @@ public class RepositoryFactory {
                 String className = repoProp.getProperty(PropertiesHandler.NET_REPOSITORY_CLASS_NAME_PROPERTY);
                 repo = (INetRepository) Class.forName(className).getDeclaredConstructor().newInstance();
 
-                repo.readFromFile(repoProp.getProperty(PropertiesHandler.FILE_NAME_PATH));
+                repo.readFromFile(repoProp.getProperty(PropertiesHandler.FILE_NAME_PROPERTY));
             } catch (IOException  e){
                 throw e;
             }

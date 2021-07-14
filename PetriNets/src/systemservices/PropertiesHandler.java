@@ -19,7 +19,7 @@ public class PropertiesHandler {
     public static final Path DEFAULT_TEST_SAVING_PATH = FileSystems.getDefault().getPath("test","data", "test_nets.xml");
 
     public static final String NET_REPOSITORY_CLASS_NAME_PROPERTY = "NetRepository.class.name";
-    public static final String FILE_NAME_PATH = "filename";
+    public static final String FILE_NAME_PROPERTY = "filename";
     public static final String EXPORT_DIR_PROPERTY = "export.directory";
     public static final String ERR_REPO_PROP = "Errore nell'inizializzazione del file delle proprietà per il sistema di persistenza";
     public static final String ERR_EXPORT_PROP = "Errore nell'inizializzazione del file delle proprietà per la gestione delle reti esportate";
@@ -37,7 +37,7 @@ public class PropertiesHandler {
 
             Properties prop = new Properties();
             prop.setProperty(NET_REPOSITORY_CLASS_NAME_PROPERTY, Archive.class.getName());
-            prop.setProperty(FILE_NAME_PATH, PropertiesHandler.DEFAULT_SAVING_PATH.toString());
+            prop.setProperty(FILE_NAME_PROPERTY, PropertiesHandler.DEFAULT_SAVING_PATH.toString());
             prop.store(out, null);
 
         } catch (IOException e) {
@@ -66,7 +66,7 @@ public class PropertiesHandler {
 
             Properties prop = new Properties();
             prop.setProperty(NET_REPOSITORY_CLASS_NAME_PROPERTY, Archive.class.getName());
-            prop.setProperty(FILE_NAME_PATH, PropertiesHandler.DEFAULT_TEST_SAVING_PATH.toString());
+            prop.setProperty(FILE_NAME_PROPERTY, PropertiesHandler.DEFAULT_TEST_SAVING_PATH.toString());
             prop.store(out, null);
 
         } catch (IOException e) {

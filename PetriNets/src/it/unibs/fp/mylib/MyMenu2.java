@@ -30,7 +30,7 @@ public class MyMenu2 {
         io.println(CORNICE);
         for (int i=0; i<voci.length; i++)
         {
-            System.out.println( (i+1) + "\t" + voci[i]);
+            io.println( (i+1) + "\t" + voci[i]);
         }
         io.println("");
         io.println(VOCE_USCITA);

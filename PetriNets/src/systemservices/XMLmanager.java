@@ -33,7 +33,6 @@ public class XMLmanager<T> implements Serializer<T>{
 	public void serialize(T netlist) throws IOException {
 		FileOutputStream fos = new FileOutputStream(filename);
 		XMLEncoder encoder = new XMLEncoder(fos);
-		encoder.setExceptionListener(e -> System.out.println("Exception! :" + e.toString()));
 
 		encoder.writeObject(netlist);
 		encoder.close();

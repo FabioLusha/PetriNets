@@ -43,10 +43,10 @@ public class PetriNetConfigurationController extends AbstractConfigurationContro
                 if(!petriNetLogic.saveCurrentNet()) {
                     view.printToDisplay(ViewStringConstants.ERR_NET_ALREADY_PRESENT);
                 }
-                petriNetMenuChoice();
+                view.mainMenu();
                 break;
             case 5:
-                petriNetMenuChoice();
+                view.mainMenu();
                 break;
             default:
                 petriNetMenuChoice();;
@@ -61,6 +61,7 @@ public class PetriNetConfigurationController extends AbstractConfigurationContro
         if(petriNetLogic.getSavedNetsNames().isEmpty()){
             view.printToDisplay(ViewStringConstants.ERR_NO_NET_SAVED);
             view.mainMenu();
+            return;
         }
 
         view.visualizeNets(petriNetLogic.getSavedNetsNames());
@@ -71,11 +72,13 @@ public class PetriNetConfigurationController extends AbstractConfigurationContro
             if(!petriNetLogic.createPetriNet(petrinetname, netname)) {
                 view.printToDisplay(ViewStringConstants.ERR_MSG_NET_NAME_ALREADY_EXIST);
                 view.mainMenu();
+                return;
             }
 
         }else {
             view.printToDisplay(ViewStringConstants.ERR_NET_NOT_PRESENT);
             view.mainMenu();
+            return;
         }
 
         view.printToDisplay(ViewStringConstants.PETRI_NET_INITIALIZED_DEFAULT);
