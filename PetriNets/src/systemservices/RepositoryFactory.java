@@ -23,7 +23,6 @@ public class RepositoryFactory {
 
     public INetRepository getRepo() throws IOException, ReflectiveOperationException {
         if(repo == null ) {
-            //repo = Archive.getInstance(); //TODO Modificare Archive affinché non sia più un Singleton
             try (FileInputStream inputStream = new FileInputStream(PropertiesHandler.REPO_PROPERTIES_PATH.toFile())) {
                 Properties repoProp = new Properties();
                 repoProp.load(inputStream);
