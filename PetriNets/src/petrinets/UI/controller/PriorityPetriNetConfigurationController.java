@@ -31,12 +31,12 @@ public class PriorityPetriNetConfigurationController extends AbstractConfigurati
             //modifica vlaore priorità
             case 1:
                 changePriority();
-                view.priorityPetriNetMenu();
+                priorityPetriNetMenuChoice();
                 break;
             //visualizza la rete
             case 2:
                 visualizeCurrentPriorityPetriNet();
-                view.priorityPetriNetMenu();
+                priorityPetriNetMenuChoice();
                 break;
             case 3:
                 if (!priorityPetriNetLogic.saveCurrentNet()) {
@@ -48,7 +48,7 @@ public class PriorityPetriNetConfigurationController extends AbstractConfigurati
                 view.mainMenu();
                 break;
             default:
-                view.petriNetMenu();
+                priorityPetriNetMenuChoice();
                 break;
         }
     }

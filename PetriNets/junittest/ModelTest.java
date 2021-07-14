@@ -1,5 +1,3 @@
-package petrinets.junittest;
-
 import org.apache.commons.lang3.SerializationUtils;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -40,7 +38,7 @@ public class ModelTest {
                 in.close();
 
                 OutputStream out = new FileOutputStream(PropertiesHandler.REPO_PROPERTIES_PATH.toFile());
-                testRepoProp.setProperty(PropertiesHandler.DIRECTORY_PROPERTY, PropertiesHandler.DEFAULT_TEST_SAVING_DIR.toString());
+                testRepoProp.setProperty(PropertiesHandler.FILE_NAME_PATH, PropertiesHandler.DEFAULT_TEST_SAVING_PATH.toString());
                 testRepoProp.store(out, null);
                 out.close();
 

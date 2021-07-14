@@ -1,7 +1,6 @@
 package systemservices;
 
 import java.io.*;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Properties;
 
 public class RepositoryFactory {
@@ -12,6 +11,7 @@ public class RepositoryFactory {
     public static RepositoryFactory getInstance() throws PropertiesInitializationException{
         if(instance == null)
             instance = new RepositoryFactory();
+
         return instance;
     }
 
@@ -21,7 +21,7 @@ public class RepositoryFactory {
             PropertiesHandler.initializeRepositoryProperties();
     }
 
-    public INetRepository getRepo() throws IOException, ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
+    public INetRepository getRepo() throws IOException, ReflectiveOperationException {
         if(repo == null ) {
             //repo = Archive.getInstance(); //TODO Modificare Archive affinché non sia più un Singleton
             try (FileInputStream inputStream = new FileInputStream(PropertiesHandler.REPO_PROPERTIES_PATH.toFile())) {
@@ -31,7 +31,7 @@ public class RepositoryFactory {
                 String className = repoProp.getProperty(PropertiesHandler.NET_REPOSITORY_CLASS_NAME_PROPERTY);
                 repo = (INetRepository) Class.forName(className).getDeclaredConstructor().newInstance();
 
-                repo.readFromFile(repoProp.getProperty(PropertiesHandler.DIRECTORY_PROPERTY));
+                repo.readFromFile(repoProp.getProperty(PropertiesHandler.FILE_NAME_PATH));
             } catch (IOException  e){
                 throw e;
             }

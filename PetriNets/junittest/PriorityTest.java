@@ -1,5 +1,3 @@
-package petrinets.junittest;
-
 import org.junit.jupiter.api.Test;
 
 import petrinets.domain.petrinet.PetriNet;

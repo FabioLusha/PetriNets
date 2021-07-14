@@ -28,29 +28,28 @@ public class PetriNetConfigurationController extends AbstractConfigurationContro
             //modifica vlaore maracatura
             case 1:
                 changeMarc();
-                view.petriNetMenu();
+                petriNetMenuChoice();
                 break;
             //modifica valore pesi rel flusso
             case 2:
                 changeFluxRelationVal();
-                view.petriNetMenu();
+                petriNetMenuChoice();
                 break;
             case 3:
                 visualizeCurrentPetriNet();
-                view.petriNetMenu();
+                petriNetMenuChoice();
                 break;
             case 4:
                 if(!petriNetLogic.saveCurrentNet()) {
                     view.printToDisplay(ViewStringConstants.ERR_NET_ALREADY_PRESENT);
                 }
-
-                view.mainMenu();
+                petriNetMenuChoice();
                 break;
             case 5:
-                view.mainMenu();
+                petriNetMenuChoice();
                 break;
             default:
-                view.petriNetMenu();
+                petriNetMenuChoice();;
                 break;
         }
     }
@@ -58,6 +57,11 @@ public class PetriNetConfigurationController extends AbstractConfigurationContro
     public void managePetriNetCreation() {
         String petrinetname;
         String netname;
+
+        if(petriNetLogic.getSavedNetsNames().isEmpty()){
+            view.printToDisplay(ViewStringConstants.ERR_NO_NET_SAVED);
+            view.mainMenu();
+        }
 
         view.visualizeNets(petriNetLogic.getSavedNetsNames());
         netname = view.readFromList(petriNetLogic.getSavedNetsNames(), ViewStringConstants.INSERT_NET_NAME_MSG);
