@@ -133,7 +133,7 @@ public class PetriNetConfigurationController extends AbstractConfigurationContro
         if(!petriNetLogic.inetContainsPlace(currentPetriNet, name))
             view.printToDisplay(ViewStringConstants.ERR_PLACE_NOT_PRESENT);
         else {
-            int newValue  = view.getNotNegativeInt(ViewStringConstants.INSERT_NEW_MARC);
+            int newValue  = view.getIntInput(ViewStringConstants.INSERT_NEW_MARC, PetriNet.DEFAULT_MARC_VALUE, Integer.MAX_VALUE);
             petriNetLogic.changeMarc(name, newValue);
         }
     }
@@ -156,7 +156,7 @@ public class PetriNetConfigurationController extends AbstractConfigurationContro
         if(!petriNetLogic.containsFluxRel(placeName, transitionName, direction))
             view.printToDisplay(ViewStringConstants.ERR_FLUX_REL_NOT_PRESENT);
         else {
-            int newValue  = view.getNotNegativeInt(ViewStringConstants.INSERT_NEW_COST);
+            int newValue  = view.getIntInput(ViewStringConstants.INSERT_NEW_COST, PetriNet.DEFAULT_FLUX_VALUE, Integer.MAX_VALUE);
             petriNetLogic.changeFluxRelVal(placeName, transitionName, direction, newValue);
         }
     }

@@ -7,8 +7,9 @@ import java.util.*;
 
 
 public class PetriNet implements SimulatableNet {
-	private static final int DEFAULT_MARC_VALUE = 0;
-	private static final int DEFAULT_FLUX_VALUE = 1;
+	public static final int DEFAULT_MARC_VALUE = 0;
+	public static final int DEFAULT_FLUX_VALUE = 1;
+
 	private Map<Place,Integer> marcmap;
 	private Map<OrderedPair, Integer>  valuemap;
 	private Net basedNet;

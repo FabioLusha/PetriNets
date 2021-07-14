@@ -1,6 +1,8 @@
 import org.junit.jupiter.api.*;
 import petrinets.UI.controller.Starter;
+import petrinets.domain.net.OrderedPair;
 import petrinets.domain.net.Place;
+import petrinets.domain.net.Transition;
 import petrinets.domain.petrinet.PetriNet;
 import systemservices.INetRepository;
 import systemservices.PropertiesHandler;
@@ -47,7 +49,6 @@ public class InteractionTest {
                 testProperties = new Properties();
                 testProperties.load(testIn);
 
-
                 OutputStream out = new FileOutputStream(PropertiesHandler.REPO_PROPERTIES_PATH.toFile());
                 testProperties.store(out, null);
                 out.close();
@@ -74,10 +75,6 @@ public class InteractionTest {
             InputStream in = new FileInputStream(PropertiesHandler.REPO_PROPERTIES_PATH.toFile());
             Properties prop = new Properties();
             prop.load(in);
-
-            File savingFile = new File(testProperties.getProperty(PropertiesHandler.FILE_NAME_PROPERTY));
-            if(savingFile.exists())
-                savingFile.delete();
 
             assertThat(original,equalTo(prop));
         } catch (IOException e) {
@@ -320,5 +317,104 @@ public class InteractionTest {
         }
     }
 
+    @Test
+    @Order(3)
+    public void changeFluxRelCorrectValue(){
+        int correctValue = 40;
+
+        String anotherPetriNetName = "petri5";
+        String inputs = "1\n" //accedi come configuratore
+                + "3\n" //crea rete di petri
+                + NET_NAME + "\n" //rete base
+                + anotherPetriNetName + "\n" //nome rete di petri
+                + "2\n" //scegli di cambiare relazione di flusso
+                + PLACE_NAME + "\n" //nome del posto da cambiare
+                + TRANSITION_NAME + "\n"
+                + "0\n" //direzione
+                + correctValue + "\n" //nuovo valore
+                + "4\n" //salva
+                + "0\n"; //esci
+        //+ "0\n"; //chiudi
+
+        InputStream in = new ByteArrayInputStream(inputs.getBytes());
+        OutputStream out = OutputStream.nullOutputStream();
+
+        Runnable toBeRun = () -> {
+            try {
+                Starter starter = new Starter(in, out);
+                starter.startView();
+            }catch(NoSuchElementException e){
+                //il programma lancia un'eccezzione perché non termina correttamente
+                //alla fine si aspetta un 0 per usire dal programma. Se forniamo quest
+                //0 termina l'intero processo a causa del System.exit
+            }
+        };
+
+        try {
+            Thread normalExec = new Thread(toBeRun);
+            normalExec.start();
+            normalExec.join();
+
+            INetRepository repo = RepositoryFactory.getInstance().getRepo();
+
+            assertThat(true, equalTo(repo.contains(anotherPetriNetName)));
+            PetriNet thisPN = (PetriNet) repo.get(anotherPetriNetName);
+            assertThat(thisPN.getFluxRelValue(new OrderedPair( new Place(PLACE_NAME), new Transition(TRANSITION_NAME), OrderedPair.Direction.pt)), equalTo(correctValue));
+
+
+        } catch (IOException | ReflectiveOperationException | PropertiesInitializationException | InterruptedException e) {
+            fail(e);
+        }
+    }
+
+    @Test
+    @Order(3)
+    public void changeFluxRelInvalidValue(){
+        int invalidValue = 0;
+
+        String anotherPetriNetName = "petri3";
+        String inputs = "1\n" //accedi come configuratore
+                + "3\n" //crea rete di petri
+                + NET_NAME + "\n" //rete base
+                + anotherPetriNetName + "\n" //nome rete di petri
+                + "2\n" //scegli di cambiare relazione di flusso
+                + PLACE_NAME + "\n" //nome del posto da cambiare
+                + TRANSITION_NAME + "\n"
+                + "0\n" //direzione
+                + invalidValue + "\n" //nuovo valore
+                + "4\n" //salva
+                + "0\n"; //esci
+        //+ "0\n"; //chiudi
+
+        InputStream in = new ByteArrayInputStream(inputs.getBytes());
+        OutputStream out = OutputStream.nullOutputStream();
+
+        Runnable toBeRun = () -> {
+            try {
+                Starter starter = new Starter(in, out);
+                starter.startView();
+            }catch(NoSuchElementException e){
+                //il programma lancia un'eccezzione perché non termina correttamente
+                //alla fine si aspetta un 0 per usire dal programma. Se forniamo quest
+                //0 termina l'intero processo a causa del System.exit
+            }
+        };
+
+        try {
+            Thread normalExec = new Thread(toBeRun);
+            normalExec.start();
+            normalExec.join();
+
+            INetRepository repo = RepositoryFactory.getInstance().getRepo();
+
+            //In caso di valore scorretto il flusso di controllo (che non possiamo gestire con i test)
+            // cambia e il programma termina bruscamente
+            assertThat(false, equalTo(repo.contains(anotherPetriNetName)));
+
+
+        } catch (IOException | ReflectiveOperationException | PropertiesInitializationException | InterruptedException e) {
+            fail(e);
+        }
+    }
 
 }

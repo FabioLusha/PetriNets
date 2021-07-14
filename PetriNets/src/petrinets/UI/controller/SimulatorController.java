@@ -91,32 +91,37 @@ public class SimulatorController {
 
 	public void simulate() throws IOException, ReflectiveOperationException {
 		Collection<Transition> activeTransitions = netToSimulate.getEnabledTransitions();
-		 {
-		List<String> namesList =
-				activeTransitions.stream().
-				map(e -> e.getName()).
-				collect(Collectors.toList());
 
-		if(activeTransitions.size() != 1){
+		if(activeTransitions.isEmpty()) {
+			simView.print(ViewStringConstants.ERR_CRITICAL_BLOCK);
+			simView.printMarking(abstractSimulatableNetLogic.getPlaces(netToSimulate), abstractSimulatableNetLogic.getMarc(netToSimulate));
+			simView.mainMenu();
+		}else {
+			List<String> namesList =
+					activeTransitions.stream().
+					map(e -> e.getName()).
+					collect(Collectors.toList());
 
-			String name = simView.readFromList(namesList, ViewStringConstants.INSERT_TRANSITION_MSG);
-			netToSimulate.fire(new Transition(name));
+			if(activeTransitions.size() > 1){
 
-		}else{
-			Transition toBeFired = activeTransitions.iterator().next();
-			simView.print(String.format(ViewStringConstants.MSG_AUTOMATIC_FIRE_TRANSITION, toBeFired ));
-			netToSimulate.fire(toBeFired);
-		}
+				String name = simView.readFromList(namesList, ViewStringConstants.INSERT_TRANSITION_MSG);
+				netToSimulate.fire(new Transition(name));
 
-		simView.print(ViewStringConstants.MSG_NEW_MARC);
-		simView.printMarking(abstractSimulatableNetLogic.getPlaces(netToSimulate), abstractSimulatableNetLogic.getMarc(netToSimulate));
+			}else if (activeTransitions.size() == 1){
+				Transition toBeFired = activeTransitions.iterator().next();
+				simView.print(String.format(ViewStringConstants.MSG_AUTOMATIC_FIRE_TRANSITION, toBeFired ));
+				netToSimulate.fire(toBeFired);
+			}
 
-		 if(netToSimulate.getEnabledTransitions().isEmpty()) {
-			 simView.print(ViewStringConstants.ERR_CRITICAL_BLOCK);
-			 simView.mainMenu();
-		 } else if(simView.userInputContinueAdding(ViewStringConstants.ASK_CONTINUE_SIMULATION))
+			simView.print(ViewStringConstants.MSG_NEW_MARC);
+			simView.printMarking(abstractSimulatableNetLogic.getPlaces(netToSimulate), abstractSimulatableNetLogic.getMarc(netToSimulate));
+			if(netToSimulate.getEnabledTransitions().isEmpty()){
+				simView.print(ViewStringConstants.ERR_CRITICAL_BLOCK);
+				simView.mainMenu();
+			}
+			else if(simView.userInputContinueAdding(ViewStringConstants.ASK_CONTINUE_SIMULATION))
 				simulate();
-		 	else
+			else
 				simView.mainMenu();
 		}
 	}
