@@ -3,7 +3,6 @@ package petrinets.UI.controller;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 
 
 import petrinets.UI.view.View;
@@ -14,25 +13,24 @@ import petrinets.domain.net.INet;
 
 
 import systemservices.INetImporter;
-import systemservices.PropertiesHandler;
 import systemservices.PropertiesInitializationException;
 
 
 public class Starter {
 
     private View view;
-    private NetConfigurationController configNetContr;
-    private PetriNetConfigurationController configPetriNetContr;
-	private PriorityPetriNetConfigurationController configPriorityPNContr;
+    private NetUIController configNetContr;
+    private PetriNetUIController configPetriNetContr;
+	private PriorityPetriNetUIController configPriorityPNContr;
 
 	public Starter(InputStream in, OutputStream out){
 		this.view = new View(this,in, out);
 
 		try {
 
-			configNetContr = new NetConfigurationController(view);
-			configPetriNetContr = new PetriNetConfigurationController(view);
-			configPriorityPNContr = new PriorityPetriNetConfigurationController(view);
+			configNetContr = new NetUIController(view);
+			configPetriNetContr = new PetriNetUIController(view);
+			configPriorityPNContr = new PriorityPetriNetUIController(view);
 
 		} catch (ReflectiveOperationException e) {
 			view.printToDisplay(ViewStringConstants.ERR_INTERNAL);
@@ -163,8 +161,8 @@ public class Starter {
 		try {
 			INet importedNet = INetImporter.importINet(fileName);
 
-			AbstractConfigurationController[] controllers = {configNetContr,configPetriNetContr,configPriorityPNContr};
-			for(AbstractConfigurationController controller: controllers){
+			AbstractUIController[] controllers = {configNetContr,configPetriNetContr,configPriorityPNContr};
+			for(AbstractUIController controller: controllers){
 				try{
 					controller.importNet(importedNet);
 					view.printToDisplay(ViewStringConstants.SUCCESSFUL_IMPORT);

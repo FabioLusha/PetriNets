@@ -11,10 +11,10 @@ import systemservices.PropertiesInitializationException;
 import java.io.IOException;
 import java.util.List;
 
-public class PetriNetConfigurationController extends AbstractConfigurationController{
+public class PetriNetUIController extends AbstractUIController {
     private PetriNetLogic petriNetLogic;
 
-    public PetriNetConfigurationController(View view) throws ReflectiveOperationException, IOException, PropertiesInitializationException {
+    public PetriNetUIController(View view) throws ReflectiveOperationException, IOException, PropertiesInitializationException {
         super(view);
         petriNetLogic = new PetriNetLogic();
         iNetLogic = petriNetLogic;

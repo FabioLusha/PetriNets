@@ -11,10 +11,10 @@ import systemservices.PropertiesInitializationException;
 import java.io.IOException;
 import java.util.List;
 
-public class NetConfigurationController extends AbstractConfigurationController{
+public class NetUIController extends AbstractUIController {
     private NetLogic netLogic;
 
-    public NetConfigurationController(View view) throws ReflectiveOperationException, IOException, PropertiesInitializationException {
+    public NetUIController(View view) throws ReflectiveOperationException, IOException, PropertiesInitializationException {
         super(view);
         netLogic = new NetLogic();
         iNetLogic = netLogic;

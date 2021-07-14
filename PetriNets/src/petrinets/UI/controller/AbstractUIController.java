@@ -11,11 +11,11 @@ import systemservices.PropertiesInitializationException;
 import java.util.*;
 import java.io.IOException;
 
-public abstract class AbstractConfigurationController {
+public abstract class AbstractUIController {
     protected View view;
     protected AbstractINetLogic iNetLogic;
 
-    public AbstractConfigurationController(View view){
+    public AbstractUIController(View view){
         this.view = view;
     }
 

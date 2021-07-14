@@ -10,7 +10,6 @@ import petrinets.UI.view.SimulatorView;
 import petrinets.UI.view.View;
 import petrinets.UI.view.ViewStringConstants;
 import petrinets.domain.AbstractSimulatableNetLogic;
-import petrinets.domain.Model;
 import petrinets.domain.petrinet.PetriNet;
 import petrinets.domain.petrinet.PriorityPetriNet;
 import petrinets.domain.petrinet.SimulatableNet;
@@ -58,7 +57,7 @@ public class SimulatorController {
 	}
 
 	public void simulatePetriNet() throws IOException, ReflectiveOperationException, PropertiesInitializationException {
-		PetriNetConfigurationController petriNetConfigurationController = new PetriNetConfigurationController(simView.getMainView());
+		PetriNetUIController petriNetConfigurationController = new PetriNetUIController(simView.getMainView());
 		if (petriNetConfigurationController.managePetriNetVis()) {
 			//richiedi il nome della rete da simulare;
 			String netname = simView.readFromList(abstractSimulatableNetLogic.getSavedGenericNetsNames(PetriNet.class.getName()),ViewStringConstants.INSERT_PETRI_NET_NAME_MSG);
@@ -72,7 +71,7 @@ public class SimulatorController {
 	}
 	
 	public void simulatePriorityPetriNet() throws IOException, ReflectiveOperationException, PropertiesInitializationException {
-		PriorityPetriNetConfigurationController priorityPetriNetConfigurationController = new PriorityPetriNetConfigurationController(simView.getMainView());
+		PriorityPetriNetUIController priorityPetriNetConfigurationController = new PriorityPetriNetUIController(simView.getMainView());
 		if (priorityPetriNetConfigurationController.managePriorityPetriNetVis()) {
 			//richiedi il nome della rete da simulare;
 			    String netname = simView.readFromList(abstractSimulatableNetLogic.getSavedGenericNetsNames(PriorityPetriNet.class.getName()),ViewStringConstants.INSERT_PRIORITY_PETRI_NET_NAME_MSG);

@@ -2,7 +2,9 @@ import org.apache.commons.lang3.SerializationUtils;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import petrinets.domain.Model;
+import petrinets.domain.NetLogic;
+import petrinets.domain.PetriNetLogic;
+import petrinets.domain.PriorityPetriNetLogic;
 import petrinets.domain.petrinet.PetriNet;
 import petrinets.domain.net.*;
 import systemservices.PropertiesHandler;
@@ -19,7 +21,9 @@ import static org.junit.jupiter.api.Assertions.fail;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ModelTest {
 
-    private Model testModel;
+    private NetLogic netLogic;
+    private PetriNetLogic petriNetLogic;
+    private PriorityPetriNetLogic priorityPetriNetLogic;
 
 
     @BeforeAll
@@ -42,7 +46,9 @@ public class ModelTest {
                 testRepoProp.store(out, null);
                 out.close();
 
-                testModel = new Model();
+                netLogic = new NetLogic();
+                petriNetLogic = new PetriNetLogic();
+                priorityPetriNetLogic = new PriorityPetriNetLogic();
                 //genera le proprietà originali
                 out = new FileOutputStream(PropertiesHandler.REPO_PROPERTIES_PATH.toFile());
                 oldRepoProp.store(out, null);
@@ -63,13 +69,13 @@ public class ModelTest {
     @Test
     public void testNetCreationAndSavig() throws IOException, ReflectiveOperationException {
             String net1 = "net1";
-            assertThat(true,equalTo(testModel.createNet(net1)));
-            testModel.addFluxElem("p1","t1", 0);
-            testModel.saveCurrentNet();
+            assertThat(true,equalTo(netLogic.createNet(net1)));
+            netLogic.addFluxElem("p1","t1", 0);
+            netLogic.saveCurrentNet();
 
-            assertThat(testModel.containsINet(net1), is(true));
+            assertThat(netLogic.containsINet(net1), is(true));
 
-            testModel.remove(net1);
+            netLogic.remove(net1);
 
     }
 
@@ -80,10 +86,10 @@ public class ModelTest {
         String transitionName = "t1";
         OrderedPair.Direction direction = OrderedPair.Direction.tp;
 
-        testModel.createNet(testNet);
-        testModel.addFluxElem(placeName, transitionName, direction.ordinal());
-        testModel.saveCurrentNet();
-        OrderedPair fluxElem = testModel.getINet(testNet).getFluxRelation().stream().findFirst().orElse(null);
+        netLogic.createNet(testNet);
+        netLogic.addFluxElem(placeName, transitionName, direction.ordinal());
+        netLogic.saveCurrentNet();
+        OrderedPair fluxElem = netLogic.getINet(testNet).getFluxRelation().stream().findFirst().orElse(null);
 
         if(fluxElem == null) fail("Expected OrderedPair, found null");
 
@@ -91,7 +97,7 @@ public class ModelTest {
         assertThat(fluxElem.getCurrentTransition().getName(),is(equalTo(transitionName)));
         assertThat(fluxElem.getDirection(),is(equalTo(direction)));
 
-        testModel.remove(testNet);
+        netLogic.remove(testNet);
     }
 
     @Test
@@ -101,25 +107,25 @@ public class ModelTest {
         String transitionName = "t1";
         OrderedPair.Direction direction = OrderedPair.Direction.tp;
 
-        testModel.createNet(testNet);
-        testModel.addFluxElem(placeName, transitionName, direction.ordinal());
-        testModel.saveCurrentNet();
+        netLogic.createNet(testNet);
+        netLogic.addFluxElem(placeName, transitionName, direction.ordinal());
+        netLogic.saveCurrentNet();
 
 
         String testPetriNetName = "PetriNet";
-        Net baseNet = (Net) testModel.getINet(testNet);
-        testModel.createPetriNet(testPetriNetName, testNet);
+        Net baseNet = (Net) petriNetLogic.getINet(testNet);
+        petriNetLogic.createPetriNet(testPetriNetName, testNet);
 
         PetriNet pn = new PetriNet(testPetriNetName,baseNet);
 
-        assertThat(pn, is(equalTo(testModel.getCurrentPetriNet())));
+        assertThat(pn, is(equalTo(petriNetLogic.getCurrentPetriNet())));
 
-        testModel.saveCurrentPetriNet();
+        petriNetLogic.saveCurrentNet();
 
-        assertThat(true,equalTo(testModel.containsINet(testPetriNetName)));
+        assertThat(true,equalTo(petriNetLogic.containsINet(testPetriNetName)));
 
-        testModel.remove(testNet);
-        testModel.remove(testPetriNetName);
+        petriNetLogic.remove(testNet);
+        petriNetLogic.remove(testPetriNetName);
     }
 
     @Test
@@ -129,24 +135,26 @@ public class ModelTest {
         String transitionName = "t1";
         OrderedPair.Direction direction = OrderedPair.Direction.tp;
 
-        testModel.createNet(testNet);
-        testModel.addFluxElem(placeName, transitionName, direction.ordinal());
-        testModel.saveCurrentNet();
+        netLogic.createNet(testNet);
+        netLogic.addFluxElem(placeName, transitionName, direction.ordinal());
+        netLogic.saveCurrentNet();
 
 
         String testPetriNetName = "PetriNet";
-        Net baseNet = (Net) testModel.getINet(testNet);
-        testModel.createPetriNet(testPetriNetName, testNet);
 
-        testModel.saveCurrentPetriNet();
+        petriNetLogic.createPetriNet(testPetriNetName, testNet);
 
-        assertThat(false, equalTo(testModel.createPetriNet(testPetriNetName, testNet)));
+        petriNetLogic.saveCurrentNet();
+
+        assertThat(false, equalTo(petriNetLogic.createPetriNet(testPetriNetName, testNet)));
 
         String differentPetriNetName = "pn2";
-        assertThat(true,equalTo(testModel.createPetriNet(differentPetriNetName,testNet)));
-        assertThat(false,equalTo(testModel.saveCurrentPetriNet()));
-        testModel.remove(testNet);
-        testModel.remove(testPetriNetName);
+        //permette l'instazione di una PetriNet con nome diverso
+        assertThat(true,equalTo(petriNetLogic.createPetriNet(differentPetriNetName,testNet)));
+        //Non permette di salvare una PetriNet con una tipologia già esistente
+        assertThat(false,equalTo(petriNetLogic.saveCurrentNet()));
+        petriNetLogic.remove(testNet);
+        petriNetLogic.remove(testPetriNetName);
 
     }
 
@@ -157,22 +165,22 @@ public class ModelTest {
         String transitionName = "t1";
         OrderedPair.Direction direction = OrderedPair.Direction.tp;
 
-        testModel.createNet(testNet);
-        testModel.addFluxElem(placeName, transitionName, direction.ordinal());
-        testModel.saveCurrentNet();
+        netLogic.createNet(testNet);
+        netLogic.addFluxElem(placeName, transitionName, direction.ordinal());
+        netLogic.saveCurrentNet();
 
         String testPetriNetName = "PetriNet";
-        Net baseNet = (Net) testModel.getINet(testNet);
-        testModel.createPetriNet(testPetriNetName, testNet);
 
-        assertThat(0, equalTo(testModel.getCurrentPetriNet().getMarcValue(new Place(placeName))));
+        petriNetLogic.createPetriNet(testPetriNetName, testNet);
+
+        assertThat(0, equalTo(petriNetLogic.getCurrentPetriNet().getMarcValue(new Place(placeName))));
 
         int newMarcVal = 4;
-        testModel.changeMarc(placeName, newMarcVal);
+        petriNetLogic.changeMarc(placeName, newMarcVal);
 
-        assertThat(newMarcVal, equalTo(testModel.getCurrentPetriNet().getMarcValue(new Place(placeName))));
+        assertThat(newMarcVal, equalTo(petriNetLogic.getCurrentPetriNet().getMarcValue(new Place(placeName))));
 
-        testModel.saveCurrentPetriNet();
+        petriNetLogic.saveCurrentNet();
     }
 
     @Test
@@ -182,15 +190,15 @@ public class ModelTest {
         String pnName = "pn1";
         PetriNet pn1 = new PetriNet(pnName,net1);
 
-        testModel.saveINet(net1);
-        testModel.saveINet(pn1);
+        netLogic.saveINet(net1);
+        netLogic.saveINet(pn1);
 
-        List<String> list = testModel.getSavedGenericNetsNames(Net.class.getName());
+        List<String> list = netLogic.getSavedGenericNetsNames(Net.class.getName());
         assertThat(netName,is(equalTo(list.get(0))));
 
 
-        testModel.remove(netName);
-        testModel.remove(pnName);
+        netLogic.remove(netName);
+        netLogic.remove(pnName);
     }
 
     @Test
@@ -200,17 +208,21 @@ public class ModelTest {
         String pnName = "pn1";
         PetriNet pn1 = new PetriNet(pnName,net1);
 
-        testModel.saveINet(net1);
-        testModel.saveINet(pn1);
+        netLogic.saveINet(net1);
+        netLogic.saveINet(pn1);
 
 
-            List<String> list = testModel.getSavedGenericNetsNames(PetriNet.class.getName());
+            List<String> list = netLogic.getSavedGenericNetsNames(PetriNet.class.getName());
             assertThat(false,is(equalTo(list.contains(netName))));
 
-        testModel.remove(netName);
-        testModel.remove(pnName);
+        netLogic.remove(netName);
+        netLogic.remove(pnName);
     }
 
+    /**
+     * Testiamo se il metodo che ritorna i nomi delle reti in base al tipo della rete
+     * funziona anche fornendoli un'interfaccia (e.g. Inet)
+     */
     @Test
     public void testReturnListOfCorrectTypeNetWorksWithInterface(){
         String netName = "net1";
@@ -218,14 +230,14 @@ public class ModelTest {
         String pnName = "pn1";
         PetriNet pn1 = new PetriNet(pnName,net1);
 
-        testModel.saveINet(net1);
-        testModel.saveINet(pn1);
+        netLogic.saveINet(net1);
+        netLogic.saveINet(pn1);
 
-            List<String> list = testModel.getSavedGenericNetsNames(INet.class.getName());
+            List<String> list = netLogic.getSavedGenericNetsNames(INet.class.getName());
             assertThat(true,is(equalTo(list.containsAll(Arrays.asList(new String[]{netName, pnName})))));
 
-        testModel.remove(netName);
-        testModel.remove(pnName);
+        netLogic.remove(netName);
+        netLogic.remove(pnName);
     }
 
 }

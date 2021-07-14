@@ -13,10 +13,10 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-public class PriorityPetriNetConfigurationController extends AbstractConfigurationController{
+public class PriorityPetriNetUIController extends AbstractUIController {
     private PriorityPetriNetLogic priorityPetriNetLogic;
 
-    public PriorityPetriNetConfigurationController(View view) throws ReflectiveOperationException,IOException, PropertiesInitializationException {
+    public PriorityPetriNetUIController(View view) throws ReflectiveOperationException,IOException, PropertiesInitializationException {
         super(view);
         priorityPetriNetLogic = new PriorityPetriNetLogic();
         iNetLogic = priorityPetriNetLogic;
