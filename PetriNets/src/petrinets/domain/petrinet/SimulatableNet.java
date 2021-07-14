@@ -13,6 +13,9 @@ public interface SimulatableNet extends INet {
 
 	void fire(Transition toFire);
 	Set<Transition> getEnabledTransitions();
-	Map<Place, Integer> getMarcmap();
-	Map<OrderedPair, Integer> getValuemap();
+
+	int getFluxRelValue(OrderedPair pair);
+	int getMarcValue(Place n1);
+	void changeMarc(Place n1, int newValue);
+	void changeFluxRel(OrderedPair pair, int newFluxRelValue);
 }

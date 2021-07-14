@@ -86,17 +86,28 @@ public class PriorityPetriNet implements SimulatableNet {
         return petriNetEnabled;
     }
 
+
     @Override
-    public Map<Place, Integer> getMarcmap() {
-        return basedPetriNet.getMarcmap();
+    public int getFluxRelValue(OrderedPair pair) {
+        return basedPetriNet.getFluxRelValue(pair);
     }
 
     @Override
-    public Map<OrderedPair, Integer> getValuemap() {
-        return basedPetriNet.getValuemap();
+    public int getMarcValue(Place n1) {
+        return basedPetriNet.getMarcValue(n1);
     }
-    
-    
+
+    @Override
+    public void changeMarc(Place n1, int newValue) {
+        basedPetriNet.changeMarc(n1,newValue);
+    }
+
+    @Override
+    public void changeFluxRel(OrderedPair pair, int newFluxRelValue) {
+        basedPetriNet.changeFluxRel(pair,newFluxRelValue);
+    }
+
+
     public boolean equals(Object obj) {
 		if (obj == this) {
 			return true;

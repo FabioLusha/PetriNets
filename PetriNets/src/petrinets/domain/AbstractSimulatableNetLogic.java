@@ -15,16 +15,16 @@ public abstract class AbstractSimulatableNetLogic extends AbstractINetLogic{
         super();
     }
 
-    public List<String> getMarc(SimulatableNet petrinet){
+    public List<String> getMarc(SimulatableNet simulatableNet){
 
-        return petrinet.getMarcmap().values().stream().
-                map(e -> Integer.toString(e)).
+        return simulatableNet.getPlaces().stream().
+                map(e -> Integer.toString(simulatableNet.getMarcValue(e))).
                 collect(Collectors.toList());
     }
 
-    public List<String> getValues(SimulatableNet petrinet){
-        return petrinet.getValuemap().values().stream().
-                map(e -> Integer.toString(e)).
+    public List<String> getValues(SimulatableNet simulatableNet){
+        return simulatableNet.getFluxRelation().stream().
+                map(e -> Integer.toString(simulatableNet.getFluxRelValue(e))).
                 collect(Collectors.toList());
     }
 
