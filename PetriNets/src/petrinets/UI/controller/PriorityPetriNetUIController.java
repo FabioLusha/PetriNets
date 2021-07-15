@@ -71,9 +71,15 @@ public class PriorityPetriNetUIController extends AbstractUIController {
     public void managePriorityPetriNetCreation() {
         String pPetriNetName;
         String petriNetName;
-
+        
+        if(priorityPetriNetLogic.getSavedPetriNetsNames().isEmpty()) {
+        	view.printToDisplay(ViewStringConstants.ERR_NO_NET_SAVED);
+        	view.mainMenu();
+        	return;
+        }
+        
         view.visualizeNets(priorityPetriNetLogic.getSavedPetriNetsNames());
-        petriNetName = view.readNotEmptyString(ViewStringConstants.INSERT_PETRI_NET_NAME_MSG);
+        petriNetName = view.readFromList(priorityPetriNetLogic.getSavedPetriNetsNames(), ViewStringConstants.INSERT_PETRI_NET_NAME_MSG);
 
         if (priorityPetriNetLogic.containsINet(petriNetName)) {
             pPetriNetName = view.readNotEmptyString(ViewStringConstants.INSERT_PRIORITY_PETRI_NET_NAME_MSG);
@@ -125,8 +131,10 @@ public class PriorityPetriNetUIController extends AbstractUIController {
 
     @Override
     public void importNet(INet importedNet) throws ClassCastException, BaseNetNotPresentException {
-        if(! (importedNet instanceof PetriNet)) throw new ClassCastException();
+        if(! (importedNet instanceof PriorityPetriNet)) throw new ClassCastException();
+        
         PriorityPetriNet pnpToImport = (PriorityPetriNet) importedNet;
+        
         if(priorityPetriNetLogic.containsINet(pnpToImport.getBasedPetriNet().getName()))
             priorityPetriNetLogic.saveINet(pnpToImport);
         else

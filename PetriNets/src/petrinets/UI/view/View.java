@@ -107,8 +107,8 @@ public class View {
           return output.toString();
     }
 
-    public void printToDisplay(String ErrMsg){
-        bufferedInputDati.println(ErrMsg);
+    public void printToDisplay(String message) {
+        bufferedInputDati.println(message);
     }
 
     public String readNotEmptyString(String message) {
@@ -150,6 +150,9 @@ public class View {
 
     public String readFromList(List<String> listOfOptions, String message){
         String element;
+        if(listOfOptions.isEmpty()) {
+        	return null;
+        }
         while(true) {
             element = readNotEmptyString(message);
 

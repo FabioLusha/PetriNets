@@ -155,7 +155,7 @@ public class Starter {
 	
 	
 	public void importNet() {
-		view.printToDisplay(ViewStringConstants.MSG_DIR);
+		
 		String fileName = view.readNotEmptyString(ViewStringConstants.INSERT_NET_NAME_IMPORT);
 
 		try {

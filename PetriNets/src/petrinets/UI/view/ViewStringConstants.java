@@ -74,7 +74,7 @@ public class ViewStringConstants {
 	public static final String[] SIMULATOR_WELCOME_OPTIONS = {"Scegli la rete di petri da simulare" , "Scegli la rete di petri con priorita' da simulare"};
 	public static final String[] LOGIN_MENU_OPTIONS = {"Accedi come configuratore", "Accedi come fruitore"};
 	public static final String ERR_CRITICAL_BLOCK = "La rete ha raggiunto un blocco critico!";
-    public static final String ERR_ELEMENT_NAME_DOES_NOT_EXSIST = "Il nome che hai inserito non comabacia con nessuno degli elementi elencati!";
+    public static final String ERR_ELEMENT_NAME_DOES_NOT_EXSIST = "Il nome che hai inserito non combacia con nessuno degli elementi elencati!";
     public static final String ASK_CONTINUE_SIMULATION = "Vuoi continuare con la simulazione?";
     public static final String MSG_NEW_MARC = "Nuova marcatura raggiunta:\n";
     public static final String MSG_AUTOMATIC_FIRE_TRANSITION = "Transizione scatta automaticamente %s.\n";
@@ -94,9 +94,9 @@ public class ViewStringConstants {
 	public static final String ERR_NET_IMPORT = "Errore nell'importazione della rete \n";
     public static final String SUCCESSFUL_IMPORT = "l'importazione della rete è andata a buon fine!\n";
 
-	public static final String INSERT_NET_NAME_IMPORT = "Inserisci il nome del file che contiene la rete: ";
-	public static final String MSG_DIR = "ATTENZIONE: Il file deve trovarsi nella cartella in cui gira l'applicazione!";
-	public static final String ERR_MSG_BSDNET_NOTPRESENT = "La rete su cui si basa la rete che si sta cercando di importare non e' presente: " ;
+	public static final String INSERT_NET_NAME_IMPORT = "Inserisci il path relativo o assoluto del file che contiene la rete: ";
+	public static final String MSG_DIR = "Inserire il path relativo o assoluto del file";
+	public static final String ERR_MSG_BSDNET_NOTPRESENT = "La rete su cui si basa la rete che si sta cercando di importare non e' presente " ;
 
 	public static final String MSG_EXPORT_COMPLETED = "L'esportazione è andata a buon fine!\n";
     public static final String ERR_INTERNAL = "Si e' verificato un errore interno";

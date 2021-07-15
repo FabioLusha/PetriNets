@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="15.0.2" class="java.beans.XMLDecoder">
+ <object class="petrinets.domain.petrinet.PriorityPetriNet">
+  <void property="basedPetriNet">
+   <object class="petrinets.domain.petrinet.PetriNet">
+    <void property="basedNet">
+     <object class="petrinets.domain.net.Net">
+      <void property="fluxRelation">
+       <object class="java.util.LinkedHashSet">
+        <void method="add">
+         <object class="petrinets.domain.net.OrderedPair" id="OrderedPair0">
+          <void property="currentPlace">
+           <object class="petrinets.domain.net.Place" id="Place0">
+            <void property="name">
+             <string>n1</string>
+            </void>
+           </object>
+          </void>
+          <void property="currentTransition">
+           <object class="petrinets.domain.net.Transition" id="Transition0">
+            <void property="name">
+             <string>t1</string>
+            </void>
+           </object>
+          </void>
+          <void property="direction">
+           <object class="java.lang.Enum" method="valueOf">
+            <class>petrinets.domain.net.OrderedPair$Direction</class>
+            <string>pt</string>
+           </object>
+          </void>
+         </object>
+        </void>
+       </object>
+      </void>
+      <void property="name">
+       <string>rete1</string>
+      </void>
+      <void property="places">
+       <object class="java.util.LinkedHashSet">
+        <void method="add">
+         <object idref="Place0"/>
+        </void>
+       </object>
+      </void>
+      <void property="transitions">
+       <object class="java.util.LinkedHashSet">
+        <void method="add">
+         <object idref="Transition0"/>
+        </void>
+       </object>
+      </void>
+     </object>
+    </void>
+    <void property="marcmap">
+     <object class="java.util.LinkedHashMap">
+      <void method="put">
+       <object idref="Place0"/>
+       <int>0</int>
+      </void>
+     </object>
+    </void>
+    <void property="name">
+     <string>rdp1</string>
+    </void>
+    <void property="valuemap">
+     <object class="java.util.LinkedHashMap">
+      <void method="put">
+       <object idref="OrderedPair0"/>
+       <int>1</int>
+      </void>
+     </object>
+    </void>
+   </object>
+  </void>
+  <void property="name">
+   <string>rdpwp1</string>
+  </void>
+  <void property="priorityMap">
+   <object class="java.util.LinkedHashMap">
+    <void method="put">
+     <object idref="Transition0"/>
+     <int>1</int>
+    </void>
+   </object>
+  </void>
+ </object>
+</java>

@@ -11,7 +11,7 @@ public class Net implements INet {
 	private String name;
 	private Set<Transition> transitions;
 	private Set<Place> places;
-	private Set<OrderedPair> fluxRelation;
+	private Set<OrderedPair> fluxRelations;
 
 	// costrutture vuoto senza argomenti per XMLEncoder
 	public Net() { }
@@ -21,32 +21,32 @@ public class Net implements INet {
 		this.name = pname;
 		this.transitions = new LinkedHashSet<>();
 		this.places = new LinkedHashSet<>();
-		this.fluxRelation = new LinkedHashSet<>();
+		this.fluxRelations = new LinkedHashSet<>();
 	}
 	
 	public List<Place> getPreviousPlaces(Transition trans){
-		return fluxRelation.stream().
+		return fluxRelations.stream().
 				filter(e -> e.getCurrentTransition().equals(trans)  && e.getDirection() == OrderedPair.Direction.pt).
 				map(e -> e.getCurrentPlace()).
 				collect(Collectors.toList());
 	}
 	
 	public List<Place> getSuccessorPlaces(Transition trans){
-		return fluxRelation.stream().
+		return fluxRelations.stream().
 				filter(e -> e.getCurrentTransition().equals(trans)  && e.getDirection() == OrderedPair.Direction.tp).
 				map(e -> e.getCurrentPlace()).
 				collect(Collectors.toList());
 	}
 	
 	public List<Transition> getPreviousTransitions(Place place){
-		return fluxRelation.stream().
+		return fluxRelations.stream().
 				filter(e -> e.getCurrentPlace() == place  && e.getDirection() == OrderedPair.Direction.tp).
 				map(e -> e.getCurrentTransition()).
 				collect(Collectors.toList());
 	}
 	
 	public List<Transition> getSuccessorTransitions(Place place){
-		return fluxRelation.stream().
+		return fluxRelations.stream().
 				filter(e -> e.getCurrentPlace() == place  && e.getDirection() == OrderedPair.Direction.pt).
 				map(e -> e.getCurrentTransition()).
 				collect(Collectors.toList());
@@ -69,7 +69,7 @@ public class Net implements INet {
 			places.add(pair.getCurrentPlace());
 			transitions.add(pair.getCurrentTransition());
 
-			return fluxRelation.add(pair);
+			return fluxRelations.add(pair);
 		}
 	}
 
@@ -106,18 +106,12 @@ public class Net implements INet {
 
 		final Net other = (Net) obj;
 		
-		//Vengono rimossi gli elementi e si verifica che sia vuoto;
-		Set<OrderedPair> fluxrelationcopy = new HashSet<OrderedPair>(fluxRelation);
-		
-		fluxrelationcopy.removeAll(new ArrayList<>(other.fluxRelation));
-		other.fluxRelation.removeAll(new ArrayList<>(this.fluxRelation));
-		
-		return fluxrelationcopy.isEmpty() && other.fluxRelation.isEmpty();
+		return fluxRelations.containsAll(other.fluxRelations) && other.fluxRelations.containsAll(fluxRelations);
 		
 	}
 	
 	public int hashCode(){
-		return Objects.hash(fluxRelation);
+		return Objects.hash(fluxRelations);
 	}
 
 
@@ -149,21 +143,21 @@ public class Net implements INet {
 	}
 
 	public Set<OrderedPair> getFluxRelation() {
-		return fluxRelation;
+		return fluxRelations;
 	}
 
 	public void setFluxRelation(Set<OrderedPair> fluxRelation) {
-		this.fluxRelation = fluxRelation;
+		this.fluxRelations = fluxRelation;
 	}
 	
 	public boolean invariant() {
 		return
-				fluxRelation.stream()
+				fluxRelations.stream()
 				.map(e -> e.getCurrentPlace())
 				.collect(Collectors.toSet())
 				.equals(places)
 				&&
-				fluxRelation.stream()
+				fluxRelations.stream()
 				.map(e -> e.getCurrentTransition())
 				.collect(Collectors.toSet())
 				.equals(transitions);

@@ -34,8 +34,15 @@ public class NetUIController extends AbstractUIController {
 
     public void addFluxRel(){
         String placeName = view.readNotEmptyString(ViewStringConstants.INSERT_PLACE_MSG).trim();
-        String transitionName = view.readNotEmptyString(ViewStringConstants.INSERT_TRANSITION_MSG).trim();
-
+        String transitionName;
+        
+        do {
+        	transitionName = view.readNotEmptyString(ViewStringConstants.INSERT_TRANSITION_MSG).trim();
+        	if(transitionName.equals(placeName))
+        		view.printToDisplay(String.format(ViewStringConstants.ERR_TRANSITION_AS_PLACE, transitionName));
+        }while(transitionName.equals(placeName));
+        	
+        
         int direction = view.getIntInput(ViewStringConstants.INSERT_DIRECTION_MSG
                         + String.format(ViewStringConstants.FLUX_DIRECTION_MSG, 0, placeName, transitionName)
                         + String.format(ViewStringConstants.FLUX_DIRECTION_MSG, 1, transitionName, placeName) + "\n > ",
@@ -48,9 +55,9 @@ public class NetUIController extends AbstractUIController {
             if(checkPlace(placeName) && checkTransition(transitionName)) {
                 if(!netLogic.addFluxElem(placeName, transitionName, direction)) {
                     view.printToDisplay(ViewStringConstants.ERR_MSG_FLUX_ELEM_ALREADY_EXSISTS);
-                }
-                continueAddingElement();
+                }            
             }
+            continueAddingElement();
         }
 
     }

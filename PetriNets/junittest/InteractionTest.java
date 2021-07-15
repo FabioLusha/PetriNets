@@ -18,6 +18,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.*;
 
+//Il Test passa su Linux ma non su Windows
+
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class InteractionTest {
 
